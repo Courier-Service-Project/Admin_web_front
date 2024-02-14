@@ -1,5 +1,7 @@
 import React from 'react'
 import axios from 'axios';
+ import Notifi from "../../Components/Notification/Notifi";
+ import { ToastContainer } from "react-toastify";
 import "./SignIn.css"
 import {
   Grid,
@@ -13,23 +15,27 @@ import {
   Box,
   Stack,
 } from "@mui/material";
+import Error from '../../Components/Notification/Error';
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPass] = React.useState("");
   const register = (e)=>{
-      console.log("im clicked")
       e.preventDefault();
       axios.post('http://localhost:3000/api/users/', {
         email:email,
         password:password
       })
       .then(function (response) {
-        alert(response.data.success)
-        console.log(response);
+        if(response.data==="Hello"){
+          Notifi();
+        }
+        else{
+          Error();
+        }
       })
       .catch(function (error) {
-        console.log(error);
+        Error();
       });
   }
 
@@ -47,13 +53,13 @@ export default function SignIn() {
             <Box align="center">
               <Typography className="express" variant="h3">Xpress</Typography>
               <Typography variant="h5" gutterBottom>
-                Sign Up
+                Sign In
               </Typography>
             </Box>
             <Box component="form" >
-              <div className="mali">
+              <div className="mali"   id="uper">
                 <TextField
-                  id="standard-basic"
+                
                   label="UserName"
                   variant="standard"
                   fullWidth
@@ -61,25 +67,18 @@ export default function SignIn() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="mali">
+              <div className="mali" id="under">
                 <TextField
-                  id="standard-basic"
                   label="Password"
                   type="password"
                   variant="standard"
                   fullWidth
                   required
                   onChange={(e) => setPass(e.target.value)}
-
                 />
               </div>
 
-              <div className="reme">
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Remember me "
-                />
-              </div>
+           
 
               <Button type="submit" onClick={register} variant="contained" id="btn" style={ava} fullWidth>
                 Sign In
@@ -89,17 +88,18 @@ export default function SignIn() {
                   Forgot password?
                 </Link>
               </Typography>
-              <Typography>
+              <Typography style={{fontSize:13}}>
                 {" "}
-                Do you have an account?
-                <Link style={link} href="#">
+                Access to the admin panel requires an account. without one, entry is not permitted.
+                {/* <Link style={link} href="#">
                   Sign Up
-                </Link>
+                </Link> */}
               </Typography>
             </Box>
           </Box>
         </Box>
       </Stack>
+      <ToastContainer />
       </Paper>
     </Box>
   )

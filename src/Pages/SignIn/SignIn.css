@@ -19,7 +19,7 @@ body{
 }
 .paper{
     height: 470px;
-    padding: 20px 20px 20px 20px;
+    padding: 30px 20px 20px 20px;
     width: 330px;
 
 }
@@ -29,10 +29,15 @@ body{
 }
 .mali{
     margin-top: 5px;
+    margin-bottom: 10px;
 }
 
-.reme{
-    margin-top:6px ;
+#under{
+    margin-bottom: 30px;
+}
+
+#uper{
+    margin-top: 20px;
 }
 
 .picts{
@@ -41,3 +46,4 @@ body{
     background-position: right;
     
 }
+
