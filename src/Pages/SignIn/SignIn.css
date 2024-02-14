@@ -2,10 +2,10 @@
     margin: 0;
     padding: 0;
 }
-body{
+/* body{
     background-image: url(../../Assets/back2.jpg); 
     background-size: cover;   
-}
+} */
 .homescreen{
     height: 100vh;
     display: grid;

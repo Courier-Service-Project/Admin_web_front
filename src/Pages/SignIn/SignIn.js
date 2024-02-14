@@ -7,8 +7,6 @@ import {
   Grid,
   Paper,
   TextField,
-  Checkbox,
-  FormControlLabel,
   Button,
   Link,
   Typography,
@@ -16,10 +14,12 @@ import {
   Stack,
 } from "@mui/material";
 import Error from '../../Components/Notification/Error';
+import { useNavigate} from 'react-router-dom';
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPass] = React.useState("");
+  const navigation = useNavigate();
   const register = (e)=>{
       e.preventDefault();
       axios.post('http://localhost:3000/api/users/', {
@@ -29,6 +29,10 @@ export default function SignIn() {
       .then(function (response) {
         if(response.data==="Hello"){
           Notifi();
+          setTimeout(function() {
+            navigation("/create")
+          }, 500);
+          
         }
         else{
           Error();
