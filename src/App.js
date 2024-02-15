@@ -1,5 +1,5 @@
 import SignIn from "./Pages/SignIn/SignIn";
-import CreateOrder from "./Pages/CreateOrder/CreateOrder";
+import CompeteForm from "./Components/CreateOrder/CompeteForm"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/create" element={<CreateOrder />} />
+        <Route path="/create" element={<CompeteForm />} />
       </Routes>
     </BrowserRouter>
   );

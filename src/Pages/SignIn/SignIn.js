@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Error from '../../Components/Notification/Error';
 import { useNavigate} from 'react-router-dom';
+import {CheckEmpty} from '../../Validation/Validation';
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -22,24 +23,31 @@ export default function SignIn() {
   const navigation = useNavigate();
   const register = (e)=>{
       e.preventDefault();
+      
+      //validations
+      if(CheckEmpty(email)||CheckEmpty(password)){
+        const msg = "Email or Password could not empty"
+        Error(msg);
+        return;
+      }
+
       axios.post('http://localhost:3000/api/users/', {
         email:email,
         password:password
       })
       .then(function (response) {
-        if(response.data==="Hello"){
-          Notifi();
-          setTimeout(function() {
-            navigation("/create")
-          }, 500);
-          
+        if(response.data===1){
+          const msg = "Login SuccessFully"
+          Notifi(msg);
+          navigation("/create")
         }
         else{
-          Error();
+          const msg = "Invalid Email or Password "
+          Error(msg);
         }
       })
       .catch(function (error) {
-        Error();
+        console.log(error)
       });
   }
 
@@ -81,9 +89,6 @@ export default function SignIn() {
                   onChange={(e) => setPass(e.target.value)}
                 />
               </div>
-
-           
-
               <Button type="submit" onClick={register} variant="contained" id="btn" style={ava} fullWidth>
                 Sign In
               </Button>
@@ -95,9 +100,6 @@ export default function SignIn() {
               <Typography style={{fontSize:13}}>
                 {" "}
                 Access to the admin panel requires an account. without one, entry is not permitted.
-                {/* <Link style={link} href="#">
-                  Sign Up
-                </Link> */}
               </Typography>
             </Box>
           </Box>
