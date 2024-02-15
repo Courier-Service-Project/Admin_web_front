@@ -1,9 +1,15 @@
+import SignIn from "./Pages/SignIn/SignIn";
+import CompeteForm from "./Components/CreateOrder/CompeteForm"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-     <h1>Hello Calisto</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/create" element={<CompeteForm />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
