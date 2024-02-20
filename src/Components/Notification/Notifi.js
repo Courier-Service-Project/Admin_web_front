@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Notifi(msg) {
   toast.success(msg,{
     position: "top-right",
-    autoClose: 2000,
+    autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
