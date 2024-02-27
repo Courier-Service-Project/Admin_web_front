@@ -22,7 +22,7 @@ export default function SignIn() {
   const navigation = useNavigate();
   const register = (e) => {
     e.preventDefault();
-
+    
     //validations
     if (CheckEmpty(email) || CheckEmpty(password)) {
       const msg = "Email or Password could not empty";
@@ -31,12 +31,12 @@ export default function SignIn() {
     }
 
     axios
-      .post("http://localhost:3000/api/users/", {
+      .post("http://localhost:3000/src/routes/admin", {
         email: email,
         password: password,
       })
       .then(function (response) {
-        if (response.data === 1) {
+        if (response.data.success === 1) {
           const msg = "Login SuccessFully";
           Notifi(msg);
           navigation("/create");
