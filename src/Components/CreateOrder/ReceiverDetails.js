@@ -13,7 +13,6 @@ export default function ReceiverDetails({fromData,setFormData}) {
       <Grid container spacing={3}>
         <Grid item xs={12} >
         <TextField
-            style={{color:"red",backgroundColor:"red"}}
             required
             name="R_name"
             label="Name"

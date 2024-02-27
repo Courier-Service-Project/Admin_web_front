@@ -1,15 +1,21 @@
-import SignIn from "./Pages/SignIn/SignIn";
-import CompeteForm from "./Components/CreateOrder/CompeteForm"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import SignIn from "./Pages/SignIn/SignIn";
+ import CompeteForm from "./Components/CreateOrder/CompeteForm"
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CreateOrder from "./Pages/Dashboard/CreateOrder";
+
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/create" element={<CompeteForm />} />
-      </Routes>
-    </BrowserRouter>
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path="/sdfS" element={<SignIn />} />
+    //     <Route path="/" element={<CompeteForm />} />
+    //   </Routes>
+    // </BrowserRouter>
+
+
+
+   <CreateOrder/>
   );
 }
 
