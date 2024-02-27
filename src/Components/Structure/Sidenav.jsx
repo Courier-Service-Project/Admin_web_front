@@ -74,9 +74,13 @@ export default function Sidenav() {
   const open = useAppStore((state) => state.dopen);
 
   const [open1, setOpen1] = React.useState(true);
+  const [open2, setOpen2] = React.useState(true);
 
   const handleClick1 = () => {
     setOpen1(!open1);
+  };
+  const handleClick2 = () => {
+    setOpen2(!open2);
   };
 
   return (
@@ -103,20 +107,13 @@ export default function Sidenav() {
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
-            <ListItemText primary="Sent mail" />
+            <ListItemText primary="Dashboard" />
           </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <DraftsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItemButton>
-
           <ListItemButton onClick={handleClick1}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary="Inbox" />
+            <ListItemText primary="Orders" />
             {open1 ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={open1} timeout="auto" unmountOnExit>
@@ -125,19 +122,73 @@ export default function Sidenav() {
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
-                <ListItemText primary="Starred" />
+                <ListItemText primary="Create New" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
-                <ListItemText primary="Hello" />
+                <ListItemText primary="Pending" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="In Progress" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Complete" />
               </ListItemButton>
             </List>
           </Collapse>
+          <ListItemButton>
+            <ListItemIcon>
+              <SendIcon />
+            </ListItemIcon>
+            <ListItemText primary="Administrators" />
+          </ListItemButton>
+
+          <ListItemButton onClick={handleClick2}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Orders" />
+            {open2 ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open2} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Registered" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Applicant" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          <ListItemButton>
+            <ListItemIcon>
+              <SendIcon />
+            </ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <SendIcon />
+            </ListItemIcon>
+            <ListItemText primary="Log Out" />
+          </ListItemButton>
         </List>
 
-        <Divider />
+        {/* <Divider />  yata ira*/}
       </Drawer>
     </Box>
   );
