@@ -14,11 +14,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
 import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -48,7 +48,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -72,7 +71,7 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidenav() {
   const theme = useTheme();
   const open = useAppStore((state) => state.dopen);
-
+  const navigate = useNavigate();
   const [open1, setOpen1] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
 
@@ -103,7 +102,7 @@ export default function Sidenav() {
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           component="nav"
         >
-          <ListItemButton>
+          <ListItemButton onClick={()=>navigate("/dashboard")}>
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
@@ -118,25 +117,25 @@ export default function Sidenav() {
           </ListItemButton>
           <Collapse in={open1} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/createorder")}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
                 <ListItemText primary="Create New" />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/pending")} >
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
                 <ListItemText primary="Pending" />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/progress")}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
-                <ListItemText primary="In Progress" />
+                <ListItemText primary="In Progress"  />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/complete")}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
@@ -144,7 +143,7 @@ export default function Sidenav() {
               </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton>
+          <ListItemButton onClick={()=>navigate("/administrator")}>
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
@@ -155,18 +154,18 @@ export default function Sidenav() {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary="Orders" />
+            <ListItemText primary="Courier Person" />
             {open2 ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={open2} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/registered")}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
                 <ListItemText primary="Registered" />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/applicant")}>
                 <ListItemIcon>
                   <StarBorder />
                 </ListItemIcon>
