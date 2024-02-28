@@ -12,6 +12,7 @@ import { useAppStore } from "../../appStore";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import SendIcon from "@mui/icons-material/Send";
@@ -177,11 +178,13 @@ export default function Sidenav() {
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
-            <ListItemText primary="Setting" />
+            <ListItemText primary="Account Setting" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton sx={{bgcolor:"#424242",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
+            bgcolor:"#9e9e9e"
+          }}}>
             <ListItemIcon>
-              <SendIcon />
+              <LogoutIcon sx={{color:"white"}}/>
             </ListItemIcon>
             <ListItemText primary="Log Out" />
           </ListItemButton>
