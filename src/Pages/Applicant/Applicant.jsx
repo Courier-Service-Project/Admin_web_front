@@ -4,6 +4,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
+import Applicanttable from '../../Components/Tables/ApplicantTable'
 export default function Applicant() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
@@ -18,7 +19,7 @@ export default function Applicant() {
         Applicant
         </Typography>
         </Box>
-          contend
+        <Applicanttable/>
         </Box>
       </Box>
       </Box>
