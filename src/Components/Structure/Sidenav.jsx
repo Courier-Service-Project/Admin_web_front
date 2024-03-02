@@ -13,12 +13,22 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
 import { useNavigate } from "react-router-dom";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import AddchartIcon from "@mui/icons-material/Addchart";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
+import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import PersonIcon from "@mui/icons-material/Person";
+import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
+import ArticleIcon from "@mui/icons-material/Article";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -72,14 +82,16 @@ export default function Sidenav() {
   const theme = useTheme();
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
-  const [open1, setOpen1] = React.useState(true);
-  const [open2, setOpen2] = React.useState(true);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
 
   const handleClick1 = () => {
     setOpen1(!open1);
+    setOpen2(false);
   };
   const handleClick2 = () => {
     setOpen2(!open2);
+    setOpen1(false);
   };
 
   return (
@@ -104,13 +116,13 @@ export default function Sidenav() {
         >
           <ListItemButton onClick={()=>navigate("/dashboard")}>
             <ListItemIcon>
-              <SendIcon />
+              <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
           <ListItemButton onClick={handleClick1}>
             <ListItemIcon>
-              <InboxIcon />
+              <AutoAwesomeMotionIcon />
             </ListItemIcon>
             <ListItemText primary="Orders" />
             {open1 ? <ExpandLess /> : <ExpandMore />}
@@ -119,40 +131,45 @@ export default function Sidenav() {
             <List component="div" disablePadding>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/createorder")}>
                 <ListItemIcon>
-                  <StarBorder />
+                  <AddShoppingCartIcon />
                 </ListItemIcon>
                 <ListItemText primary="Create New" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/pending")} >
                 <ListItemIcon>
-                  <StarBorder />
+                  <AddchartIcon />
                 </ListItemIcon>
                 <ListItemText primary="Pending" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/progress")}>
                 <ListItemIcon>
-                  <StarBorder />
+                  <AutorenewIcon />
                 </ListItemIcon>
                 <ListItemText primary="In Progress"  />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/complete")}>
                 <ListItemIcon>
-                  <StarBorder />
+                  <TaskAltRoundedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Complete" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/track")}>
+                <ListItemIcon>
+                  <ModeOfTravelIcon />
+                </ListItemIcon>
+                <ListItemText primary="Track Order" />
               </ListItemButton>
             </List>
           </Collapse>
           <ListItemButton onClick={()=>navigate("/administrator")}>
             <ListItemIcon>
-              <SendIcon />
+              <SupervisorAccountIcon />
             </ListItemIcon>
             <ListItemText primary="Administrators" />
           </ListItemButton>
-
           <ListItemButton onClick={handleClick2}>
             <ListItemIcon>
-              <InboxIcon />
+              <PersonIcon />
             </ListItemIcon>
             <ListItemText primary="Courier Person" />
             {open2 ? <ExpandLess /> : <ExpandMore />}
@@ -161,13 +178,13 @@ export default function Sidenav() {
             <List component="div" disablePadding>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/registered")}>
                 <ListItemIcon>
-                  <StarBorder />
+                  <HowToRegRoundedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Registered" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/applicant")}>
                 <ListItemIcon>
-                  <StarBorder />
+                  <ArticleIcon />
                 </ListItemIcon>
                 <ListItemText primary="Applicant" />
               </ListItemButton>
@@ -175,13 +192,15 @@ export default function Sidenav() {
           </Collapse>
           <ListItemButton>
             <ListItemIcon>
-              <SendIcon />
+              <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Setting" />
+            <ListItemText primary="Account Setting" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton sx={{bgcolor:"#424242",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
+            bgcolor:"#9e9e9e"
+          }}}>
             <ListItemIcon>
-              <SendIcon />
+              <LogoutIcon sx={{color:"white"}}/>
             </ListItemIcon>
             <ListItemText primary="Log Out" />
           </ListItemButton>

@@ -9,6 +9,8 @@ import Registered from "./Pages/Registered/Registered";
 import Complete from "./Pages/Complete/Complete";
 import Pending from "./Pages/Pending/Pending";
 import ViewOrder from "./Pages/Pending/ViewOrder"
+import Tracker from "./Pages/TrackOrder/Tracker";
+
 
 
 
@@ -25,12 +27,10 @@ function App() {
          <Route path="/complete" element={<Complete/>} />
          <Route path="/registered" element={<Registered/>} />
          <Route path="/pending" element={<Pending/>} />
-         <Route path="/" element={<Pending />} />
          <Route path="/order/:orderNo" element={<ViewOrder />} />
+         <Route path="/track" element={<Tracker/>} />
         </Routes>
-      </BrowserRouter>
-
-      
+      </BrowserRouter>    
   );
 }
 
