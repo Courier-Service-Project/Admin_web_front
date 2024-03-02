@@ -29,19 +29,19 @@ export default function ViewOrder() {
         <Box sx={{ display: "flex" }}>
           <Sidenav />
           <Box component="main" sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}>
-            <Box sx={{ mx: 3 }}>
+            <Box sx={{ mx: 4 }}>
               <Typography sx={{ fontSize: 30, fontWeight: 'bold' }}>
                 <AppsIcon sx={{ mr: 3 }} />
-                OrderID-2141N
+                OrderID - 2141N
               </Typography>
             </Box>
-            <Box sx={{ml:4,mr:4,mt:5,mb:5,border:1,borderColor:'black',borderRadius:1}}>
-      <Card>
+            <Box sx={{ml:4,mr:4,mt:5,mb:5}}>
+      <Card sx={{boxShadow:3,border:"2px solid green",borderRadius:3}}>
         <CardContent>
           <Box component="form" sx={{m:4}}>
             <FormSubTitle subTitle="Sender Details" />
-            <Divider sx={{ marginBottom: 1 }} />
-            <Grid container>
+            <Divider sx={{ marginBottom: 1 , border:1 }} />
+            <Grid container sx={{mt:3}}>
               <Grid item xs={12}>
                 <TextField
                   type="text"
@@ -53,7 +53,7 @@ export default function ViewOrder() {
                   placeholder="Enter Sender name"
                   fullWidth
                   required
-                  value="Pramuditha Sadeepa"
+                  value=""
                 />
               </Grid>
               <Grid item xs={12}>
@@ -67,7 +67,7 @@ export default function ViewOrder() {
                   placeholder="Enter Sender Address"
                   fullWidth
                   required
-                  value="175/3A,wallasmulla Road,Beliatta"
+                  value=""
                 />
               </Grid>
               <Grid item xs={3}>
@@ -81,14 +81,14 @@ export default function ViewOrder() {
                   placeholder="Enter Sender Phone Number"
                   fullWidth
                   required
-                  value="0766022618"
+                  value=""
                 />
               </Grid>
             </Grid>
 
             <FormSubTitle subTitle="Receiver Details" />
-            <Divider sx={{ marginBottom: 1 }} />
-            <Grid container>
+            <Divider sx={{ marginBottom: 1, border:1 }} />
+            <Grid container sx={{mt:3}}>
               <Grid item xs={12}>
                 <TextField
                   type="text"
@@ -100,7 +100,7 @@ export default function ViewOrder() {
                   placeholder="Enter Receiver name"
                   fullWidth
                   required
-                  value="Nethupama Shavinda"
+                  value=""
                 />
               </Grid>
               <Grid item xs={12}>
@@ -114,7 +114,7 @@ export default function ViewOrder() {
                   placeholder="Enter Receiver Address"
                   fullWidth
                   required
-                  value="100/A,thissa road,hungama"
+                  value=""
                 />
               </Grid>
               <Grid item xs={3} mr={2}>
@@ -128,7 +128,7 @@ export default function ViewOrder() {
                   placeholder="Enter Receiver Phone Number"
                   fullWidth
                   required
-                  value="0765466324"
+                  value=""
                 />
               </Grid>
               <Grid item xs={3} mr={2}>
@@ -140,9 +140,9 @@ export default function ViewOrder() {
             </Grid>
 
             <FormSubTitle subTitle="Pickup Details" />
-            <Divider sx={{ marginBottom: 1 }} />
+            <Divider sx={{ marginBottom: 1, border:1 }} />
 
-            <Grid container>
+            <Grid container sx={{mt:3}}>
               <Grid xs={12}>
                 <TextField
                   type="text"
@@ -153,7 +153,7 @@ export default function ViewOrder() {
                   placeholder="Enter Pickup Address"
                   fullWidth
                   required
-                  value="100/A,thissa Road,Hungama"
+                  value=""
                 />
               </Grid>
               <Grid xs={3} mr={2}>
@@ -169,7 +169,7 @@ export default function ViewOrder() {
                   placeholder="Enter Pickup Phone Number"
                   fullWidth
                   required
-                  value="0765466324"
+                  value=""
                 />
               </Grid>
               <Grid xs={3}>
@@ -202,7 +202,7 @@ export default function ViewOrder() {
                   placeholder="Enter Description About Order"
                   fullWidth
                   required
-                  value="Quick Dilivary"
+                  value=""
                 />
               </Grid>
               <Grid xs={4} style={{ margin: "0 auto",padding:"0 20px"}}>
@@ -213,7 +213,7 @@ export default function ViewOrder() {
                   variant="contained"
                   color="success"
                 >
-                  Create Order
+                  Confirm Order
                 </Button>
               </Grid>
 

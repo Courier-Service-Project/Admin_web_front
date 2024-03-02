@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 // import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import './PendingTable.css';
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -19,6 +20,7 @@ const StyledTableCell = styled(TableCell)(( ) => ({
     top: 0,
     zIndex: 1,
     overflowX: 'auto',
+    height:'0px'
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -30,12 +32,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(even)': {
     backgroundColor:'#D9D9D9',
   },
+  // hover effect
+  '&:hover': {
+    backgroundColor: '#E4A6A6',
+  },
+  // blue left border on hover
+  '&:hover td:nth-child(1)': {
+    borderLeft: '5px solid red',
+  },
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 
 }));
+
 const TableContainerStyled = styled(TableContainer)({
   maxHeight : '475px', // Set a fixed height for the table container
   overflowY: 'auto',
@@ -66,6 +77,8 @@ const rows = [
 ];
 
 
+
+
 export default function PendingTable() {
   return (
         <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
@@ -85,14 +98,21 @@ export default function PendingTable() {
 
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.id} sx={{ '&:hover': { backgroundColor: '#E4A6A6' } }}>
+              <StyledTableRow key={row.id} >
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.pdistrict}</TableCell>
                 <TableCell>{row.ptown}</TableCell>
                 <TableCell>{row.date}</TableCell>
                 <TableCell>
-                    <a href={`/order/${row.id}`} style={{color:"red", textDecoration:'none'}}>{row.action}</a>
+                  
+                  <a
+                    href={`/order/${row.id}`}
+                    className="hover-link"
+                  >
+                    {row.action}
+                  </a>
+
                 </TableCell>
               </StyledTableRow>
             ))}

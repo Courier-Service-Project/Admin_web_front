@@ -8,6 +8,8 @@ import PendingTable from '../../Components/pending/PendingTable';
 
 export default function Pending() {
   return (
+
+    
   <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh",position:"fixed",minWidth:"100%"}}>
       <Navbar />
       <Box height={75} />
