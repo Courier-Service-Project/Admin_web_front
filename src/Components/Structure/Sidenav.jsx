@@ -174,14 +174,15 @@ export default function Sidenav() {
               </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton>
+          <ListItemButton onClick={()=>navigate("/account")}>
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
             <ListItemText primary="Account Setting" />
           </ListItemButton>
-          <ListItemButton sx={{bgcolor:"#424242",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
-            bgcolor:"#9e9e9e"
+          <ListItemButton sx={{bgcolor:"#616161",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
+            bgcolor:"#9e9e9e",
+            color:"black"
           }}}>
             <ListItemIcon>
               <LogoutIcon sx={{color:"white"}}/>
