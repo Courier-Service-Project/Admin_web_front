@@ -7,9 +7,14 @@ import AppsIcon from "@mui/icons-material/Apps";
 import Avatar from "@mui/material/Avatar";
 import profile from "../../Assets/round.png";
 import Button from "@mui/material/Button";
-
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
+import KeyIcon from "@mui/icons-material/Key";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PhoneIcon from "@mui/icons-material/Phone";
+import { changebtn, updateimg, deleteimg } from "./AccountStyles";
 
 export default function Account() {
   return (
@@ -22,12 +27,22 @@ export default function Account() {
           component="main"
           sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}
         >
-          <Box sx={{ mx: 3, mb: 5 }}>
+          <Box sx={{ mx: 3, mb: 3 }}>
             <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
               <AppsIcon sx={{ mr: 3 }} />
               Account
             </Typography>
+            <Typography
+              variant="caption"
+              display="block"
+              gutterBottom
+              color={"#9e9e9e"}
+              pl={6}
+            >
+              Real time information and activities of your property.
+            </Typography>
           </Box>
+          <Divider sx={{ mb: 8, ml: 3 }} />
           <Box
             sx={{
               display: "flex",
@@ -52,67 +67,187 @@ export default function Account() {
               </Box>
             </Box>
             <Box>
-              <Button
-                variant="contained"
-                sx={{
-                  mx: 1,
-                  bgcolor: "#bdbdbd",
-                  color: "#212121",
-                  ":hover": {
-                    bgcolor: "#9e9e9e",
-                  },
-                }}
-              >
+              <Button variant="contained" sx={updateimg}>
                 Update new Image
               </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  mx: 1,
-                  bgcolor: "#eeeeee",
-                  color: "#212121",
-                  ":hover": {
-                    bgcolor: "#bdbdbd",
-                  },
-                }}
-              >
+              <Button variant="contained" sx={deleteimg}>
                 Delete Image
               </Button>
             </Box>
           </Box>
           <Box sx={{ mt: 7, ml: 3 }}>
-            <Typography sx={{ fontWeight: "bold",mb:2}}>
+            <Typography sx={{ fontWeight: "bold", mb: 2 }}>
               Full Name
             </Typography>
 
             <Grid container spacing={5}>
               <Grid item xs={4}>
-              <Typography color={"#9e9e9e"}>First name</Typography>
+                <Typography color={"#9e9e9e"}>First name</Typography>
                 <TextField
-                fullWidth
-                size="small"
-                sx={{boxShadow:1}}
+                  fullWidth
+                  size="small"
+                  sx={{ boxShadow: 1 }}
                   id="outlined-read-only-input"
                   defaultValue="Malinda"
                   InputProps={{
                     readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircleIcon />
+                      </InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
               <Grid item xs={4}>
-              <Typography color={"#9e9e9e"}>Last name</Typography>
+                <Typography color={"#9e9e9e"}>Last name</Typography>
                 <TextField
-                fullWidth
-                size="small"
-                sx={{boxShadow:1}}
+                  fullWidth
+                  size="small"
+                  sx={{ boxShadow: 1 }}
                   id="outlined-read-only-input"
-                  defaultValue="Sureshs"
+                  defaultValue="Suresh"
                   InputProps={{
                     readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircleIcon />
+                      </InputAdornment>
+                    ),
                   }}
                 />
               </Grid>
+              <Grid
+                item
+                xs={4}
+                sx={{
+                  justifyContent: "right",
+                  display: "flex",
+                  alignItems: "end",
+                  pr: 4,
+                }}
+              >
+                <Button variant="contained" sx={changebtn}>
+                  Change name
+                </Button>
+              </Grid>
             </Grid>
+            <Divider sx={{ mt: 8, mb: 4 }} />
+          </Box>
+          <Box sx={{ mt: 4, ml: 3 }}>
+            <Typography sx={{ fontWeight: "bold" }}>Contact Info</Typography>
+            <Typography
+              variant="caption"
+              display="block"
+              gutterBottom
+              sx={{ mb: 2 }}
+              color={"#9e9e9e"}
+            >
+              Manage your accounts email address for the invoices.
+            </Typography>
+
+            <Grid container spacing={5}>
+              <Grid item xs={4}>
+                <Typography color={"#9e9e9e"}>Email</Typography>
+                <TextField
+                  fullWidth
+                  size="small"
+                  sx={{ boxShadow: 1 }}
+                  id="outlined-read-only-input"
+                  defaultValue="malindasuresh47@gmail.com"
+                  InputProps={{
+                    readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailOutlineIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Typography color={"#9e9e9e"}>Tele</Typography>
+                <TextField
+                  fullWidth
+                  size="small"
+                  sx={{ boxShadow: 1 }}
+                  id="outlined-read-only-input"
+                  defaultValue="070-1271912"
+                  InputProps={{
+                    readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PhoneIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={5}
+                sx={{
+                  justifyContent: "end",
+                  display: "flex",
+                  alignItems: "end",
+                  pr: 4,
+                }}
+              >
+                <Button variant="contained" sx={changebtn}>
+                  Change Contact info
+                </Button>
+              </Grid>
+            </Grid>
+            <Divider sx={{ mt: 8, mb: 4 }} />
+          </Box>
+          <Box sx={{ mt: 4, ml: 3 }}>
+            <Typography sx={{ fontWeight: "bold" }}>Password</Typography>
+            <Typography
+              variant="caption"
+              display="block"
+              gutterBottom
+              color={"#9e9e9e"}
+              sx={{ mb: 2 }}
+            >
+              Modify your current password.
+            </Typography>
+
+            <Grid container spacing={5}>
+              <Grid item xs={4}>
+                <Typography color={"#9e9e9e"}>Current Password</Typography>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="password"
+                  sx={{ boxShadow: 1 }}
+                  id="outlined-read-only-input"
+                  defaultValue="malindaSureshMadhushan"
+                  InputProps={{
+                    readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <KeyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={8}
+                sx={{
+                  justifyContent: "end",
+                  display: "flex",
+                  alignItems: "end",
+                  pr: 4,
+                }}
+              >
+                <Button variant="contained" sx={changebtn}>
+                  Change Password
+                </Button>
+              </Grid>
+            </Grid>
+            <Divider sx={{ mt: 8, mb: 4 }} />
           </Box>
         </Box>
       </Box>
