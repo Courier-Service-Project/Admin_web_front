@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import AppsIcon from "@mui/icons-material/Apps";
 import Avatar from "@mui/material/Avatar";
 import profile from "../../Assets/round.png";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -15,8 +16,33 @@ import KeyIcon from "@mui/icons-material/Key";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { changebtn, updateimg, deleteimg } from "./AccountStyles";
+import Popup from "../../Components/Account/Popup"
+
+var pffname
+var pllname
+
+var firstName
 
 export default function Account() {
+
+  const[openpopup,setopenpopup] = React.useState(false);
+  
+  axios
+  .post("http://localhost:3000/src/routes/profileDget", {
+    id:1,
+  })
+  .then(function (response) {
+     pffname=document.getElementById("fname").value=response.data.data[0].fname
+     pllname=document.getElementById("lname").value=response.data.data[0].lname
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+
+  
+
+
+
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
       <Navbar />
@@ -87,8 +113,9 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
-                  defaultValue="Malinda"
+                 
+                  id="fname"
+                defaultValue={firstName}
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -105,7 +132,7 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
+                  id="lname"
                   defaultValue="Suresh"
                   InputProps={{
                     readOnly: true,
@@ -127,7 +154,7 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" sx={changebtn}>
+                <Button variant="contained" onClick={()=>setopenpopup(true)} sx={changebtn}>
                   Change name
                 </Button>
               </Grid>
@@ -251,6 +278,12 @@ export default function Account() {
           </Box>
         </Box>
       </Box>
+      <Popup
+        openpopup = {openpopup}
+        setopenpopup ={setopenpopup}
+        pfname={pffname}
+        plname={pllname}
+      />
     </Box>
   );
 }

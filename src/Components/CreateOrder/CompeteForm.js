@@ -4,17 +4,20 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
+import { ToastContainer } from "react-toastify";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
+import { CheckEmpty } from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
+import Error from "../../Components/Notification/Error";
 import axios from "axios";
 import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
@@ -67,19 +70,59 @@ export default function CompeteForm() {
           <ReceiverDetails fromData={fromData} setFormData={setFormData} />
         );
       case 2:
-        return <PickupDetails fromData={fromData} setFormData={setFormData} />;
+        return <PickupDetails fromData={fromData} setFormData={setFormData}/>;
       default:
         throw new Error("Unknown step");
     }
   }
+//................................
+  function senderValid(){
+         if (CheckEmpty(fromData.S_name) || CheckEmpty(fromData.S_address) || CheckEmpty(fromData.S_telephone)) {
+          Error(" Fields cannot be empty")
+          return 1;
+        }
+  }
+//................................
+  function recieverValid(){
+         if (CheckEmpty(fromData.R_name) || CheckEmpty(fromData.R_district) || CheckEmpty(fromData.R_HomeTown) || CheckEmpty(fromData.R_telephone)) {
+          Error(" Fields cannot be empty")
+          return 1;
+        }
+  }
+  //.............................
+  function pickValid(){
+    if (CheckEmpty(fromData.P_VehicalType) || CheckEmpty(fromData.P_address) || CheckEmpty(fromData.P_homeTown) || CheckEmpty(fromData.P_paymentMethod) || CheckEmpty(fromData.P_telephone) || CheckEmpty(fromData.P_district)) {
+      Error(" Fields cannot be empty")
+      return 1;
+   }
+}
 
   function sendDetails() {
-    console.log(fromData.S_name);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Order Placed",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    
     axios
-      .post("http://localhost:3000/api/order/", {
+      .post("http://localhost:3000/src/routes/createOrder", {
         sname: fromData.S_name,
-        rhometown: fromData.R_HomeTown,
-        ptelephone: fromData.P_telephone,
+        saddress: fromData.S_address,
+        stelephone: fromData.S_telephone,
+        rname:fromData.R_name,
+        rtelephone:fromData.R_telephone,
+        rdistric:fromData.R_district,
+        rhometown:fromData.R_HomeTown,
+        raddress:fromData.R_address,
+        paddress:fromData.P_address ,
+        pdistrict:fromData.P_district,
+        pvehicaltype:fromData.P_VehicalType,
+        ptelephone:fromData.P_telephone ,
+        ppaymentmethod:fromData.P_paymentMethod,
+        pspecialnote:fromData.P_specialNote,
+        phometown:fromData.P_homeTown,
       })
       .then(function (response) {
         console.log(response);
@@ -90,14 +133,23 @@ export default function CompeteForm() {
   }
 
   const handleNext = () => {
+    
+    if(activeStep === 0){
+      if(senderValid()){
+        return;
+      };
+    }
+    if(activeStep === 1){
+      if(recieverValid()){
+        return;
+      };
+    }
+
     if (activeStep === steps.length - 1) {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Order Placed",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      if(pickValid()){
+        return;
+      }
+      sendDetails();
     }
     setActiveStep(activeStep + 1);
   };
@@ -189,6 +241,7 @@ export default function CompeteForm() {
           )}
         </Paper>
       </Container>
+      <ToastContainer />
     </React.Fragment>
   );
 }

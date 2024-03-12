@@ -22,6 +22,8 @@ export const picts = {
 }
 
 
-export const btn = { backgroundColor: "black",mb:2};
+export const btn = {backgroundColor: "#424242",mb:2,":hover":{
+  bgcolor:"#212121"
+}};
 
 export const link = { typography: "body1"};

@@ -83,7 +83,7 @@ export default function Sidenav() {
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
   const [open1, setOpen1] = React.useState(true);
-  const [open2, setOpen2] = React.useState(true);
+  const [open2, setOpen2] = React.useState(false);
 
   const handleClick1 = () => {
     setOpen1(!open1);
