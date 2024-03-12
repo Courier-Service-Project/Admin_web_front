@@ -8,8 +8,13 @@ import Progress from "./Pages/In-Progress/Progress";
 import Registered from "./Pages/Registered/Registered";
 import Complete from "./Pages/Complete/Complete";
 import Pending from "./Pages/Pending/Pending";
+
+import ViewOrder from "./Pages/Pending/ViewOrder"
+
 import Account from "./Pages/Account/Account";
+
 import Tracker from "./Pages/TrackOrder/Tracker";
+
 
 
 
@@ -17,7 +22,7 @@ function App() {
   return (
      <BrowserRouter>
        <Routes>
-         <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
         <Route path="/createorder" element={<CreateOrder/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/applicant" element={<Applicant/>} />
@@ -28,12 +33,9 @@ function App() {
         <Route path="/pending" element={<Pending/>} />
         <Route path="/account" element={<Account/>} />
         <Route path="/track" element={<Tracker/>} />
+        <Route path="/order/:orderNo" element={<ViewOrder />} />
       </Routes>
      </BrowserRouter>
-
-
-
-   
   );
 }
 
