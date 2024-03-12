@@ -15,13 +15,8 @@ export default function Dashboard() {
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3,m:3,bgcolor:"white",boxShadow:1  }}>
         <Box sx={{mx:3}}>
-        {/* <Typography sx={{fontSize:30,fontWeight: 'bold'}}>
-        <AppsIcon sx={{mr:3}}/>
-          Dashboard
-        </Typography> */}
         <Card />
         </Box>
-          {/* contend */}
         </Box>
       </Box>
       </Box>
