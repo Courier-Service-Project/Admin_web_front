@@ -7,10 +7,10 @@ import AppsIcon from '@mui/icons-material/Apps';
 import Applicanttable from '../../Components/Tables/ApplicantTable'
 export default function Applicant() {
   return (
-  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
+    <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
       <Navbar />
-      <Box height={75}  />
-      <Box sx={{ display: "flex"}}>
+      <Box height={75} />
+      <Box sx={{ display: "flex" }}>
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3,m:3,bgcolor:"white",boxShadow:1  }}>
         <Box sx={{mx:3}}>
@@ -22,6 +22,6 @@ export default function Applicant() {
         <Applicanttable/>
         </Box>
       </Box>
-      </Box>
+    </Box>
   );
 }

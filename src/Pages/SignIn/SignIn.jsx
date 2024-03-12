@@ -25,7 +25,7 @@ export default function SignIn() {
     
     //validations
     if (CheckEmpty(email) || CheckEmpty(password)) {
-      const msg = "Email or Password could not empty";
+      const msg = "Email / Password could not Empty";
       Error(msg);
       return;
     }
@@ -39,9 +39,9 @@ export default function SignIn() {
         if (response.data.success === 1) {
           const msg = "Login SuccessFully";
           Notifi(msg);
-          navigation("/create");
+          navigation("/createorder");
         } else {
-          const msg = "Invalid Email or Password ";
+          const msg = "Invalid Email / Password ";
           Error(msg);
         }
       })

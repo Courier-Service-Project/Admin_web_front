@@ -82,16 +82,14 @@ export default function Sidenav() {
   const theme = useTheme();
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
-  const [open1, setOpen1] = React.useState(false);
+  const [open1, setOpen1] = React.useState(true);
   const [open2, setOpen2] = React.useState(false);
 
   const handleClick1 = () => {
     setOpen1(!open1);
-    setOpen2(false);
   };
   const handleClick2 = () => {
     setOpen2(!open2);
-    setOpen1(false);
   };
 
   return (
@@ -190,14 +188,15 @@ export default function Sidenav() {
               </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton>
+          <ListItemButton onClick={()=>navigate("/account")}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Account Setting" />
           </ListItemButton>
-          <ListItemButton sx={{bgcolor:"#424242",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
-            bgcolor:"#9e9e9e"
+          <ListItemButton sx={{bgcolor:"#616161",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
+            bgcolor:"#9e9e9e",
+            color:"black"
           }}}>
             <ListItemIcon>
               <LogoutIcon sx={{color:"white"}}/>
