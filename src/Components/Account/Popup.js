@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -19,13 +20,26 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Popup(props) {
-  const { openpopup, setopenpopup,pfname,plname } = props;
+  const { openpopup, setopenpopup, pfname, plname } = props;
 
   const handleClickOpen = () => {
     setopenpopup(true);
   };
   const handleClose = () => {
     setopenpopup(false);
+  };
+
+  const changebtn = {
+    px:2,
+    py:0.8,
+    my: 0.5,
+    textTransform: "none",
+    bgcolor: "#26a69a",
+    color: "#fff",
+    ":hover": {
+      bgcolor: "#80cbc4",
+      color: "#000",
+    },
   };
 
   return (
@@ -35,8 +49,10 @@ export default function Popup(props) {
         aria-labelledby="customized-dialog-title"
         open={openpopup}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Change User Name
+        <DialogTitle sx={{ p: 1.5 }}>
+        <Typography variant="h6">
+          Edit Username
+        </Typography>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -52,25 +68,25 @@ export default function Popup(props) {
         </IconButton>
         <DialogContent dividers>
           <TextField
-          hiddenLabel
+            hiddenLabel
             id="outlined-basic"
             label="Rename first name"
             variant="outlined"
-            size="small" 
-            sx={{mr:3}}
+            size="small"
+            sx={{ mr: 3,mb:1.5 }}
             defaultValue={pfname}
           />
           <TextField
-          hiddenLabel
+            hiddenLabel
             id="outlined-basic"
-           label="Rename last name"
+            label="Rename last name"
             variant="outlined"
             size="small"
             defaultValue={plname}
           />
         </DialogContent>
         <DialogActions>
-          <Button sx={{color:"black"}} onClick={handleClose}>
+          <Button sx={changebtn} onClick={handleClose}>
             Save changes
           </Button>
         </DialogActions>
