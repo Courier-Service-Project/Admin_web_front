@@ -4,6 +4,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
+import RegisteredTable from "../../Components/Registered/RegisteredTable";
 export default function Registered() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
@@ -18,7 +19,9 @@ export default function Registered() {
         Registered
         </Typography>
         </Box>
-          contend
+          <Box>
+            <RegisteredTable/>
+          </Box>
         </Box>
       </Box>
       </Box>

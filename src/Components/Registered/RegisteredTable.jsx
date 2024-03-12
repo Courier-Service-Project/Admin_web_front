@@ -3,13 +3,11 @@ import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-//import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-// import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import './PendingTable.css';
+import './RegisteredTable.css';
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,33 +52,38 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: '100%'  // Allow vertical scrolling
 });
 
-function createData(id, name, pdistrict, ptown, date,action) {
-  return { id, name, pdistrict, ptown, date,action };
+function createData(registerdid, name, pdistrict, ptown, date,action) {
+  return { registerdid, name, pdistrict, ptown, date,action };
 }
 
 const rows = [
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2142N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
-  createData('2141N','Rajapaksha','Matara','Rahula','2/3/2024','View Order'),
+  createData('2001N','Pramuditha','Hambanthota','Beliatta','3/3/2024','View Details'),
+  createData('2002N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2003N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2004N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2005N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2006N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2007N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2008N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2009N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2010N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2011N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2012N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2013N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2014N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2015N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2016N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2017N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2018N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2019N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+  createData('2020N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
+ 
 ];
 
 
 
 
-export default function PendingTable() {
+export default function RegisteredTable() {
   return (
         <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
         <Box style = {{display:'flex', justifyContent:'center'}}>
@@ -88,19 +91,19 @@ export default function PendingTable() {
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
           <TableHead >
           <TableRow> 
-          <StyledTableCell >OrderID</StyledTableCell>
-          <StyledTableCell >Customer Name</StyledTableCell>
-          <StyledTableCell >Pickup District</StyledTableCell>
-          <StyledTableCell >Pickup HomeTown</StyledTableCell>
-          <StyledTableCell >Date</StyledTableCell>
+          <StyledTableCell >RegisteredID</StyledTableCell>
+          <StyledTableCell >Person Name</StyledTableCell>
+          <StyledTableCell >Person District</StyledTableCell>
+          <StyledTableCell >Person HomeTown</StyledTableCell>
+          <StyledTableCell >Register Date</StyledTableCell>
           <StyledTableCell >Action</StyledTableCell>
           </TableRow>
           </TableHead>
 
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.id} >
-                <TableCell>{row.id}</TableCell>
+              <StyledTableRow key={row.registerdid} >
+                <TableCell>{row.registerdid}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.pdistrict}</TableCell>
                 <TableCell>{row.ptown}</TableCell>
@@ -108,7 +111,7 @@ export default function PendingTable() {
                 <TableCell>
                   
                   <a
-                    href={`/Pendingorder/${row.id}`}
+                    href={`/RegisteredPerson/${row.registerdid}`}
                     className="hover-link"
                   >
                     {row.action}

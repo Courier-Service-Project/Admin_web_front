@@ -1,0 +1,10 @@
+.hover-link {
+    color: red;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease-in-out;
+  }
+  
+  .hover-link:hover {
+    text-decoration: underline;
+  }
+  

@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 // import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import './PendingTable.css';
+import './CompleteTable.css';
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -80,7 +80,7 @@ const rows = [
 
 
 
-export default function PendingTable() {
+export default function completetable() {
   return (
         <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
         <Box style = {{display:'flex', justifyContent:'center'}}>
@@ -93,7 +93,7 @@ export default function PendingTable() {
           <StyledTableCell >Pickup District</StyledTableCell>
           <StyledTableCell >Pickup HomeTown</StyledTableCell>
           <StyledTableCell >Date</StyledTableCell>
-          <StyledTableCell >Action</StyledTableCell>
+          <StyledTableCell >View</StyledTableCell>
           </TableRow>
           </TableHead>
 
@@ -108,7 +108,7 @@ export default function PendingTable() {
                 <TableCell>
                   
                   <a
-                    href={`/Pendingorder/${row.id}`}
+                    href={`/completeorder/${row.id}`}
                     className="hover-link"
                   >
                     {row.action}
