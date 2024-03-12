@@ -1,6 +1,7 @@
 import React from 'react'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import './style.css'
 
 export default function Notifi(msg) {
   toast.success(msg,{

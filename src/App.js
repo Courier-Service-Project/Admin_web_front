@@ -8,6 +8,7 @@ import Progress from "./Pages/In-Progress/Progress";
 import Registered from "./Pages/Registered/Registered";
 import Complete from "./Pages/Complete/Complete";
 import Pending from "./Pages/Pending/Pending";
+import Account from "./Pages/Account/Account";
 import Tracker from "./Pages/TrackOrder/Tracker";
 
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/complete" element={<Complete/>} />
         <Route path="/registered" element={<Registered/>} />
         <Route path="/pending" element={<Pending/>} />
+        <Route path="/account" element={<Account/>} />
         <Route path="/track" element={<Tracker/>} />
       </Routes>
      </BrowserRouter>
