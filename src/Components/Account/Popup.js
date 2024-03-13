@@ -23,16 +23,38 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export default function Popup(props) {
   const { openpopup, setopenpopup, pfname, plname } = props;
 
-  const handleClickOpen = () => {
-    setopenpopup(true);
+  const [formdata,setformdata]=React.useState({
+    fffname:"",
+    llname:""
+  })
+
+  const changeUsername = () => {
+
+    axios
+      .post("http://localhost:3000/src/routes/admin/change", {
+        id:1,
+        fname:formdata.fffname,
+        lname:formdata.llname
+      })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    
+      window.location.reload();
+
+    handleClose();
   };
+
   const handleClose = () => {
     setopenpopup(false);
   };
 
   const changebtn = {
-    px:2,
-    py:0.8,
+    px: 2,
+    py: 0.8,
     my: 0.5,
     textTransform: "none",
     bgcolor: "#26a69a",
@@ -51,9 +73,7 @@ export default function Popup(props) {
         open={openpopup}
       >
         <DialogTitle sx={{ p: 1.5 }}>
-        <Typography variant="h6">
-          Edit Username
-        </Typography>
+          <Typography variant="h6">Edit Username</Typography>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -74,8 +94,9 @@ export default function Popup(props) {
             label="Rename first name"
             variant="outlined"
             size="small"
-            sx={{ mr: 3,mb:1.5 }}
+            sx={{ mr: 3, mb: 1.5 }}
             defaultValue={pfname}
+            onChange={(event)=>setformdata({...formdata,fffname:event.target.value})}
           />
           <TextField
             hiddenLabel
@@ -84,10 +105,11 @@ export default function Popup(props) {
             variant="outlined"
             size="small"
             defaultValue={plname}
+            onChange={(event)=>setformdata({...formdata,llname:event.target.value})}
           />
         </DialogContent>
         <DialogActions>
-          <Button sx={changebtn} onClick={handleClose}>
+          <Button sx={changebtn} onClick={changeUsername}>
             Save changes
           </Button>
         </DialogActions>
