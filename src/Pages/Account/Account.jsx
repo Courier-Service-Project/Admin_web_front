@@ -17,6 +17,10 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { changebtn, updateimg, deleteimg } from "./AccountStyles";
 import Popup from "../../Components/Account/Popup"
+import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+
 
 var pffname
 var pllname
@@ -38,6 +42,18 @@ export default function Account() {
   .catch(function (error) {
     console.log(error);
   })
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   
 
@@ -93,9 +109,16 @@ export default function Account() {
               </Box>
             </Box>
             <Box>
-              <Button variant="contained" sx={updateimg}>
-                Update new Image
-              </Button>
+            <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload file
+                <VisuallyHiddenInput type="file" />
+            </Button>
               <Button variant="contained" sx={deleteimg}>
                 Delete Image
               </Button>
