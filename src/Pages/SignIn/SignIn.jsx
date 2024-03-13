@@ -39,7 +39,7 @@ export default function SignIn() {
         if (response.data.success === 1) {
           const msg = "Login SuccessFully";
           Notifi(msg);
-          navigation("/createorder");
+          navigation("/dashboard");
         } else {
           const msg = "Invalid Email / Password ";
           Error(msg);

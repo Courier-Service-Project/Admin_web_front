@@ -16,46 +16,44 @@ import KeyIcon from "@mui/icons-material/Key";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { changebtn, updateimg, deleteimg } from "./AccountStyles";
-import Popup from "../../Components/Account/Popup"
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Popup from "../../Components/Account/Popup";
+import PopupContact from "../../Components/Account/PopupContact";
 
-
-
-var pffname
-var pllname
-
-var firstName
+var pffname;
+var pllname;
+var pbemail;
+var pbtele;
 
 export default function Account() {
+  const [openpopup, setopenpopup] = React.useState(false);
+  const [openConpopup, setopenConpopup] = React.useState(false);
 
-  const[openpopup,setopenpopup] = React.useState(false);
-  
   axios
-  .post("http://localhost:3000/src/routes/profileDget", {
-    id:1,
-  })
-  .then(function (response) {
-     pffname=document.getElementById("fname").value=response.data.data[0].fname
-     pllname=document.getElementById("lname").value=response.data.data[0].lname
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
+    .post("http://localhost:3000/src/routes/profileDget", {
+      id: 1,
+    })
+    .then(function (response) {
+      pffname = document.getElementById("fname").value =
+        response.data.data[0].fname;
+      pllname = document.getElementById("lname").value =
+        response.data.data[0].lname;
+      pbemail = document.getElementById("email").value =
+        response.data.data[0].email;
+      pbtele = document.getElementById("tele").value =
+        response.data.data[0].tele;
 
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
+        //console.log(response);
+        // console.log(pllname);
+        // console.log(pbemail);
+        // console.log(pbtele);
 
-  
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+
 
 
 
@@ -94,11 +92,12 @@ export default function Account() {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Avatar
+            <Avatar
                 alt="Remy Sharp"
                 src={profile}
                 sx={{ width: 150, height: 150 }}
               />
+
               <Box sx={{ ml: 3 }}>
                 <Typography sx={{ fontSize: 20, mb: 1 }}>
                   Profile picture
@@ -109,16 +108,9 @@ export default function Account() {
               </Box>
             </Box>
             <Box>
-            <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload file
-                <VisuallyHiddenInput type="file" />
-            </Button>
+            <Button variant="contained" sx={updateimg}>
+                Change Image
+              </Button>
               <Button variant="contained" sx={deleteimg}>
                 Delete Image
               </Button>
@@ -136,9 +128,8 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                 
                   id="fname"
-                defaultValue={firstName}
+                  defaultValue="Malinda"
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -177,7 +168,11 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" onClick={()=>setopenpopup(true)} sx={changebtn}>
+                <Button
+                  variant="contained"
+                  onClick={() => setopenpopup(true)}
+                  sx={changebtn}
+                >
                   Change name
                 </Button>
               </Grid>
@@ -203,7 +198,7 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
+                  id="email"
                   defaultValue="malindasuresh47@gmail.com"
                   InputProps={{
                     readOnly: true,
@@ -221,7 +216,7 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
+                  id="tele"
                   defaultValue="070-1271912"
                   InputProps={{
                     readOnly: true,
@@ -243,7 +238,7 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" sx={changebtn}>
+                <Button variant="contained" onClick={() => setopenConpopup(true)} sx={changebtn}>
                   Change Contact info
                 </Button>
               </Grid>
@@ -302,10 +297,18 @@ export default function Account() {
         </Box>
       </Box>
       <Popup
-        openpopup = {openpopup}
-        setopenpopup ={setopenpopup}
+        openpopup={openpopup}
+        setopenpopup={setopenpopup}
         pfname={pffname}
         plname={pllname}
+      />
+
+      console.log(openConpopup)
+      <PopupContact
+        openpopup={openConpopup}
+        setopenpopup={setopenConpopup}
+        pemail={pbemail}
+        ptele={pbtele}
       />
     </Box>
   );
