@@ -21,30 +21,37 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Popup(props) {
-  const { openpopup, setopenpopup, pfname, plname } = props;
-
-  const [formdata,setformdata]=React.useState({
-    fffname:"",
-    llname:""
-  })
-
-  const changeUsername = () => {
-
+  const { openpopup, setopenpopup } = props;
+  const [fName, setFname] = React.useState();
+  const [lName, setLname] = React.useState();
+  React.useEffect(() => {
+    const id = 1;
     axios
-      .post("http://localhost:3000/src/routes/admin/change", {
-        id:1,
-        fname:formdata.fffname,
-        lname:formdata.llname
-      })
+      .get("http://localhost:5000/src/routes/profileDget/" + id)
       .then(function (response) {
-        console.log(response)
+        if (response) {
+         setFname(response.data.data[0].fname);
+          setLname(response.data.data[0].lname);
+        }
       })
       .catch(function (error) {
         console.log(error);
       });
-    
-      window.location.reload();
+  }, []);
 
+  const changeUsername = () => {
+    axios
+      .post("http://localhost:3000/src/routes/admin/change", {
+        id: 1,
+        fname:fName,
+        lname:lName
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     handleClose();
   };
 
@@ -90,22 +97,24 @@ export default function Popup(props) {
         <DialogContent dividers>
           <TextField
             hiddenLabel
-            id="outlined-basic"
+            id="Dfname"
             label="Rename first name"
             variant="outlined"
             size="small"
             sx={{ mr: 3, mb: 1.5 }}
-            defaultValue={pfname}
-            onChange={(event)=>setformdata({...formdata,fffname:event.target.value})}
+            defaultValue="##########"
+            value={fName}
+            onChange={(event) => setFname(event.target.value)}
           />
           <TextField
             hiddenLabel
-            id="outlined-basic"
+            id="lname"
             label="Rename last name"
             variant="outlined"
             size="small"
-            defaultValue={plname}
-            onChange={(event)=>setformdata({...formdata,llname:event.target.value})}
+            defaultValue="##########"
+            value={lName}
+            onChange={(event) => setLname(event.target.value)}
           />
         </DialogContent>
         <DialogActions>

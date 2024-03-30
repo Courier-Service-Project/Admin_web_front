@@ -21,17 +21,29 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function PopupContact(props) {
-  const { openpopup, setopenpopup, pemail, ptele } = props;
+  const { openpopup, setopenpopup} = props;
 
   const [formdata,setformdata]=React.useState({
     cemail:"",
     ctele:""
   })
 
+  React.useEffect(() => {
+    const id = 1;
+    axios
+      .get("http://localhost:3000/src/routes/profileDget/" + id)
+      .then(function (response) {
+        if (response) {
+         setFname(response.data.data[0].email);
+          setLname(response.data.data[0].tele);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   const changecontact = () => {
-
-   
-
     axios
       .post("http://localhost:3000/src/routes/admin/changecontact", {
         id:1,
