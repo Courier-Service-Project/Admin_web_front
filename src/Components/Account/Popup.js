@@ -27,7 +27,7 @@ export default function Popup(props) {
   React.useEffect(() => {
     const id = 1;
     axios
-      .get("http://localhost:5000/src/routes/profileDget/" + id)
+      .get("http://localhost:5000/profileDget/" + id)
       .then(function (response) {
         if (response) {
          setFname(response.data.data[0].fname);
@@ -41,7 +41,7 @@ export default function Popup(props) {
 
   const changeUsername = () => {
     axios
-      .post("http://localhost:3000/src/routes/admin/change", {
+      .post("http://localhost:5000/admin/change", {
         id: 1,
         fname:fName,
         lname:lName
@@ -102,7 +102,6 @@ export default function Popup(props) {
             variant="outlined"
             size="small"
             sx={{ mr: 3, mb: 1.5 }}
-            defaultValue="##########"
             value={fName}
             onChange={(event) => setFname(event.target.value)}
           />
@@ -112,7 +111,6 @@ export default function Popup(props) {
             label="Rename last name"
             variant="outlined"
             size="small"
-            defaultValue="##########"
             value={lName}
             onChange={(event) => setLname(event.target.value)}
           />

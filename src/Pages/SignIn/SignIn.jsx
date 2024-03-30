@@ -15,7 +15,9 @@ import Error from "../../Components/Notification/Error";
 import { useNavigate } from "react-router-dom";
 import { CheckEmpty } from "../../Validation/Validation";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
-import {BACKEND_URL} from "../../Constants/index"
+import { BACKEND_URL } from "../../Constants/index";
+import * as Yup from "yup";
+import { Formik } from "formik";
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -23,7 +25,7 @@ export default function SignIn() {
   const navigation = useNavigate();
   const register = (e) => {
     e.preventDefault();
-    
+
     //validations
     if (CheckEmpty(email) || CheckEmpty(password)) {
       const msg = "Email / Password could not Empty";
@@ -32,7 +34,7 @@ export default function SignIn() {
     }
 
     axios
-      .post(`${BACKEND_URL}/src/routes/admin`, {
+      .post(`${BACKEND_URL}/admin`, {
         email: email,
         password: password,
       })
@@ -40,6 +42,7 @@ export default function SignIn() {
         if (response.data.success === 1) {
           const msg = "Login SuccessFully";
           Notifi(msg);
+
           navigation("/dashboard");
         } else {
           const msg = "Invalid Email / Password ";
@@ -51,13 +54,18 @@ export default function SignIn() {
       });
   };
 
+  //Validation yup
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email().required().label("Email"),
+    password: Yup.string().min(8).max(15).required().label("Password"),
+  });
 
   return (
     <Box sx={HomeScreenStyles}>
       <Paper elevation={10}>
         <Stack direction="row">
-        <Box sx={picts} width={"530px"}></Box>
-          <Box >
+          <Box sx={picts} width={"530px"}></Box>
+          <Box>
             <Box
               sx={{ height: "470px", width: "330px", p: "20px", pt: "30px" }}
             >
@@ -68,48 +76,49 @@ export default function SignIn() {
                 </Typography>
               </Box>
               <Box component="form">
-                <Box>
-                  <Box sx={{ mt: "15px", mb: "20px" }} id="uper">
-                    <TextField
-                      label="UserName"
-                      variant="standard"
+                <Formik>
+                  <Box>
+                    <Box sx={{ mt: "15px", mb: "20px" }} id="uper">
+                      <TextField
+                        label="UserName"
+                        variant="standard"
+                        fullWidth
+                        required
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </Box>
+                    <Box sx={{ mt: "5px", mb: "40px" }}>
+                      <TextField
+                        label="Password"
+                        type="password"
+                        variant="standard"
+                        fullWidth
+                        required
+                        onChange={(e) => setPass(e.target.value)}
+                      />
+                    </Box>
+                    <Button
+                      type="submit"
+                      onClick={register}
+                      variant="contained"
+                      id="btn"
+                      sx={btn}
                       fullWidth
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                    >
+                      Sign In
+                    </Button>
+                    <Typography>
+                      <Link sx={link} href="#">
+                        Forgot password?
+                      </Link>
+                    </Typography>
+                    <Typography sx={{ fontSize: 13 }}>
+                      {" "}
+                      Access to the admin panel requires an account. without
+                      one, entry is not permitted.
+                    </Typography>
                   </Box>
-                  <Box sx={{ mt: "5px", mb: "40px" }}>
-                    <TextField
-                      label="Password"
-                      type="password"
-                      variant="standard"
-                      fullWidth
-                      required
-                      onChange={(e) => setPass(e.target.value)}
-                    />
-                  </Box>
-                  <Button
-                    type="submit"
-                    onClick={register}
-                    variant="contained"
-                    id="btn"
-                    sx={btn}
-                    fullWidth
-                    
-                  >
-                    Sign In
-                  </Button>
-                  <Typography>
-                    <Link sx={link} href="#">
-                      Forgot password?
-                    </Link>
-                  </Typography>
-                  <Typography sx={{fontSize:13}}>
-                    {" "}
-                    Access to the admin panel requires an account. without one,
-                    entry is not permitted.
-                  </Typography>
-                </Box>
+                </Formik>
               </Box>
             </Box>
           </Box>

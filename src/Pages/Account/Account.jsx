@@ -50,7 +50,7 @@ export default function Account() {
   const id = 1;
 
   axios
-    .get(`${BACKEND_URL}/src/routes/profileDget/` + id)
+    .get(`${BACKEND_URL}/profileDget/` + id)
     .then(function (response) {
       setFormdata({
         ...formdata,
