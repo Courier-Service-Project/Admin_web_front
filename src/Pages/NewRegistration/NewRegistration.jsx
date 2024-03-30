@@ -4,8 +4,8 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
-import OrderTracking from "../../Components/Tracker/OrderTracker";
-export default function Tracker() {
+import Complete from '../../Components/NewRegistration/Complete'
+export default function newRegistration() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
       <Navbar />
@@ -16,10 +16,10 @@ export default function Tracker() {
         <Box sx={{mx:3}}>
         <Typography sx={{fontSize:30,fontWeight: 'bold'}}>
         <AppsIcon sx={{mr:3}}/>
-        Order Tracker 
+        Courier Person Registration
         </Typography>
         </Box>
-          <OrderTracking />
+          <Complete />
         </Box>
       </Box>
       </Box>
