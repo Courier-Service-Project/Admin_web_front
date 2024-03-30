@@ -29,7 +29,7 @@ export default function BarChart() {
     <Chart
       chartType="Bar"
       width="100%"
-      height="400px"
+      height="350px"
       data={data}
       options={options}
     />

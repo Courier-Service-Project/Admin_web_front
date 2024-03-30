@@ -1,17 +1,18 @@
 import React from 'react'
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { Stack } from '@mui/material';
-import Dash from '../../Pages/Dashboard/Dashboard.css';
+import { Link } from 'react-router-dom';
 
 export default function CardCom(props) {
   const cardStyles = {
     maxWidth: props.width,
     height: props.height,
     backgroundImage: props.gradient,
+    cursor: 'pointer',
   };
   return (
     <div>
+      <Link to={props.linkTo} style={{ textDecoration: 'none' }}>
       <Card sx={cardStyles}>
         <Stack spacing={1} direction="row">
             <div style={{color:'aliceblue',marginLeft: '20px' , marginTop: '20px', marginRight:'20px'}}>
@@ -27,6 +28,7 @@ export default function CardCom(props) {
             </div>
           </Stack>
     </Card>
+    </Link>
     </div>
   )
 }

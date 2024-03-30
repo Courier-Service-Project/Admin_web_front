@@ -29,7 +29,7 @@ import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import ArticleIcon from "@mui/icons-material/Article";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -174,6 +174,12 @@ export default function Sidenav() {
           </ListItemButton>
           <Collapse in={open2} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/newregistration")}>
+                <ListItemIcon>
+                  <LibraryAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="New Registration" />
+              </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/registered")}>
                 <ListItemIcon>
                   <HowToRegRoundedIcon />
