@@ -4,7 +4,6 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from "@mui/icons-material/Apps";
-import Avatar from "@mui/material/Avatar";
 import profile from "../../Assets/round.png";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -16,48 +15,80 @@ import KeyIcon from "@mui/icons-material/Key";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { changebtn, updateimg, deleteimg } from "./AccountStyles";
-import Popup from "../../Components/Account/Popup"
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
-
-
-var pffname
-var pllname
-
-var firstName
+import Popup from "../../Components/Account/Popup";
+import PopupContact from "../../Components/Account/PopupContact";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Avatar from "react-avatar-edit";
+import {BACKEND_URL} from "../../Constants/index"
+//////////////////////
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
 export default function Account() {
+  const [openpopup, setopenpopup] = React.useState(false);
+  const [openConpopup, setopenConpopup] = React.useState(false);
 
-  const[openpopup,setopenpopup] = React.useState(false);
-  
-  axios
-  .post("http://localhost:3000/src/routes/profileDget", {
-    id:1,
-  })
-  .then(function (response) {
-     pffname=document.getElementById("fname").value=response.data.data[0].fname
-     pllname=document.getElementById("lname").value=response.data.data[0].lname
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
+  const [formdata, setFormdata] = React.useState({
+    fName: "",
+    fLame: "",
+    eGmail: "",
+    tTele: "",
   });
 
-  
+  const id = 1;
 
+  axios
+    .get(`${BACKEND_URL}/src/routes/profileDget/` + id)
+    .then(function (response) {
+      setFormdata({
+        ...formdata,
+        fName: response.data.data[0].fname,
+        fLame: response.data.data[0].lname,
+        eGmail: response.data.data[0].email,
+        tTele: response.data.data[0].tele,
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [image, setimage] = React.useState();
+
+  //
+
+  const [src, setScr] = React.useState(null);
+  const [preview, setpreview] = React.useState(profile);
+
+  const onClose = () => {
+    setpreview(preview);
+  };
+
+  const onCrop = (view) => {
+    setpreview(view);
+  };
+
+  ////////////////////////////////
 
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
@@ -94,11 +125,69 @@ export default function Account() {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Avatar
+              {/* <Avatar
                 alt="Remy Sharp"
                 src={profile}
                 sx={{ width: 150, height: 150 }}
-              />
+              /> */}
+              {/*  */}
+              <Box>
+                <img
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                  src={preview}
+                  alt="profile"
+                />
+
+                {/* <Button variant="outlined" onClick={handleClickOpen}>
+                  Open dialog
+                </Button> */}
+
+                <BootstrapDialog
+                  onClose={handleClose}
+                  aria-labelledby="customized-dialog-title"
+                  open={open}
+                >
+                  <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                    Change Profile Image
+                  </DialogTitle>
+                  <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                      position: "absolute",
+                      right: 8,
+                      top: 8,
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                  <DialogContent dividers>
+                    <Avatar
+                      width={400}
+                      height={300}
+                      onCrop={onCrop}
+                      onClose={onClose}
+                      // onBeforeFileLoad={this.onBeforeFileLoad}
+                      // src={this.state.src}
+                    />
+                    {/* <img src={preview} alt="Preview" /> */}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button autoFocus onClick={handleClose}>
+                      Save changes
+                    </Button>
+                  </DialogActions>
+                </BootstrapDialog>
+              </Box>
+
+              {/*  */}
+
               <Box sx={{ ml: 3 }}>
                 <Typography sx={{ fontSize: 20, mb: 1 }}>
                   Profile picture
@@ -109,16 +198,13 @@ export default function Account() {
               </Box>
             </Box>
             <Box>
-            <Button
-                component="label"
-                role={undefined}
+              <Button
                 variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
+                sx={updateimg}
+                onClick={handleClickOpen}
               >
-                Upload file
-                <VisuallyHiddenInput type="file" />
-            </Button>
+                Change Image
+              </Button>
               <Button variant="contained" sx={deleteimg}>
                 Delete Image
               </Button>
@@ -136,9 +222,9 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                 
                   id="fname"
-                defaultValue={firstName}
+                  defaultValue="########"
+                  value={formdata.fName}
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -156,7 +242,8 @@ export default function Account() {
                   size="small"
                   sx={{ boxShadow: 1 }}
                   id="lname"
-                  defaultValue="Suresh"
+                  defaultValue="###########"
+                  value={formdata.fLame}
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -177,7 +264,11 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" onClick={()=>setopenpopup(true)} sx={changebtn}>
+                <Button
+                  variant="contained"
+                  onClick={() => setopenpopup(true)}
+                  sx={changebtn}
+                >
                   Change name
                 </Button>
               </Grid>
@@ -203,8 +294,9 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
-                  defaultValue="malindasuresh47@gmail.com"
+                  id="email"
+                  defaultValue="################"
+                  value={formdata.eGmail}
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -221,8 +313,9 @@ export default function Account() {
                   fullWidth
                   size="small"
                   sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
-                  defaultValue="070-1271912"
+                  id="tele"
+                  defaultValue="###################"
+                  value={formdata.tTele}
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
@@ -243,7 +336,11 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" sx={changebtn}>
+                <Button
+                  variant="contained"
+                  onClick={() => setopenConpopup(true)}
+                  sx={changebtn}
+                >
                   Change Contact info
                 </Button>
               </Grid>
@@ -301,12 +398,13 @@ export default function Account() {
           </Box>
         </Box>
       </Box>
-      <Popup
-        openpopup = {openpopup}
-        setopenpopup ={setopenpopup}
-        pfname={pffname}
-        plname={pllname}
-      />
+
+      <Popup openpopup={openpopup} setopenpopup={setopenpopup} />
+      console.log(openConpopup)
+      {/* <PopupContact
+        openpopup={openConpopup}
+        setopenpopup={setopenConpopup}F
+      /> */}
     </Box>
   );
 }

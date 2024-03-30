@@ -20,18 +20,22 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function Popup(props) {
-  const { openpopup, setopenpopup } = props;
-  const [fName, setFname] = React.useState();
-  const [lName, setLname] = React.useState();
+export default function PopupContact(props) {
+  const { openpopup, setopenpopup} = props;
+
+  const [formdata,setformdata]=React.useState({
+    cemail:"",
+    ctele:""
+  })
+
   React.useEffect(() => {
     const id = 1;
     axios
-      .get("http://localhost:5000/src/routes/profileDget/" + id)
+      .get("http://localhost:3000/src/routes/profileDget/" + id)
       .then(function (response) {
         if (response) {
-         setFname(response.data.data[0].fname);
-          setLname(response.data.data[0].lname);
+         setFname(response.data.data[0].email);
+          setLname(response.data.data[0].tele);
         }
       })
       .catch(function (error) {
@@ -39,19 +43,22 @@ export default function Popup(props) {
       });
   }, []);
 
-  const changeUsername = () => {
+  const changecontact = () => {
     axios
-      .post("http://localhost:3000/src/routes/admin/change", {
-        id: 1,
-        fname:fName,
-        lname:lName
+      .post("http://localhost:3000/src/routes/admin/changecontact", {
+        id:1,
+        email:formdata.cemail,
+        tele:formdata.ctele
       })
       .then(function (response) {
-        console.log(response);
+        console.log(response)
       })
       .catch(function (error) {
         console.log(error);
       });
+    
+      window.location.reload();
+
     handleClose();
   };
 
@@ -80,7 +87,7 @@ export default function Popup(props) {
         open={openpopup}
       >
         <DialogTitle sx={{ p: 1.5 }}>
-          <Typography variant="h6">Edit Username</Typography>
+          <Typography variant="h6">Edit Contact Info</Typography>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -97,28 +104,26 @@ export default function Popup(props) {
         <DialogContent dividers>
           <TextField
             hiddenLabel
-            id="Dfname"
-            label="Rename first name"
+            id="outlined-basic"
+            label="Change email"
             variant="outlined"
             size="small"
             sx={{ mr: 3, mb: 1.5 }}
-            defaultValue="##########"
-            value={fName}
-            onChange={(event) => setFname(event.target.value)}
+            defaultValue={pemail}
+            onChange={(event)=>setformdata({...formdata,cemail:event.target.value})}
           />
           <TextField
             hiddenLabel
-            id="lname"
-            label="Rename last name"
+            id="outlined-basic"
+            label="Change Tele"
             variant="outlined"
             size="small"
-            defaultValue="##########"
-            value={lName}
-            onChange={(event) => setLname(event.target.value)}
+            defaultValue={ptele}
+            onChange={(event)=>setformdata({...formdata,ctele:event.target.value})}
           />
         </DialogContent>
         <DialogActions>
-          <Button sx={changebtn} onClick={changeUsername}>
+          <Button sx={changebtn} onClick={changecontact}>
             Save changes
           </Button>
         </DialogActions>
