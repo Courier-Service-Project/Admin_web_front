@@ -5,16 +5,25 @@ const SearchForm = ({ orderId, handleOrderIdChange, handleSearch, showSearch }) 
   return (
     <div>
       {showSearch && (
-        <div style={{ margin: "10px", marginTop: "100px", marginBottom: "50px", height:'200px' }}>
+        <div style={{ margin: "10px", marginTop: "100px", marginBottom: "200px"}}>
           <TextField
             label="Delivery Order ID"
             variant="outlined"
             value={orderId}
             onChange={handleOrderIdChange}
-            sx={{ width: "80%", maxWidth: "100%" }}
+            sx={{
+              width: "80%",
+              "& input": {
+                height: "40px",
+                padding: "10px",
+              },
+            }}
           />
-          <Button variant="contained" style={{ marginLeft: "20px", marginTop: "8px" }} onClick={handleSearch} sx={{
+          <Button variant="contained" style={{ marginLeft: "20px" }} onClick={handleSearch} sx={{
             bgcolor: "#00897b",
+            height:  "60px",
+            width: "100px",
+            fontWeight: "600",
             ":hover": {
               bgcolor: "#009688",
               color: "#616161",

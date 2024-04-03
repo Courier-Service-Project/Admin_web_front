@@ -32,8 +32,6 @@ const StyledTableRow = styled(TableRow)(({ theme, isSelected }) => ({
   '&:last-child td, &:last-child th': {
     border: 0,
   },
-  // borderLeft: isSelected ? '5px solid green' : '15px solid transparent',
-  borderLeft: isSelected ? '5px solid green' : '5px solid transparent',
 }));
 
 const TableContainerStyled = styled(TableContainer)({
@@ -67,8 +65,9 @@ function ApplocontList() {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowClick = (row) => {
-    setSelectedRow(row.ID_Num === selectedRow ? null : row.ID_Num);
+    setSelectedRow(row.ID_Num);
   };
+  
 
   return (
     <Box style={{ margin: '30px', marginTop: '20px', marginLeft: '25px', marginBottom: '10px' }}>

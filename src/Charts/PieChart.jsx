@@ -12,6 +12,7 @@ export const data = [
 export const options = {
   title: "Today Performance",
   is3D: true,
+  colors: ["#4CAF50", "#FFC107", "#2196F3", "#F44336"],
 };
 
 export function PieChart() {

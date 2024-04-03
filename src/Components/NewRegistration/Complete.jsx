@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid';
 import DriverQuestionnaries from './DriverQuestionnaries';
 import EmergencyContact from './EmergencyContact';
 import ApplicantInformantion from './ApplicantDetails';
-import Divider from '@mui/material/Divider';
 import {  Card,
           CardContent,
           Button } from '@mui/material';
@@ -40,8 +39,7 @@ export default function CombinedForm() {
   const [formData, setFormData] = React.useState(initialFormData);
 
   const handleSubmit = () => {
-    // Add your form submission logic here
-    console.log('Form submitted:', formData);
+    window.location.reload();
   };
 
   return (

@@ -10,30 +10,6 @@ export default function DriverQuestionnaries({fromData,setFormData}) {
         Driver Questionnaries
       </Typography>
       <Grid container spacing={3}>
-      <Grid item xs={12}>
-          <TextField
-            required
-            name="D_city"
-            label="Applying for what city?"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            value={fromData.D_city}
-            onChange={(event)=>setFormData({...fromData,D_city:event.target.value})}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            name="D_vehicle"
-            label="Vehicle year & model?"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            value={fromData.D_vehicle}
-            onChange={(event)=>setFormData({...fromData,D_vehicle:event.target.value})}
-          />
-        </Grid>
         <Grid item xs={12}>
           <TextField
             required

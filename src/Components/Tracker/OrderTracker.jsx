@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Typography } from '@mui/material';
 import SearchForm from './SearchForm';
 import OrderDetails from './OrderDetails';
+import axios from 'axios';
 
+//step lebels
 const steps = [
   { label: 'Pending Order' },
   { label: 'Pickup Order' },
@@ -15,103 +17,68 @@ const OrderTracking = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [orderStatus, setOrderStatus] = useState(null);
   const [error, setError] = useState(null);
-  const [orderDetails, setOrderDetails] = useState({
-    // Order details object
-    '123': {
-          shipmentDetails: {
-            quantity: 5,
-            weight: '10 kg',
-            serviceType: 'Emergency',
-          },
-          destinationDetails: {
-            receiverName: 'Saman De silva',
-            receiverEmail: 'desilva123@gmail.com',
-            receiverAddress: '123, Main road, Henakaduwa, Tangalle',
-          },
-          originDetails: {
-            senderName: 'Kamal soysa',
-            location: 'Matara',
-            senderAddress: '345, Dickwella, Matara',
-          },
-          'Pending Order': '2024-02-25',
-          'Pickup Order': null,
-          'On Delivery': null,
-          'Order Delivered': null,
-          'Estimated Delivery': '2024-02-25',
-    },
+  const [orderData,setOrderData] =useState({});
+  const [orderDetails, setOrderDetails] = useState({});
 
-    '456': {
+  useEffect(()=>{
+    setOrderDetails({
+      // Order details from database
+      [orderId]: {
             shipmentDetails: {
-              quantity: 10,
-              weight: '20 kg',
-              serviceType: 'Normal',
+              cost: `Rs ${orderData.Total_Cost}`,
+              weightCost: `Rs ${orderData.Weight_Cost}`,
+              serviceType: orderData.Emmergency ? 'Emergency' : 'Regular',
+              Status: orderData.Status ? statusMapping[orderData.Status] : '',
             },
             destinationDetails: {
-              receiverName: 'Kumara Bandara',
-              receiverEmail: 'kumara12@gmail.com',
-              receiverAddress: '456, New road, Galle',
+              receiverName: `${orderData.FirstName} ${orderData.LastName}`,
+              number: `${orderData.mobile}`,
+              receiverAddress: `${orderData.StreetNo},${orderData.Street},${orderData.City}`,
             },
             originDetails: {
-              senderName: 'Asanka Gunawardhana',
-              location: 'Kalutara',
-              senderAddress: '789, Temple Road, Kalutara',
+              senderName: `${orderData.CFirstName} ${orderData.CLastName}`,
+              location: `${orderData.branchLocation}`,
+              senderAddress: `${orderData.Pickup_StreetNo},${orderData.Pickup_Street},${orderData.Pickup_City}`,
             },
-            'Pending Order': '2024-03-01',
-            'Pickup Order': '2024-03-01',
-            'On Delivery': '2024-03-01',
-            'Order Delivered': null,
-            'Estimated Delivery': '2024-03-01',
-          },
-          '789': {
-            shipmentDetails: {
-              quantity: 3,
-              weight: '5 kg',
-              serviceType: 'Emergency',
-            },
-            destinationDetails: {
-              receiverName: 'Emma Siriwardhana',
-              receiverEmail: 'emma@gmail.com',
-              receiverAddress: '789, New Road, Gampaha ',
-            },
-            originDetails: {
-              senderName: 'Kastura Iyar',
-              location: 'Jaffna',
-              senderAddress: '123, Pine Street, Jaffna',
-            },
-            'Pending Order': '2024-03-02',
-            'Pickup Order': '2024-03-02',
-            'On Delivery': '2024-03-02',
-            'Order Delivered': '2024-03-02',
-            'Estimated Delivery': '2024-03-02',
-          },
-  });
+      },
+    }); 
+    },[orderData])
 
+
+    const statusMapping = {
+      'PENDING': 'Pending Order',
+      'PICKED': 'Pickup Order',
+      'ONDELIVERY': 'On Delivery',
+      'DELIVERED': 'Order Delivered'
+    };
   // Handlers
   const handleOrderIdChange = (event) => {
     setOrderId(event.target.value);
   };
 
   const handleSearch = async () => {
-    // Check if the entered order ID is valid
-    if (!orderDetails.hasOwnProperty(orderId)) {
+
+    try{
+      const result=await axios.get(`http://192.168.235.94:9000/api/web/orders/orderDetails/${orderId}`);
+      setOrderData(result.data.message[0]);
+      console.log(result.data.message[0].Status);
+
+    if (result.data.success==101) {
       setError('Invalid order ID. Enter a valid order ID.');
       return;
     }
 
-    // Simulating the order status based on a static object
-    const orderStatusObject = {
-      '123': 'Pending Order',
-      '456': 'On Delivery',
-      '789': 'Order Delivered',
-    };
-
-    const status = orderStatusObject[orderId];
+    const status = statusMapping[orderData.Status];
     const stepIndex = steps.findIndex((step) => step.label === status);
 
     setOrderStatus(status || null);
     setActiveStep(stepIndex === -1 ? 0 : stepIndex);
     setError(null);
+  }catch(error){
+    console.log(error.message)
+  }
   };
+
 
   const showSearch = !orderStatus;
 

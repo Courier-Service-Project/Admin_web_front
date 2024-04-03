@@ -20,8 +20,9 @@ export const data = [
 export const options = {
   chart: {
     title: "Company Performance",
-    subtitle: "Order growth per month",
+    subtitle: "Order growth per month", 
   },
+  colors: ["blue"],
 };
 
 export default function BarChart() {

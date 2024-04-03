@@ -16,11 +16,11 @@ export default function EmergencyContact({fromData,setFormData}) {
             required
             name="E_fname"
             label="First Name"
-            fullWidth
             autoComplete=""
             variant="standard"
             value={fromData.E_fname}
             onChange={(event)=>setFormData({...fromData,E_fname:event.target.value})}
+            style={{width:"90%"}}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -28,11 +28,11 @@ export default function EmergencyContact({fromData,setFormData}) {
             required
             name="E_lname"
             label="Last Name"
-            fullWidth
             autoComplete=""
             variant="standard"
             value={fromData.E_lname}
             onChange={(event)=>setFormData({...fromData,E_lname:event.target.value})}
+            style={{width:"90%"}}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -40,47 +40,11 @@ export default function EmergencyContact({fromData,setFormData}) {
             required
             name="E_relation"
             label="Relationship to You"
-            fullWidth
             autoComplete=""
             variant="standard"
             value={fromData.E_relation}
             onChange={(event)=>setFormData({...fromData,E_relation:event.target.value})}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            name="E_district"
-            label="District"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            value={fromData.E_district}
-            onChange={(event)=>setFormData({...fromData,E_district:event.target.value})}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            name="E_city"
-            label="City"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            value={fromData.E_city}
-            onChange={(event)=>setFormData({...fromData,E_city:event.target.value})}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            name="E_state"
-            label="State/Province"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            value={fromData.E_state}
-            onChange={(event)=>setFormData({...fromData,E_state:event.target.value})}
+            style={{width:"90%"}}
           />
         </Grid>
         <Grid item xs={12}>
@@ -100,11 +64,11 @@ export default function EmergencyContact({fromData,setFormData}) {
             required
             name="E_telephone"
             label="Telephone"
-            fullWidth
             autoComplete=""
             variant="standard"
             value={fromData.E_telephone}
             onChange={(event)=>setFormData({...fromData,E_telephone:event.target.value})}
+            style={{width:"90%"}}
           />
         </Grid>
       </Grid>

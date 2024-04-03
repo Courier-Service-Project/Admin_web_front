@@ -28,7 +28,7 @@ export default function BasicGrid() {
                     titlefw="1500"
                     titlefs="30px" subtitlefs="20px"
                     pl="10px" pr="10px" pt="10px" pb="10px" 
-                    gradient="linear-gradient(158deg, rgba(1, 36, 24, 1) 0%, rgba(16, 196, 134, 1) 100%)"
+                    gradient="linear-gradient(158deg, rgba(1, 3, 24, 1) 0%, rgba(16, 196, 134, 1) 100%)"
                     icon ={< AddchartIcon/>}
                     linkTo="/pending"/>
             </Grid>
@@ -86,6 +86,8 @@ export default function BasicGrid() {
                 icon ={<ArticleIcon />} 
                 linkTo="/applicant"/>
         </Grid>
+
+
         </Stack>
         </Grid>
         <Box height={20}/>
