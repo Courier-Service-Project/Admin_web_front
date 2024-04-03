@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
@@ -25,8 +25,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Avatar from "react-avatar-edit";
-import {BACKEND_URL} from "../../Constants/index"
-//////////////////////
+import { BACKEND_URL } from "../../Constants/index";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -49,21 +49,6 @@ export default function Account() {
 
   const id = 1;
 
-  axios
-    .get(`${BACKEND_URL}/src/routes/profileDget/` + id)
-    .then(function (response) {
-      setFormdata({
-        ...formdata,
-        fName: response.data.data[0].fname,
-        fLame: response.data.data[0].lname,
-        eGmail: response.data.data[0].email,
-        tTele: response.data.data[0].tele,
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -73,11 +58,6 @@ export default function Account() {
     setOpen(false);
   };
 
-  const [image, setimage] = React.useState();
-
-  //
-
-  const [src, setScr] = React.useState(null);
   const [preview, setpreview] = React.useState(profile);
 
   const onClose = () => {
@@ -88,7 +68,22 @@ export default function Account() {
     setpreview(view);
   };
 
-  ////////////////////////////////
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/profileDget/` + id)
+      .then(function (response) {
+        setFormdata({
+          ...formdata,
+          fName: response.data.data[0].fname,
+          fLame: response.data.data[0].lname,
+          eGmail: response.data.data[0].email,
+          tTele: response.data.data[0].tele,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [formdata]);
 
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
@@ -125,12 +120,6 @@ export default function Account() {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              {/* <Avatar
-                alt="Remy Sharp"
-                src={profile}
-                sx={{ width: 150, height: 150 }}
-              /> */}
-              {/*  */}
               <Box>
                 <img
                   style={{
@@ -142,10 +131,6 @@ export default function Account() {
                   src={preview}
                   alt="profile"
                 />
-
-                {/* <Button variant="outlined" onClick={handleClickOpen}>
-                  Open dialog
-                </Button> */}
 
                 <BootstrapDialog
                   onClose={handleClose}
@@ -173,10 +158,7 @@ export default function Account() {
                       height={300}
                       onCrop={onCrop}
                       onClose={onClose}
-                      // onBeforeFileLoad={this.onBeforeFileLoad}
-                      // src={this.state.src}
                     />
-                    {/* <img src={preview} alt="Preview" /> */}
                   </DialogContent>
                   <DialogActions>
                     <Button autoFocus onClick={handleClose}>
@@ -185,8 +167,6 @@ export default function Account() {
                   </DialogActions>
                 </BootstrapDialog>
               </Box>
-
-              {/*  */}
 
               <Box sx={{ ml: 3 }}>
                 <Typography sx={{ fontSize: 20, mb: 1 }}>
@@ -399,12 +379,17 @@ export default function Account() {
         </Box>
       </Box>
 
-      <Popup openpopup={openpopup} setopenpopup={setopenpopup} />
-      console.log(openConpopup)
-      {/* <PopupContact
-        openpopup={openConpopup}
-        setopenpopup={setopenConpopup}F
-      /> */}
+      {formdata.fLame && formdata.fName && (
+        <Popup
+          openpopup={openpopup}
+          setopenpopup={setopenpopup}
+          plname={formdata.fLame}
+          pfname={formdata.fName}
+          setFormdata={setFormdata}
+        />
+      )}
+
+      <PopupContact openpopup={openConpopup} setopenpopup={setopenConpopup} />
     </Box>
   );
 }

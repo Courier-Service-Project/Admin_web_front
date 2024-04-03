@@ -10,6 +10,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { BACKEND_URL } from "../../Constants";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -21,46 +24,25 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function PopupContact(props) {
-  const { openpopup, setopenpopup} = props;
+  const { openpopup, setopenpopup } = props;
 
-  const [formdata,setformdata]=React.useState({
-    cemail:"",
-    ctele:""
-  })
+  const [email, setEmail] = React.useState();
+  const [tele, setTele] = React.useState();
 
   React.useEffect(() => {
     const id = 1;
     axios
-      .get("http://localhost:3000/src/routes/profileDget/" + id)
+      .get(`${BACKEND_URL}/profileDget/` + id)
       .then(function (response) {
         if (response) {
-         setFname(response.data.data[0].email);
-          setLname(response.data.data[0].tele);
+          setEmail(response.data.data[0].email);
+          setTele(response.data.data[0].tele);
         }
       })
       .catch(function (error) {
         console.log(error);
       });
   }, []);
-
-  const changecontact = () => {
-    axios
-      .post("http://localhost:3000/src/routes/admin/changecontact", {
-        id:1,
-        email:formdata.cemail,
-        tele:formdata.ctele
-      })
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    
-      window.location.reload();
-
-    handleClose();
-  };
 
   const handleClose = () => {
     setopenpopup(false);
@@ -79,6 +61,41 @@ export default function PopupContact(props) {
     },
   };
 
+  const validationSchema = yup.object({
+    email: yup
+      .string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required"),
+    tele: yup
+      .string("Enter your password")
+      .min(8)
+      .required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      tele: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      axios
+        .post(`${BACKEND_URL}/admin/changecontact`, {
+          id: 1,
+          email: values.email,
+          tele: values.tele,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      handleClose();
+    },
+  });
+
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -86,47 +103,56 @@ export default function PopupContact(props) {
         aria-labelledby="customized-dialog-title"
         open={openpopup}
       >
-        <DialogTitle sx={{ p: 1.5 }}>
-          <Typography variant="h6">Edit Contact Info</Typography>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <TextField
-            hiddenLabel
-            id="outlined-basic"
-            label="Change email"
-            variant="outlined"
-            size="small"
-            sx={{ mr: 3, mb: 1.5 }}
-            defaultValue={pemail}
-            onChange={(event)=>setformdata({...formdata,cemail:event.target.value})}
-          />
-          <TextField
-            hiddenLabel
-            id="outlined-basic"
-            label="Change Tele"
-            variant="outlined"
-            size="small"
-            defaultValue={ptele}
-            onChange={(event)=>setformdata({...formdata,ctele:event.target.value})}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button sx={changebtn} onClick={changecontact}>
-            Save changes
-          </Button>
-        </DialogActions>
+        <form onSubmit={formik.handleSubmit}>
+          <DialogTitle sx={{ p: 1.5 }}>
+            <Typography variant="h6">Edit Contact Info</Typography>
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent dividers>
+            <TextField
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              hiddenLabel
+              label="Change email"
+              variant="outlined"
+              size="small"
+              sx={{ mr: 3, mb: 1.5 }}
+            />
+
+            <TextField
+              name="tele"
+              value={formik.values.tele}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.tele && Boolean(formik.errors.tele)}
+              helperText={formik.touched.tele && formik.errors.tele}
+              hiddenLabel
+              label="Change Tele"
+              variant="outlined"
+              size="small"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button sx={changebtn} type="submit">
+              Save changes
+            </Button>
+          </DialogActions>
+        </form>
       </BootstrapDialog>
     </React.Fragment>
   );
