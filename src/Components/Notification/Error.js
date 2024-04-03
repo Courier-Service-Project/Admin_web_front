@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./style.css";
 
 export default function Error(msg) {
-  toast.error(msg,{
+  toast.error(msg, {
     position: "top-right",
     autoClose: 3000,
     hideProgressBar: false,
@@ -12,10 +13,10 @@ export default function Error(msg) {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
+  });
   return (
     <div>
-        <ToastContainer />
+      <ToastContainer />
     </div>
-  )
+  );
 }
