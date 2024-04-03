@@ -11,6 +11,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 
+import { useFormik } from "formik";
+import * as yup from "yup";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -21,16 +24,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Popup(props) {
-  const { openpopup, setopenpopup } = props;
-  const [fName, setFname] = React.useState();
-  const [lName, setLname] = React.useState();
+  const { openpopup, setopenpopup, pfname, plname, setFormData } = props;
+  const [fGName, setFname] = React.useState();
+  const [lGName, setLname] = React.useState();
   React.useEffect(() => {
     const id = 1;
     axios
       .get("http://localhost:5000/profileDget/" + id)
       .then(function (response) {
         if (response) {
-         setFname(response.data.data[0].fname);
+          setFname(response.data.data[0].fname);
           setLname(response.data.data[0].lname);
         }
       })
@@ -38,22 +41,6 @@ export default function Popup(props) {
         console.log(error);
       });
   }, []);
-
-  const changeUsername = () => {
-    axios
-      .post("http://localhost:5000/admin/change", {
-        id: 1,
-        fname:fName,
-        lname:lName
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    handleClose();
-  };
 
   const handleClose = () => {
     setopenpopup(false);
@@ -72,6 +59,40 @@ export default function Popup(props) {
     },
   };
 
+  const validationSchema = yup.object({
+    fName: yup.string("Enter your email").required("Email is required"),
+    lName: yup.string("Enter your password").required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      fName: pfname,
+      lName: plname,
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      axios
+        .post("http://localhost:5000/admin/change", {
+          id: 1,
+          fname: values.fName,
+          lname: values.lName,
+        })
+        .then(function (response) {
+          setFormData((data) => ({
+            ...data,
+            fName: values.fName,
+            fLame: values.lName,
+          }));
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      handleClose();
+    },
+  });
+
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -79,47 +100,56 @@ export default function Popup(props) {
         aria-labelledby="customized-dialog-title"
         open={openpopup}
       >
-        <DialogTitle sx={{ p: 1.5 }}>
-          <Typography variant="h6">Edit Username</Typography>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <TextField
-            hiddenLabel
-            id="Dfname"
-            label="Rename first name"
-            variant="outlined"
-            size="small"
-            sx={{ mr: 3, mb: 1.5 }}
-            value={fName}
-            onChange={(event) => setFname(event.target.value)}
-          />
-          <TextField
-            hiddenLabel
-            id="lname"
-            label="Rename last name"
-            variant="outlined"
-            size="small"
-            value={lName}
-            onChange={(event) => setLname(event.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button sx={changebtn} onClick={changeUsername}>
-            Save changes
-          </Button>
-        </DialogActions>
+        <form onSubmit={formik.handleSubmit}>
+          <DialogTitle sx={{ p: 1.5 }}>
+            <Typography variant="h6">Edit Username</Typography>
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent dividers>
+            <TextField
+              hiddenLabel
+              label="Rename first name"
+              variant="outlined"
+              size="small"
+              sx={{ mr: 3, mb: 1.5 }}
+              name="fName"
+              value={formik.values.fName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.fName && Boolean(formik.errors.fName)}
+              helperText={formik.touched.fName && formik.errors.fName}
+            />
+            <TextField
+              hiddenLabel
+              id="lname"
+              label="Rename last name"
+              variant="outlined"
+              size="small"
+              name="lName"
+              value={formik.values.lName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.lName && Boolean(formik.errors.lName)}
+              helperText={formik.touched.lName && formik.errors.lName}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button sx={changebtn} type="submit">
+              Save changes
+            </Button>
+          </DialogActions>
+        </form>
       </BootstrapDialog>
     </React.Fragment>
   );
