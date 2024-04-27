@@ -25,22 +25,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function Popup(props) {
   const { openpopup, setopenpopup, pfname, plname, setFormData } = props;
-  const [fGName, setFname] = React.useState();
-  const [lGName, setLname] = React.useState();
-  React.useEffect(() => {
-    const id = 1;
-    axios
-      .get("http://localhost:5000/profileDget/" + id)
-      .then(function (response) {
-        if (response) {
-          setFname(response.data.data[0].fname);
-          setLname(response.data.data[0].lname);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
 
   const handleClose = () => {
     setopenpopup(false);
@@ -59,6 +43,7 @@ export default function Popup(props) {
     },
   };
 
+  //Validation Schema
   const validationSchema = yup.object({
     fName: yup.string("Enter your email").required("Email is required"),
     lName: yup.string("Enter your password").required("Password is required"),
@@ -71,7 +56,6 @@ export default function Popup(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       axios
         .post("http://localhost:5000/admin/change", {
           id: 1,
