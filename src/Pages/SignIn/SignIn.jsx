@@ -21,13 +21,15 @@ import { useFormik } from "formik";
 export default function SignIn() {
   const navigation = useNavigate();
 
+  //Validation Schema
   const validationSchema = yup.object({
-    userName: yup.string("Enter your email").required("UserName is required"),
+    userName: yup.string("Enter your emai").required("UserName is required"),
     password: yup
       .string("Enter your password")
       .required("Password is required"),
   });
 
+  //Axios call
   const formik = useFormik({
     initialValues: {
       userName: "",

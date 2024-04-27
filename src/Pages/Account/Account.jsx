@@ -26,6 +26,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Avatar from "react-avatar-edit";
 import { BACKEND_URL } from "../../Constants/index";
+import ChangePass from "../../Components/Account/ChangePass";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -39,6 +40,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export default function Account() {
   const [openpopup, setopenpopup] = React.useState(false);
   const [openConpopup, setopenConpopup] = React.useState(false);
+  const [openChange, setChange] = React.useState(false);
 
   const [formdata, setFormdata] = React.useState({
     fName: "",
@@ -47,10 +49,9 @@ export default function Account() {
     tTele: "",
   });
 
-  const id = 1;
-
   const [open, setOpen] = React.useState(false);
 
+  //Popup Dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -58,19 +59,20 @@ export default function Account() {
     setOpen(false);
   };
 
+  //Image crop
   const [preview, setpreview] = React.useState(profile);
-
   const onClose = () => {
     setpreview(preview);
   };
-
   const onCrop = (view) => {
     setpreview(view);
   };
 
+  const id = 1;
+  //Get values from the database
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/profileDget/` + id)
+      .get(`${BACKEND_URL}/admin/getInfo/` + id)
       .then(function (response) {
         setFormdata({
           ...formdata,
@@ -83,7 +85,7 @@ export default function Account() {
       .catch(function (error) {
         console.log(error);
       });
-  }, [formdata]);
+  }, []);
 
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
@@ -369,7 +371,11 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" sx={changebtn}>
+                <Button
+                  variant="contained"
+                  onClick={() => setChange(true)}
+                  sx={changebtn}
+                >
                   Change Password
                 </Button>
               </Grid>
@@ -389,7 +395,16 @@ export default function Account() {
         />
       )}
 
-      <PopupContact openpopup={openConpopup} setopenpopup={setopenConpopup} />
+      {formdata.eGmail && formdata.tTele && (
+        <PopupContact
+          openpopup={openConpopup}
+          setopenpopup={setopenConpopup}
+          pEmail={formdata.eGmail}
+          pTele={formdata.tTele}
+        />
+      )}
+
+      <ChangePass openpopup={openChange} setopenpopup={setChange} />
     </Box>
   );
 }

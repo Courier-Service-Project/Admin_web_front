@@ -24,25 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function PopupContact(props) {
-  const { openpopup, setopenpopup } = props;
-
-  const [email, setEmail] = React.useState();
-  const [tele, setTele] = React.useState();
-
-  React.useEffect(() => {
-    const id = 1;
-    axios
-      .get(`${BACKEND_URL}/profileDget/` + id)
-      .then(function (response) {
-        if (response) {
-          setEmail(response.data.data[0].email);
-          setTele(response.data.data[0].tele);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  const { openpopup, setopenpopup, pEmail, pTele } = props;
 
   const handleClose = () => {
     setopenpopup(false);
@@ -61,21 +43,24 @@ export default function PopupContact(props) {
     },
   };
 
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
       .email("Enter a valid email")
       .required("Email is required"),
     tele: yup
-      .string("Enter your password")
-      .min(8)
+      .string("Enter your Telephone")
+      .matches(phoneRegExp, "Phone number is not valid")
       .required("Password is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      tele: "",
+      email: "dff",
+      tele: "efef",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
