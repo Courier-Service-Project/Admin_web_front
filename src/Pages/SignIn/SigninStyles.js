@@ -22,7 +22,7 @@ export const picts = {
 }
 
 
-export const btn = {backgroundColor: "#424242",mb:2,":hover":{
+export const btn = {backgroundColor: "#424242",mb:2,mt:4,":hover":{
   bgcolor:"#212121"
 }};
 

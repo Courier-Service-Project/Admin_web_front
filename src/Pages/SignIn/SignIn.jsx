@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Notifi from "../../Components/Notification/Notifi";
 import { ToastContainer } from "react-toastify";
@@ -20,10 +20,11 @@ import { useFormik } from "formik";
 
 export default function SignIn() {
   const navigation = useNavigate();
+  const [error,setError] = useState(null);
 
   //Validation Schema
   const validationSchema = yup.object({
-    userName: yup.string("Enter your emai").required("UserName is required"),
+    userName: yup.string("Enter your emai").required("UserName is required").email("Enter valid Email"),
     password: yup
       .string("Enter your password")
       .required("Password is required"),
@@ -38,19 +39,20 @@ export default function SignIn() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       axios
-        .post(`${BACKEND_URL}/admin`, {
+        .post("http://localhost:9000/admin",{
           userName: values.userName,
           password: values.password,
         })
         .then(function (response) {
           if (response.data.success === 1) {
-            const msg = "Login SuccessFully";
-            Notifi(msg);
-
+            // const msg = "Login SuccessFully";
+            // Notifi(msg);
             navigation("/dashboard");
+
           } else {
-            const msg = "Invalid Email / Password ";
-            Error(msg);
+            setError("Invalid Username or Password, Please try again.")
+            // const msg = "Invalid Email / Password ";
+            // Error(msg);
           }
         })
         .catch(function (error) {
@@ -83,7 +85,6 @@ export default function SignIn() {
                         variant="standard"
                         name="userName"
                         fullWidth
-                        required
                         value={formik.values.userName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -96,14 +97,13 @@ export default function SignIn() {
                         }
                       />
                     </Box>
-                    <Box sx={{ mt: "5px", mb: "40px" }}>
+                    <Box sx={{ mt: "5px", mb: "15px" }}>
                       <TextField
                         label="Password"
                         type="password"
                         variant="standard"
                         name="password"
                         fullWidth
-                        required
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -116,6 +116,7 @@ export default function SignIn() {
                         }
                       />
                     </Box>
+                    <Typography sx={{color:"red",fontSize:"13px"}}> {error? error : ""}</Typography>
                     <Button
                       type="submit"
                       variant="contained"

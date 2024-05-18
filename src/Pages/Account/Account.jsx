@@ -25,7 +25,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Avatar from "react-avatar-edit";
-import { BACKEND_URL } from "../../Constants/index";
+import { BACKEND_URL,ID } from "../../Constants/index";
 import ChangePass from "../../Components/Account/ChangePass";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -68,11 +68,10 @@ export default function Account() {
     setpreview(view);
   };
 
-  const id = 1;
   //Get values from the database
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/admin/getInfo/` + id)
+      .get(`${BACKEND_URL}/admin/getInfo/` + `${ID}`)
       .then(function (response) {
         setFormdata({
           ...formdata,
@@ -88,7 +87,9 @@ export default function Account() {
   }, []);
 
   return (
+
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
+
       <Navbar />
       <Box height={75} />
       <Box sx={{ display: "flex" }}>
