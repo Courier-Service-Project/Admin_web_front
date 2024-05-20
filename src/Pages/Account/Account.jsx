@@ -71,14 +71,14 @@ export default function Account() {
   //Get values from the database
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/admin/getInfo/` + `${ID}`)
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
       .then(function (response) {
         setFormdata({
           ...formdata,
-          fName: response.data.data[0].fname,
-          fLame: response.data.data[0].lname,
-          eGmail: response.data.data[0].email,
-          tTele: response.data.data[0].tele,
+          fName: response.data.data[0].FirstName,
+          fLame: response.data.data[0].LastName,
+          eGmail: response.data.data[0].Email,
+          tTele: response.data.data[0].Tele,
         });
       })
       .catch(function (error) {
