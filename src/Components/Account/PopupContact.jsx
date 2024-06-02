@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { BACKEND_URL } from "../../Constants";
+import { BACKEND_URL,ID } from "../../Constants/index";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -59,14 +59,14 @@ export default function PopupContact(props) {
 
   const formik = useFormik({
     initialValues: {
-      email: "dff",
-      tele: "efef",
+      email:pEmail,
+      tele:pTele,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       axios
-        .post(`${BACKEND_URL}/admin/changecontact`, {
-          id: 1,
+        .post(`${BACKEND_URL}/admin/changeContact`, {
+          adminID: ID,
           email: values.email,
           tele: values.tele,
         })

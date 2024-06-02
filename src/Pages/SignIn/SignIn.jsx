@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Notifi from "../../Components/Notification/Notifi";
+import Pulseloader from "react-spinners/PulseLoader";
 import { ToastContainer } from "react-toastify";
 import {
   Paper,
@@ -21,6 +22,7 @@ import { useFormik } from "formik";
 export default function SignIn() {
   const navigation = useNavigate();
   const [error,setError] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   //Validation Schema
   const validationSchema = yup.object({
@@ -38,12 +40,15 @@ export default function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+
+      setLoading(true)
       axios
         .post("http://localhost:9000/admin",{
           userName: values.userName,
           password: values.password,
         })
         .then(function (response) {
+          setLoading(false)
           if (response.data.success === 1) {
             // const msg = "Login SuccessFully";
             // Notifi(msg);
@@ -124,7 +129,13 @@ export default function SignIn() {
                       sx={btn}
                       fullWidth
                     >
-                      Sign In
+                      Sign In <span style={{margin:"0 5px"}}></span><Pulseloader
+                          color={"white"}
+                          loading={loading}
+                          size={6}
+                          aria-label="Loading Spinner"
+                          data-testid="loader"
+                        />
                     </Button>
                     <Typography>
                       <Link sx={link} href="#">

@@ -13,8 +13,9 @@ import axios from "axios";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Block } from "@mui/icons-material";
+import { Block, Password } from "@mui/icons-material";
 import { Hidden } from "@mui/material";
+import { BACKEND_URL,ID } from "../../Constants/index";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -27,6 +28,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function Popup(props) {
   const { openpopup, setopenpopup } = props;
+  const [error,setError] = React.useState(null);
 
   const [formStep, setFormStep] = React.useState(0);
 
@@ -61,22 +63,55 @@ export default function Popup(props) {
     },
     validationSchema: validationSchema0,
     onSubmit: (values) => {
-      CompleteFormStep();
-      alert("axios0");
+      axios
+        .post(`${BACKEND_URL}/admin/CheckPrePassword`, {
+          adminID: ID,
+          Password:values.prePass
+        })
+        .then(function (response) {
+          console.log(response.data.success)
+          if(response.data.success){
+            CompleteFormStep();
+          }else{
+            setError("Invalid Password Please Re-Enter")
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
     },
   });
 
   const validationSchema1 = yup.object({
-    newPass: yup.string("Enter your email").required("Email is required"),
+    newPass: yup.string("Enter New Password").required("password is required"),
+    comNewPass: yup.string()
+    .oneOf([yup.ref('newPass'), null], 'Passwords must match').required("password is required"),
+
   });
   const formik1 = useFormik({
     initialValues: {
       newPass: "",
+      comNewPass:""
     },
     validationSchema: validationSchema1,
-    onSubmit: (values) => {
-      CompleteFormStep();
-      alert("axios1");
+    onSubmit: (values) => { 
+      axios
+        .post(`${BACKEND_URL}/admin/ChangePassword`, {
+          adminID: ID,
+          newPassword:values.newPass,
+          comPassword:values.comNewPass
+        })
+        .then(function (response) {
+          console.log(response.data.success)
+          if(response.data.success){
+            CompleteFormStep();
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      
     },
   });
 
@@ -111,7 +146,7 @@ export default function Popup(props) {
               p: 1.5,
             }}
           >
-            <Typography variant="h6">Edit Username</Typography>
+            <Typography variant="h6">Change Password</Typography>
           </DialogTitle>
           <IconButton
             aria-label="close"
@@ -143,6 +178,7 @@ export default function Popup(props) {
                   }
                   helperText={formik0.touched.prePass && formik0.errors.prePass}
                 />
+                <Typography sx={{color:"red",fontSize:"13px"}}> {error? error : ""}</Typography>
               </section>
             )}
             {formStep === 1 && (
@@ -161,6 +197,21 @@ export default function Popup(props) {
                     formik1.touched.newPass && Boolean(formik1.errors.newPass)
                   }
                   helperText={formik1.touched.newPass && formik1.errors.newPass}
+                />
+                <TextField
+                  hiddenLabel
+                  label="Enter New Password"
+                  variant="outlined"
+                  size="small"
+                  sx={{ mr: 3, mb: 1.5 }}
+                  name="comNewPass"
+                  value={formik1.values.comNewPass}
+                  onChange={formik1.handleChange}
+                  onBlur={formik1.handleBlur}
+                  error={
+                    formik1.touched.comNewPass && Boolean(formik1.errors.comNewPass)
+                  }
+                  helperText={formik1.touched.comNewPass && formik1.errors.comNewPass}
                 />
               </section>
             )}
