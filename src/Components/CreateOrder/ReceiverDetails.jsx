@@ -2,9 +2,11 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function ReceiverDetails({fromData,setFormData}) {
+  const District = ['Hambantota', 'Mathara','Colombo', 'Gampaha'];
+  const HomeTown = ['Katuwna', 'Walasmulla','Mathara', 'Middeniya'];
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -17,7 +19,7 @@ export default function ReceiverDetails({fromData,setFormData}) {
             name="R_name"
             label="Name"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="off"
             variant="standard"
             value={fromData.R_name}
             onChange={(event)=>setFormData({...fromData,R_name:event.target.value})}
@@ -29,34 +31,49 @@ export default function ReceiverDetails({fromData,setFormData}) {
             name="R_telephone"
             label="Telephone"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="off"
             variant="standard"
             value={fromData.R_telephone}
             onChange={(event)=>setFormData({...fromData,R_telephone:event.target.value})}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField
-            required
+        <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={District}
+
+            onChange={(event, value) => setFormData({ ...fromData, R_district:value })}
+            renderInput={(params) => (
+              <TextField
+              {...params}
+              required
             name="R_district"
             label="District"
             fullWidth
             autoComplete="family-name"
             variant="standard"
-            value={fromData.R_district}
-            onChange={(event)=>setFormData({...fromData,R_district:event.target.value})}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            name="R_HomeTown"
-            label="Home Town"
-            fullWidth
-            autoComplete="family-name"
-            variant="standard"
-            value={fromData.R_HomeTown}
-            onChange={(event)=>setFormData({...fromData,R_HomeTown:event.target.value})}
+        <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={HomeTown}
+
+            onChange={(event, value) => setFormData({ ...fromData, R_HomeTown:value })}
+            renderInput={(params) => (
+              <TextField
+              {...params}
+              required
+              name="R_HomeTown"
+              label="Home Town"
+              fullWidth
+              variant="standard"
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12}>
@@ -65,7 +82,7 @@ export default function ReceiverDetails({fromData,setFormData}) {
             name="R_address"
             label="Address"
             fullWidth
-            autoComplete="shipping address-line1"
+            autoComplete="off"
             variant="standard"
             value={fromData.R_address}
             onChange={(event)=>setFormData({...fromData,R_address:event.target.value})}

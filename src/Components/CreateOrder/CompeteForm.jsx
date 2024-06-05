@@ -11,14 +11,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
-import { CheckEmpty } from "../../Validation/Validation";
+import {senderValidation ,RecieverValidation,PickupValidation} from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
 import Error from "../../Components/Notification/Error";
 import axios from "axios";
 import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-// import { useNavigate } from "react-router-dom";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
 const steptyle = {
@@ -39,6 +42,7 @@ const steptyle = {
 
 export default function CompeteForm() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [err,setErr] = React.useState(null);
   const [fromData, setFormData] = React.useState({
     S_name: "",
     S_telephone: "",
@@ -77,38 +81,50 @@ export default function CompeteForm() {
   }
   //................................
   function senderValid() {
-    if (
-      CheckEmpty(fromData.S_name) ||
-      CheckEmpty(fromData.S_address) ||
-      CheckEmpty(fromData.S_telephone)
-    ) {
-      Error(" Fields cannot be empty");
+    setErr(null)
+    const data = senderValidation(
+      fromData.S_name,
+      fromData.S_address,
+      fromData.S_telephone
+    )
+    console.log(data)
+    if(data){
+      setErr(data.Error)
       return 1;
+
     }
   }
   //................................
   function recieverValid() {
-    if (
-      CheckEmpty(fromData.R_name) ||
-      CheckEmpty(fromData.R_district) ||
-      CheckEmpty(fromData.R_HomeTown) ||
-      CheckEmpty(fromData.R_telephone)
-    ) {
-      Error(" Fields cannot be empty");
+    setErr(null)
+    const data = RecieverValidation(
+      fromData.R_name,
+      fromData.R_district,
+      fromData.R_HomeTown,
+      fromData.R_telephone
+    )
+      console.log(data)
+
+    if (data) {
+      setErr(data.Error)
       return 1;
     }
   }
   //.............................
   function pickValid() {
-    if (
-      CheckEmpty(fromData.P_VehicalType) ||
-      CheckEmpty(fromData.P_address) ||
-      CheckEmpty(fromData.P_homeTown) ||
-      CheckEmpty(fromData.P_paymentMethod) ||
-      CheckEmpty(fromData.P_telephone) ||
-      CheckEmpty(fromData.P_district)
-    ) {
-      Error(" Fields cannot be empty");
+     setErr(null)
+    const data = PickupValidation(
+      fromData.P_VehicalType,
+      fromData.P_address,
+      fromData.P_homeTown,
+      fromData.P_paymentMethod,
+      fromData.P_telephone,
+      fromData.P_district,
+    )
+      console.log(data)
+
+    if (data) {
+      setErr(data.Error)
       return 1;
     }
   }
@@ -119,9 +135,25 @@ export default function CompeteForm() {
       icon: "success",
       title: "Order Placed",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2500,
     });
 
+    // console.log(fromData.S_name)
+    // console.log(fromData.S_address)
+    // console.log(fromData.S_telephone)
+    // console.log(fromData.R_name)
+    // console.log(fromData.R_telephone)
+    // console.log(fromData.R_district)
+    // console.log(fromData.R_HomeTown)
+    // console.log(fromData.R_address)
+    // console.log(fromData.P_address)
+    // console.log(fromData.P_district)
+    // console.log(fromData.P_VehicalType)
+    // console.log(fromData.P_telephone)
+    // console.log(fromData.P_paymentMethod)
+    // console.log(fromData.P_specialNote)
+    // console.log(fromData.P_homeTown)
+   
     axios
       .post("http://localhost:3000/src/routes/createOrder", {
         sname: fromData.S_name,
@@ -214,6 +246,28 @@ export default function CompeteForm() {
           ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
+              {err?<Box sx={{ width: '100%',mt:3 }}>
+      <Collapse in={err}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setErr(null);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {err}
+        </Alert>
+      </Collapse>
+    </Box>:""}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {activeStep !== 0 && (
                   <Button

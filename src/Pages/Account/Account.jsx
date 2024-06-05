@@ -27,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Avatar from "react-avatar-edit";
 import { BACKEND_URL,ID } from "../../Constants/index";
 import ChangePass from "../../Components/Account/ChangePass";
+import AccSkeleton from "./AccSkeleton"
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -42,6 +43,9 @@ export default function Account() {
   const [openConpopup, setopenConpopup] = React.useState(false);
   const [openChange, setChange] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false)
+
+
   const [formdata, setFormdata] = React.useState({
     fName: "",
     fLame: "",
@@ -51,7 +55,7 @@ export default function Account() {
 
   const [open, setOpen] = React.useState(false);
 
-  //Popup Dialog
+ 
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,7 +63,6 @@ export default function Account() {
     setOpen(false);
   };
 
-  //Image crop
   const [preview, setpreview] = React.useState(profile);
   const onClose = () => {
     setpreview(preview);
@@ -68,11 +71,13 @@ export default function Account() {
     setpreview(view);
   };
 
-  //Get values from the database
+
   useEffect(() => {
+    setLoading(true)
     axios
       .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
       .then(function (response) {
+        setLoading(false)
         setFormdata({
           ...formdata,
           fName: response.data.data[0].FirstName,
@@ -89,6 +94,8 @@ export default function Account() {
   return (
 
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
+
+   
 
       <Navbar />
       <Box height={75} />
