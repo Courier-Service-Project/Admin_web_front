@@ -4,11 +4,11 @@ import Stack from "@mui/material/Stack";
 
 export default function Variants() {
   return (
-    <Stack spacing={1}>
-      <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
-      <Skeleton variant="circular" width={40} height={40} />
-      <Skeleton variant="rectangular" width={210} height={60} />
-      <Skeleton variant="rounded" width={210} height={60} />
+    <Stack spacing={2} mt={-6} >
+      <Skeleton variant="text" width={"100%"} height={80} sx={{ fontSize: "1rem" }} />
+      <Skeleton variant="circular" width={130} height={130} style={{marginTop:20}} />
+      <Skeleton variant="rectangular" width={"100%"} height={80} style={{marginTop:30}}/>
+      <Skeleton variant="rounded" width={"100%"} height={80} style={{marginTop:30,marginBottom:30}}  />
     </Stack>
   );
 }

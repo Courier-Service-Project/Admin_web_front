@@ -13,7 +13,6 @@ import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
 import {senderValidation ,RecieverValidation,PickupValidation} from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
-import Error from "../../Components/Notification/Error";
 import axios from "axios";
 import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";

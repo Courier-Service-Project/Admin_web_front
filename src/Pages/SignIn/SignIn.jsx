@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Notifi from "../../Components/Notification/Notifi";
 import Pulseloader from "react-spinners/PulseLoader";
-import { ToastContainer } from "react-toastify";
 import {
   Paper,
   TextField,
@@ -12,27 +10,29 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import Error from "../../Components/Notification/Error";
 import { useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
-import { BACKEND_URL } from "../../Constants/index";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 export default function SignIn() {
   const navigation = useNavigate();
   const [error,setError] = useState(null);
   const [loading, setLoading] = useState(false)
 
-  //Validation Schema
+
   const validationSchema = yup.object({
-    userName: yup.string("Enter your emai").required("UserName is required").email("Enter valid Email"),
+    userName: yup.string("Enter your emai").required(" ").email("Enter valid Email"),
     password: yup
       .string("Enter your password")
-      .required("Password is required"),
+      .required(" "),
   });
 
-  //Axios call
+ 
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -50,14 +50,10 @@ export default function SignIn() {
         .then(function (response) {
           setLoading(false)
           if (response.data.success === 1) {
-            // const msg = "Login SuccessFully";
-            // Notifi(msg);
             navigation("/dashboard");
 
           } else {
             setError("Invalid Username or Password, Please try again.")
-            // const msg = "Invalid Email / Password ";
-            // Error(msg);
           }
         })
         .catch(function (error) {
@@ -121,7 +117,26 @@ export default function SignIn() {
                         }
                       />
                     </Box>
-                    <Typography sx={{color:"red",fontSize:"13px"}}> {error? error : ""}</Typography>
+                    <Typography sx={{color:"red",fontSize:"13px"}}> {error? <Box mb={-3}><Collapse in={error}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setError(null);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {error}
+        </Alert>
+      </Collapse></Box> :""}</Typography>
                     <Button
                       type="submit"
                       variant="contained"
@@ -152,7 +167,6 @@ export default function SignIn() {
               </Box>
             </Box>
           </Stack>
-          <ToastContainer />
         </Paper>
       </Box>
     </form>
