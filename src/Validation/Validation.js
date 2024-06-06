@@ -1,6 +1,3 @@
-import { json } from "react-router-dom";
-import * as yup from "yup";
-
 export const CheckEmpty = (data) => {
   if (data.trim() === "" || data.trim() === "") {
     return true;

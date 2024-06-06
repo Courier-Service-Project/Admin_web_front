@@ -10,11 +10,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import clsx from "clsx";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Block, Password } from "@mui/icons-material";
-import { Hidden } from "@mui/material";
 import { BACKEND_URL,ID } from "../../Constants/index";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
