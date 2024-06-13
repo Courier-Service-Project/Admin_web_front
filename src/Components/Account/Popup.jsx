@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import { BACKEND_URL,ID } from "../../Constants/index";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -57,17 +58,12 @@ export default function Popup(props) {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       axios
-        .post("http://localhost:5000/admin/change", {
-          id: 1,
+        .post(`${BACKEND_URL}/admin/changeUsername`, {
+          adminID:ID,
           fname: values.fName,
           lname: values.lName,
         })
         .then(function (response) {
-          setFormData((data) => ({
-            ...data,
-            fName: values.fName,
-            fLame: values.lName,
-          }));
           console.log(response);
         })
         .catch(function (error) {

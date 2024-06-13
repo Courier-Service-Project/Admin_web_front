@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import Notifi from "../../Components/Notification/Notifi";
-import { ToastContainer } from "react-toastify";
+import Pulseloader from "react-spinners/PulseLoader";
 import {
   Paper,
   TextField,
@@ -11,25 +10,29 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import Error from "../../Components/Notification/Error";
 import { useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
-import { BACKEND_URL } from "../../Constants/index";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 export default function SignIn() {
   const navigation = useNavigate();
+  const [error,setError] = useState(null);
+  const [loading, setLoading] = useState(false)
 
-  //Validation Schema
+
   const validationSchema = yup.object({
-    userName: yup.string("Enter your emai").required("UserName is required"),
+    userName: yup.string("Enter your emai").required(" ").email("Enter valid Email"),
     password: yup
       .string("Enter your password")
-      .required("Password is required"),
+      .required(" "),
   });
 
-  //Axios call
+ 
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -37,20 +40,20 @@ export default function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+
+      setLoading(true)
       axios
-        .post(`${BACKEND_URL}/admin`, {
+        .post("http://localhost:9000/admin",{
           userName: values.userName,
           password: values.password,
         })
         .then(function (response) {
+          setLoading(false)
           if (response.data.success === 1) {
-            const msg = "Login SuccessFully";
-            Notifi(msg);
-
             navigation("/dashboard");
+
           } else {
-            const msg = "Invalid Email / Password ";
-            Error(msg);
+            setError("Invalid Username or Password, Please try again.")
           }
         })
         .catch(function (error) {
@@ -83,7 +86,6 @@ export default function SignIn() {
                         variant="standard"
                         name="userName"
                         fullWidth
-                        required
                         value={formik.values.userName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -96,14 +98,13 @@ export default function SignIn() {
                         }
                       />
                     </Box>
-                    <Box sx={{ mt: "5px", mb: "40px" }}>
+                    <Box sx={{ mt: "5px", mb: "15px" }}>
                       <TextField
                         label="Password"
                         type="password"
                         variant="standard"
                         name="password"
                         fullWidth
-                        required
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -116,6 +117,26 @@ export default function SignIn() {
                         }
                       />
                     </Box>
+                    <Typography sx={{color:"red",fontSize:"13px"}}> {error? <Box mb={-3}><Collapse in={error}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setError(null);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {error}
+        </Alert>
+      </Collapse></Box> :""}</Typography>
                     <Button
                       type="submit"
                       variant="contained"
@@ -123,7 +144,13 @@ export default function SignIn() {
                       sx={btn}
                       fullWidth
                     >
-                      Sign In
+                      Sign In <span style={{margin:"0 5px"}}></span><Pulseloader
+                          color={"white"}
+                          loading={loading}
+                          size={6}
+                          aria-label="Loading Spinner"
+                          data-testid="loader"
+                        />
                     </Button>
                     <Typography>
                       <Link sx={link} href="#">
@@ -140,7 +167,6 @@ export default function SignIn() {
               </Box>
             </Box>
           </Stack>
-          <ToastContainer />
         </Paper>
       </Box>
     </form>
