@@ -200,7 +200,7 @@ export default function Sidenav() {
             </ListItemIcon>
             <ListItemText primary="Account Setting" />
           </ListItemButton>
-          <ListItemButton onClick={()=>navigate("/")} sx={{bgcolor:"#616161",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
+          <ListItemButton onClick={()=>{localStorage.setItem('login',null);navigate("/")}} sx={{bgcolor:"#616161",m:1,mt:2,py:0.8, borderRadius:3,color:"white",":hover":{
             bgcolor:"#9e9e9e",
             color:"black"
           }}}>

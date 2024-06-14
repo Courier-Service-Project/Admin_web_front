@@ -73,7 +73,12 @@ export default function Account() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`,{
+        headers:{
+          'access_token':localStorage.getItem('login')
+        }
+      })
+    
       .then(function (response) {
         setLoading(false);
         setFormdata({
