@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Stepper, Step, StepLabel, Card, CardContent } from '@mui/material';
 
-const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiveStep }) => {
+const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiveSteps }) => {
   const steps = [
     { label: 'Pending Order' },
     { label: 'Pickup Order' },
@@ -48,11 +48,11 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
     {orderStatus && (
     <div>
       <div style={{ padding: '80px', display: 'flex', alignItems: 'center', paddingTop: '30px', marginTop: '20px' }}>
-        <Typography variant="h6" fontWeight='600'>
+        <Typography variant="h6" fontWeight='600' color={{}}>
           Order Id: {orderId}
         </Typography>
         <Typography variant="h6" style={{ marginLeft: '40px' }} fontWeight='600'>
-          Order Status: {orderStatus}
+          Order Status: {getShipmentDetails(orderId).Status }
         </Typography>
         {orderDetails[orderId] && (
           <Typography variant="h6" style={{ marginLeft: '40px' }} fontWeight='600'>
@@ -66,11 +66,6 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
             <Step key={step.label}>
               <StepLabel>
                 {step.label}
-                <div>
-                  <Typography variant="caption">
-                    {orderDetails[orderId] && orderDetails[orderId][step.label]}
-                  </Typography>
-                </div>
               </StepLabel>
             </Step>
           ))}
@@ -84,9 +79,9 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
               Shipment Details
             </Typography>
             <Typography style={{ fontFamily: 'Roboto', fontWeight: 'bold', paddingTop: '7px' }}>
-              Quantity: {getShipmentDetails(orderId).quantity}
+              Cost: {getShipmentDetails(orderId).cost}
               <br /><br />
-              Weight: {getShipmentDetails(orderId).weight}
+              Weight cost: {getShipmentDetails(orderId).weightCost}
               <br /><br />
               Service Type: {getShipmentDetails(orderId).serviceType}
             </Typography>
@@ -100,7 +95,7 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
             <Typography style={{ fontFamily: 'Roboto', fontWeight: 'bold', paddingTop: '7px' }}>
               Receiver Name: {getDestinationDetails(orderId).receiverName}
               <br /><br />
-              Receiver Email: {getDestinationDetails(orderId).receiverEmail}
+              Telephone Number: {getDestinationDetails(orderId).number}
               <br /><br />
               Receiver Address: {getDestinationDetails(orderId).receiverAddress}
             </Typography>
