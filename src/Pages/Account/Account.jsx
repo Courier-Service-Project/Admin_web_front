@@ -67,6 +67,7 @@ export default function Account() {
   };
   const onCrop = (view) => {
     setpreview(view);
+    alert(preview)
   };
 
   useEffect(() => {
@@ -128,6 +129,8 @@ export default function Account() {
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* ....................................................................... */}
+                  
                   <Box>
                     <img
                       style={{
@@ -201,6 +204,8 @@ export default function Account() {
                   </Button>
                 </Box>
               </Box>
+ {/* ....................................................................... */}
+
               <Box sx={{ mt: 7, ml: 3 }}>
                 <Typography sx={{ fontWeight: "bold", mb: 2 }}>
                   Full Name
