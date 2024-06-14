@@ -67,12 +67,18 @@ export default function Account() {
   };
   const onCrop = (view) => {
     setpreview(view);
+    alert(preview)
   };
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`,{
+        headers:{
+          'access_token':localStorage.getItem('login')
+        }
+      })
+    
       .then(function (response) {
         setLoading(false);
         setFormdata({
@@ -128,6 +134,8 @@ export default function Account() {
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* ....................................................................... */}
+                  
                   <Box>
                     <img
                       style={{
@@ -201,6 +209,8 @@ export default function Account() {
                   </Button>
                 </Box>
               </Box>
+ {/* ....................................................................... */}
+
               <Box sx={{ mt: 7, ml: 3 }}>
                 <Typography sx={{ fontWeight: "bold", mb: 2 }}>
                   Full Name

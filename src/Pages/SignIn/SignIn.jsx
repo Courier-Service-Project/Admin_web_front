@@ -10,7 +10,7 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -49,6 +49,13 @@ export default function SignIn() {
         })
         .then(function (response) {
           setLoading(false)
+          //console.log(response.data.token)
+          //localStorage.setItem('login',response.data.token)
+          localStorage.setItem('adminID',response.data.adminID)
+
+       
+
+          console.log(localStorage.getItem('login'))
           if (response.data.success === 1) {
             navigation("/dashboard");
 
