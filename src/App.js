@@ -15,6 +15,7 @@ import CompleteOrder from "./Pages/Complete/CompleteOrder"
 import RegisteredPerson from "./Pages/Registered/RegisteredPerson"
 import NewRegistration from "./Pages/NewRegistration/NewRegistration"
 import NewAdministrator from "./Pages/Administrators/NewAdministrator.jsx"
+import ApplicantPerson from "./Pages/Applicant/ApplicantPerson"
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/order/:orderNo" element={<ViewOrder />} />
         <Route path="/newregistration" element={<NewRegistration/>} />
         <Route path="/newadministrator" element={<NewAdministrator/>} />
+        <Route path="/ApplicantPerson/:applicantid" element={<ApplicantPerson/>} />
         </Routes>
       </BrowserRouter>
   );
