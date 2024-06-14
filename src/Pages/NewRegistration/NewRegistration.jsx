@@ -4,7 +4,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
-import Complete from '../../Components/NewRegistration/Complete'
+import Complete from './NewRegForm'
 export default function newRegistration() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
