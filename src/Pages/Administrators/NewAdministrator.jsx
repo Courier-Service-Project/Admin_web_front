@@ -4,8 +4,8 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
-import OrderTracking from "./Tracker/OrderTracker";
-export default function Tracker() {
+import NewAdnimForm from './NewAdminForm';
+export default function NewAdministrator() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
       <Navbar />
@@ -16,10 +16,10 @@ export default function Tracker() {
         <Box sx={{mx:3}}>
         <Typography sx={{fontSize:30,fontWeight: 'bold'}}>
         <AppsIcon sx={{mr:3}}/>
-        Order Tracker 
+        New Administrator Registration
         </Typography>
         </Box>
-          <OrderTracking />
+        <NewAdnimForm />
         </Box>
       </Box>
       </Box>

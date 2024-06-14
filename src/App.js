@@ -14,6 +14,8 @@ import Tracker from "./Pages/TrackOrder/Tracker";
 import CompleteOrder from "./Pages/Complete/CompleteOrder"
 import RegisteredPerson from "./Pages/Registered/RegisteredPerson"
 import NewRegistration from "./Pages/NewRegistration/NewRegistration"
+import ApplicantPerson from "./Pages/Applicant/ApplicantPerson"
+import NewAdministrator from "./Pages/Administrators/NewAdministrator"
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/track" element={<Tracker/>} />
         <Route path="/order/:orderNo" element={<ViewOrder />} />
         <Route path="/newregistration" element={<NewRegistration/>} />
+        <Route path="/ApplicantPerson/:applicantid" element={<ApplicantPerson/>} />
+        <Route path="/newadministrator" element={<NewAdministrator/>} />
         </Routes>
       </BrowserRouter>
   );

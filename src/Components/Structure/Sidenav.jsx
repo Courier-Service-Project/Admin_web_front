@@ -84,12 +84,16 @@ export default function Sidenav() {
   const navigate = useNavigate();
   const [open1, setOpen1] = React.useState(true);
   const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
 
   const handleClick1 = () => {
     setOpen1(!open1);
   };
   const handleClick2 = () => {
     setOpen2(!open2);
+  };
+  const handleClick3 = () => {
+    setOpen3(!open3);
   };
 
   return (
@@ -159,12 +163,37 @@ export default function Sidenav() {
               </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton onClick={()=>navigate("/administrator")}>
+          {/* <ListItemButton onClick={()=>navigate("/administrator")}>
             <ListItemIcon>
               <SupervisorAccountIcon />
             </ListItemIcon>
             <ListItemText primary="Administrators" />
+          </ListItemButton> */}
+
+            <ListItemButton onClick={handleClick3}>
+            <ListItemIcon>
+              <SupervisorAccountIcon />
+            </ListItemIcon>
+            <ListItemText primary="Administrators" />
+            {open3 ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
+          <Collapse in={open3} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/administrator")}>
+                <ListItemIcon>
+                  <LibraryAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin Profile" />
+              </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/newadministrator")}>
+                <ListItemIcon>
+                  <HowToRegRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="New Administrator" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+
           <ListItemButton onClick={handleClick2}>
             <ListItemIcon>
               <PersonIcon />

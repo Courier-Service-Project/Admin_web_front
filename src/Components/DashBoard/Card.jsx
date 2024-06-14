@@ -12,8 +12,26 @@ import BarChart from '../../Charts/BarChart';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { PieChart } from '../../Charts/PieChart';
+import { useActionData } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function BasicGrid() {
+    const [orderCount, setOrderCount] = useState([]);
+    useEffect(()=>{
+        fetchOrderCount();
+    },[])
+
+    const fetchOrderCount = async () => {
+
+        const result = await axios.get(`http://192.168.117.94:9000/api/web/orders/orderCounts`);
+        setOrderCount(result.data.message);
+        console.log(result);
+
+    }
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -21,7 +39,7 @@ export default function BasicGrid() {
         <Stack spacing={2} direction={'row'} >
             <Grid item xs={12} md={4}> 
                 <CardCom 
-                    title="40" 
+                    title={orderCount.pendingCount}
                     text="Pending Orders" 
                     width ="100%" 
                     height="145px" 
@@ -34,7 +52,7 @@ export default function BasicGrid() {
             </Grid>
             <Grid item xs={12} md={4}> 
                 <CardCom 
-                    title="20" 
+                    title={orderCount.inProgressCount}
                     text="In progress" 
                     width =" 100%" 
                     height="145px"
@@ -47,7 +65,7 @@ export default function BasicGrid() {
             </Grid>
             <Grid item xs={12} md={4}> 
                 <CardCom 
-                    title="200" 
+                    title={orderCount.completeCount}
                     text="Completed Orders" 
                     width ="100%" 
                     height="145px" 
