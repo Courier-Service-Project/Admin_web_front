@@ -1,20 +1,39 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-
-export const data = [
-  ["Task", "Orders per Day"],
-  ["New Orders", 11],
-  ["Pending", 2],
-  ["In - Progress", 2],
-  ["Complete", 2],
-];
-
-export const options = {
-  title: "Today Performance",
-  is3D: true,
-};
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export function PieChart() {
+  const [orderCount, setOrderCount] = useState([]);
+    useEffect(()=>{
+        fetchOrderCount();
+    },[])
+
+    const fetchOrderCount = async () => {
+        try {
+        const result = await axios.get(`http://192.168.117.94:9000/orders/orderCounts`);
+        setOrderCount(result.data.message);
+        console.log(result);
+        }
+        catch (error) {
+
+        }
+    } 
+
+  const data = [
+    ["Task", "Orders per Day"],
+    ["On pickup",orderCount.onpickCount ],
+    ["Pending",orderCount.pendingCount ],
+    ["In - Progress", orderCount.ondiliveryCount],
+    ["Complete", orderCount.completeCount],
+  ];
+
+  const options = {
+    title: "Today Performance",
+    is3D: true,
+  };
+
   return (
     <Chart
       chartType="PieChart"
