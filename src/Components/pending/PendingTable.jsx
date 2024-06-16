@@ -67,7 +67,7 @@ export default function PendingTable() {
   const getpendingOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/api/web/orders/pendingorderDetails`
+        `${BACKEND_URL}/orders/pendingorderDetails`
       );
       console.log(result);
       console.log(result.data.message[0]);

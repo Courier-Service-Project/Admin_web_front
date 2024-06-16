@@ -8,7 +8,7 @@ import CompleteTable from "../../Components/complete/CompleteTable";
 
 export default function Complete() {
   return (
-  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
+  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh",minWidth:"100%", width: "fit-content"}}>
       <Navbar />
       <Box height={75}  />
       <Box sx={{ display: "flex"}}>
