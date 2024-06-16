@@ -32,7 +32,7 @@ export default function BasicGrid() {
 
     const fetchOrderCount = async () => {
         try {
-            const result = await axios.get('http://192.168.117.94:9000/orders/orderCounts');
+            const result = await axios.get('http://10.10.29.232:9000/orders/orderCounts');
             setOrderCount(result.data.message);
         } catch (error) {
             setError("Network error. Please try again.");
@@ -42,7 +42,7 @@ export default function BasicGrid() {
 
     const perCount = async () => {
         try {
-            const result = await axios.get('http://192.168.117.94:9000/admin/regCount');
+            const result = await axios.get('http://10.10.29.232:9000/admin/regCount');
             setRegPerCount(result.data.message);
             console.log(result);
         } catch (error) {

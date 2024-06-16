@@ -31,7 +31,7 @@ export default function ViewOrder() {
       
         try {
           console.log(`Fetching order details for ID: ${orderId}`);
-          const response = await axios.get(`${BACKEND_URL}/api/web/orders/pendingorderdetailsbyid/${orderId}`);
+          const response = await axios.get(`${BACKEND_URL}/orders/pendingorderdetailsbyid/${orderId}`);
           console.log('Order Details:', response.data);
           setViewOrderData(response.data.message[0]);
         
