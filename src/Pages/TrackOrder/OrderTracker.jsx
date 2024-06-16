@@ -59,7 +59,7 @@ const OrderTracking = () => {
   const handleSearch = async () => {
 
     try{
-      const result=await axios.get(`http://192.168.8.146:9000/orders/orderDetails/${orderId}`);
+      const result=await axios.get(`http://192.168.117.94:9000/orders/orderDetails/${orderId}`);
       setOrderData(result.data.message[0]);
       console.log(result.data.message[0].Status);
 
