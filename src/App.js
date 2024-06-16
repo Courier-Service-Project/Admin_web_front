@@ -17,6 +17,7 @@ import NewAdministrator from "./Pages/Administrators/NewAdministrator.jsx"
 import ApplicantPerson from "./Pages/Applicant/ApplicantPerson"
 import Adminprofile from "./Pages/Adminprofile/Adminprofile.jsx"
 import Administratorsdetails from "./Pages/Adminprofile/Administratorsdetails"
+import ProgressOrderdetails from "./Pages/In-Progress/ProgressOrderdetails.jsx";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/pending" element={<Pending />} />
         <Route path="/Pendingorder/:orderNo1" element={<ViewOrder />} />
         <Route path="/completeorder/:orderNo2" element={< CompleteOrder/>} />
+        <Route path="/inprogressorder/:orderNo3" element={< ProgressOrderdetails/>} />
         <Route path="/RegisteredPerson/:registerdid" element={<RegisteredPerson />} />
         <Route path="/account" element={<Account/>} />
         <Route path="/track" element={<Tracker/>} />
