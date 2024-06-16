@@ -179,7 +179,7 @@ export default function Sidenav() {
           </ListItemButton>
           <Collapse in={open3} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/administrator")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/adminprofile")}>
                 <ListItemIcon>
                   <LibraryAddIcon />
                 </ListItemIcon>

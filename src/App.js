@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CreateOrder from "./Pages/CreateOrder/CreateOrder";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Applicant from "./Pages/Applicant/Applicant";
-import Administrators from "./Pages/Administrators/Administrators";
 import Progress from "./Pages/In-Progress/Progress";
 import Registered from "./Pages/Registered/Registered";
 import Complete from "./Pages/Complete/Complete";
@@ -16,7 +15,8 @@ import RegisteredPerson from "./Pages/Registered/RegisteredPerson"
 import NewRegistration from "./Pages/NewRegistration/NewRegistration"
 import NewAdministrator from "./Pages/Administrators/NewAdministrator.jsx"
 import ApplicantPerson from "./Pages/Applicant/ApplicantPerson"
-
+import Adminprofile from "./Pages/Adminprofile/Adminprofile.jsx"
+import Administratorsdetails from "./Pages/Adminprofile/Administratorsdetails"
 
 function App() {
   return (
@@ -26,7 +26,6 @@ function App() {
         <Route path="/createorder" element={<CreateOrder/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/applicant" element={<Applicant/>} />
-        <Route path="/administrator" element={<Administrators/>} />
         <Route path="/progress" element={<Progress/>} />
         <Route path="/complete" element={<Complete/>} />
         <Route path="/registered" element={<Registered/>} />
@@ -40,6 +39,8 @@ function App() {
         <Route path="/newregistration" element={<NewRegistration/>} />
         <Route path="/newadministrator" element={<NewAdministrator/>} />
         <Route path="/ApplicantPerson/:applicantid" element={<ApplicantPerson/>} />
+        <Route path="/adminprofile" element={<Adminprofile/>}/>
+        <Route path="/adminform" element={<Administratorsdetails/>} />
         </Routes>
       </BrowserRouter>
   );
