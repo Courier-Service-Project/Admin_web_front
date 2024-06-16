@@ -4,7 +4,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
-import OrderTracking from "../../Components/Tracker/OrderTracker";
+import OrderTracking from "./OrderTracker";
 export default function Tracker() {
   return (
   <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
