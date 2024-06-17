@@ -4,9 +4,10 @@ import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AppsIcon from '@mui/icons-material/Apps';
+import Inprogresstable from "../../Components/Inprogress/Inprogresstable";
 export default function Progress() {
   return (
-  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
+  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh",minWidth:"100%", width: "fit-content"}}>
       <Navbar />
       <Box height={75}  />
       <Box sx={{ display: "flex"}}>
@@ -18,7 +19,7 @@ export default function Progress() {
         In Progress
         </Typography>
         </Box>
-          contend
+          <Inprogresstable/>
         </Box>
       </Box>
       </Box>
