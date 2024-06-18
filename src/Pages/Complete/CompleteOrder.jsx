@@ -31,7 +31,7 @@ export default function CompleteOrder() {
         try {
           console.log(`Fetching order details for ID: ${orderId}`);
           const response = await axios.get(`${BACKEND_URL}/orders/completeorderdetailsbyid/${orderId}`);
-          console.log('Order Details:', response.data);
+          console.log('Admin Details:', response.data);
           setCompleteOrderData(response.data.message[0]);
         
       } catch (error) {
