@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
@@ -9,29 +9,29 @@ import { Grid, Divider } from "@mui/material";
 import pramuditha from '../../Assets/pramuditha.png';
 import fphoto1 from '../../Assets/fphoto1.jpg'
 import fphoto2 from '../../Assets/fphoto2.jpg'
+import axios from "axios";
+import { BACKEND_URL } from "../../Constants";
 
 export default function Adminprofile(){
-  // Define data for each administrator
-  const administratorsData = [
-    {
-      name: "Pramuditha Sadeepa",
-      email: "mlpramuditha1@gmail.com",
-      telephone: "0766022618",
-      photoSrc: pramuditha
-    },
-    {
-      name: "Dasun theekshana",
-      email: "dasun2001@gmail.com",
-      telephone: "0765674333",
-      photoSrc: fphoto2
-    },
-    {
-      name: "Malinda Suresh",
-      email: "malinda1999@gmail.com",
-      telephone: "0762256765",
-      photoSrc: fphoto1   
-     },
-  ];
+
+  useEffect(() => {
+    getAdminprofileDetails();
+  }, []);
+
+  const [AdminprofileData, setAdminprofileData] = React.useState();
+
+  const getAdminprofileDetails = async () => {
+    try {
+      const result = await axios.get(
+        `${BACKEND_URL}/admin/AdminprofileDetails`
+      );
+      console.log(result);
+      console.log(result.data.message[0]);
+      setAdminprofileData(result.data.message);
+    } catch (error) {
+      // setIsError(true);
+    }
+  };
 
   return (
     <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
@@ -46,22 +46,25 @@ export default function Adminprofile(){
               Admin Profile
             </Typography>
           </Box>
+
           <Box sx={{m:3}}>
             <Grid container spacing={3}>
-              {/* Map through administratorsData and render Admincard for each administrator */}
-              {administratorsData.map((admin, index) => (
-                <Grid item xs={12} key={index}>
+            {AdminprofileData &&
+              AdminprofileData.map((admin) => (
+                <Grid item xs={12} key={admin}>
                   <Admincard
-                    name={admin.name}
-                    email={admin.email}
-                    telephone={admin.telephone}
+                    name={admin.FirstName+ " " +admin.LastName}
+                    email={admin.Email}
+                    telephone={admin.mobile}
                     photoSrc={admin.photoSrc}
+                    admin_Id={admin.admin_Id}
                   />
                 </Grid>
               ))}
             </Grid>
             <Divider sx={{ marginBottom: 4 , border:'none'}} />
           </Box>
+
         </Box>
       </Box>
     </Box>

@@ -42,7 +42,7 @@ function App() {
         <Route path="/newadministrator" element={<NewAdministrator/>} />
         <Route path="/ApplicantPerson/:applicantid" element={<ApplicantPerson/>} />
         <Route path="/adminprofile" element={<Adminprofile/>}/>
-        <Route path="/adminform" element={<Administratorsdetails/>} />
+        <Route path="/adminform/:adminid1" element={<Administratorsdetails/>} />
         </Routes>
       </BrowserRouter>
   );

@@ -1,10 +1,12 @@
-.hover-link {
-    color: red;
-    text-decoration: none;
-    transition: text-decoration 0.2s ease-in-out;
-  }
-  
-  .hover-link:hover {
-    text-decoration: underline;
-  }
+button.red-button {
+  color: red;
+  text-transform: none;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease-in-out;
+}
+
+button.red-button:hover {
+  background: none;
+  text-decoration: underline;
+}
   

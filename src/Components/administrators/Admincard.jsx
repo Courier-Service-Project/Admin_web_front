@@ -4,58 +4,62 @@ import { Button, Avatar, Box, Typography } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
 import "./Admincard.css";
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Admincard(props) {
-  const { name, email, telephone, photoSrc } = props;
+  const { name, email, telephone, photoSrc, admin_Id } = props;
+  const navigate = useNavigate();
+
+  const handleViewMore = () => {
+    navigate(`/adminform/${admin_Id}`,{
+      state: { admin_Id: admin_Id },
+    })
+  };
 
   return (
-    <Card className="admin-card" sx={{minHeight: 200, boxShadow: 3, borderRadius: 5 }}>
+    <Card className="admin-card" sx={{ minHeight: 200, boxShadow: 3, borderRadius: 5 }}>
       <Box sx={{ m: 3 }}>
         <Grid container>
           <Grid item xs={3} sx={{ pt: 3 }}>
             <Avatar
               alt="Admin photo"
               src={photoSrc}
-              sx={{ width: 150, height: 150 , ml:5 }}
+              sx={{ width: 150, height: 150, ml: 5 }}
             />
           </Grid>
           <Grid item xs={9}>
             <TextField
               type="text"
               margin="dense"
-              id="standard-basic"
-              label="Name"
+              id="name-field"
+              label="Full Name"
               variant="standard"
               size="small"
-              placeholder=""
               fullWidth
-              required
               value={name}
+              InputProps={{ readOnly: true }}
             />
             <TextField
               type="text"
               margin="dense"
-              id="standard-basic"
+              id="email-field"
               label="Email"
               variant="standard"
               size="small"
-              placeholder=""
               fullWidth
-              required
               value={email}
+              InputProps={{ readOnly: true }}
             />
             <TextField
               type="text"
               margin="dense"
-              id="standard-basic"
+              id="telephone-field"
               label="Telephone NO"
               variant="standard"
               size="small"
-              placeholder=""
               fullWidth
-              required
               value={telephone}
+              InputProps={{ readOnly: true }}
             />
           </Grid>
         </Grid>
@@ -63,21 +67,18 @@ export default function Admincard(props) {
         <Box sx={{
           pt: 4, display: 'flex', justifyContent: "flex-end",
         }}>
-          <Link to="/adminform">
-          <Button size="small" color="primary" sx={{
-            border: 1, justifyContent: "flex-end",
-            "&:hover": {
-              backgroundColor: '#7abec5',
-              color: 'white',
-            }
-          }}>
-          <Typography>View More</Typography>
-            
-          </Button>
-          </Link>
-
+            <Button size="small" color="primary" 
+              onClick={handleViewMore}
+            sx={{
+              border: 1, justifyContent: "flex-end",
+              "&:hover": {
+                backgroundColor: '#7abec5',
+                color: 'white',
+              }
+            }}>
+              <Typography>View More</Typography>
+            </Button>
         </Box>
-
       </Box>
     </Card>
   );

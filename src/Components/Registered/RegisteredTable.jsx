@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -8,6 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
 import './RegisteredTable.css';
+import axios from "axios";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../../Constants";
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -23,7 +27,7 @@ const StyledTableCell = styled(TableCell)(( ) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-
+    padding: 15,
   },
 }));
 
@@ -52,72 +56,66 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: '100%'  // Allow vertical scrolling
 });
 
-function createData(registerdid, name, pdistrict, ptown, date,action) {
-  return { registerdid, name, pdistrict, ptown, date,action };
-}
-
-const rows = [
-  createData('2001N','Pramuditha','Hambanthota','Beliatta','3/3/2024','View Details'),
-  createData('2002N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2003N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2004N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2005N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2006N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2007N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2008N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2009N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2010N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2011N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2012N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2013N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2014N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2015N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2016N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2017N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2018N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2019N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
-  createData('2020N','Rajapaksha','Matara','Rahula','2/3/2024','View Details'),
- 
-];
-
-
-
-
 export default function RegisteredTable() {
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    getRegisterdpersonDetails();
+  },[]);
+
+  const [rows, setRows] = React.useState();
+
+  const getRegisterdpersonDetails = async () => {
+    try {
+      const results = await axios.get(
+        `${BACKEND_URL}/branchuser/RegisterdpersonDetails`
+      );
+      console.log(results);
+      console.log(results.data.message[0]);
+      setRows(results.data.message);
+    }
+    catch(error){
+
+    }
+  };
+
   return (
-        <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
+        <Box style={{paddingTop:'20px', marginLeft:'20px',overflowX: "auto"}} >
         <Box style = {{display:'flex', justifyContent:'center'}}>
       <TableContainerStyled sx={{ height: '100%' , overflowX: 'auto'}}>
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
           <TableHead >
           <TableRow> 
           <StyledTableCell >RegisteredID</StyledTableCell>
-          <StyledTableCell >Person Name</StyledTableCell>
-          <StyledTableCell >Person District</StyledTableCell>
-          <StyledTableCell >Person HomeTown</StyledTableCell>
-          <StyledTableCell >Register Date</StyledTableCell>
+          <StyledTableCell >Name</StyledTableCell>
+          <StyledTableCell >City</StyledTableCell>
+          <StyledTableCell >Email</StyledTableCell>
+          <StyledTableCell >BranchLocation</StyledTableCell>
           <StyledTableCell >Action</StyledTableCell>
           </TableRow>
           </TableHead>
 
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.registerdid} >
-                <TableCell>{row.registerdid}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.pdistrict}</TableCell>
-                <TableCell>{row.ptown}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>
-                  
-                  <a
-                    href={`/RegisteredPerson/${row.registerdid}`}
-                    className="hover-link"
-                  >
-                    {row.action}
-                  </a>
-
-                </TableCell>
+          {rows &&
+            rows.map((row) => (
+              <StyledTableRow key={row.BranchUser_id} >
+                <StyledTableCell>{row.BranchUser_id}</StyledTableCell>
+                <StyledTableCell>{row.FirstName}</StyledTableCell>
+                <StyledTableCell>{row.City}</StyledTableCell>
+                <StyledTableCell>{row.Email}</StyledTableCell>
+                <StyledTableCell>{row.branchLocation}</StyledTableCell>
+                <StyledTableCell>
+                <Button
+                        className="hover-link red-button"
+                        onClick={() =>
+                          navigate(`/RegisteredPerson/${row.BranchUser_id}`, {
+                            state: { orderId: row.BranchUser_id },
+                          })
+                        }
+                      >
+                        View Order
+                </Button>
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
