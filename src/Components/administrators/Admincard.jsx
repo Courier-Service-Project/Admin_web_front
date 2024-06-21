@@ -20,14 +20,14 @@ export default function Admincard(props) {
     <Card className="admin-card" sx={{ minHeight: 200, boxShadow: 3, borderRadius: 5 }}>
       <Box sx={{ m: 3 }}>
         <Grid container>
-          <Grid item xs={3} sx={{ pt: 3 }}>
+          <Grid item xs={12} md={3} sx={{ pt: 3 }}>
             <Avatar
               alt="Admin photo"
               src={photoSrc}
               sx={{ width: 150, height: 150, ml: 5 }}
             />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} md={9}>
             <TextField
               type="text"
               margin="dense"
@@ -61,6 +61,7 @@ export default function Admincard(props) {
               value={telephone}
               InputProps={{ readOnly: true }}
             />
+           
           </Grid>
         </Grid>
 
