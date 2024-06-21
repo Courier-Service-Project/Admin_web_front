@@ -18,6 +18,10 @@ import ApplicantPerson from "./Pages/Applicant/ApplicantPerson"
 import Adminprofile from "./Pages/Adminprofile/Adminprofile.jsx"
 import Administratorsdetails from "./Pages/Adminprofile/Administratorsdetails"
 import ProgressOrderdetails from "./Pages/In-Progress/ProgressOrderdetails.jsx";
+import Verifypicked from "./Pages/Verifypicked/Verifypicked.jsx";
+import VerifypickedDetails from "./Pages/Verifypicked/VerifypickedDetails.jsx"
+import Verifydilivery from "./Pages/Veryfydilivery/Verifydilivery.jsx"
+import VerifydiliveryDetails from "./Pages/Veryfydilivery/VerifydiliveryDetails.jsx"
 
 function App() {
   return (
@@ -43,6 +47,10 @@ function App() {
         <Route path="/ApplicantPerson/:applicantid" element={<ApplicantPerson/>} />
         <Route path="/adminprofile" element={<Adminprofile/>}/>
         <Route path="/adminform/:adminid1" element={<Administratorsdetails/>} />
+        <Route path="/verifypicked" element={<Verifypicked/>}/>
+        <Route path="/verifypickedorder/:orderNo4" element={<VerifypickedDetails/>} />
+        <Route path="/verifydilivery" element={<Verifydilivery/>}/>
+        <Route path="/verifydiliveryorder/:orderNo5" element={<VerifydiliveryDetails/>} />
         </Routes>
       </BrowserRouter>
   );

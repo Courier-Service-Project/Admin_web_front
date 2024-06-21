@@ -12,7 +12,8 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
-// import { Typography } from '@mui/material';
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import { Typography } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,7 +62,7 @@ export default function CompleteTable() {
     getcompleteOrderDetails();
   }, []);
 
-  const [rows, setRows] = React.useState();
+  const [rows, setRows] = React.useState([]);
   // const [isError,setIsError]=React.useState(false);
 
   const getcompleteOrderDetails = async () => {
@@ -70,10 +71,15 @@ export default function CompleteTable() {
         `${BACKEND_URL}/orders/completeorderDetails`
       );
       console.log(result);
-      console.log(result.data.message[0]);
-      setRows(result.data.message);
+      if(Array.isArray(result.data.message)){
+        setRows(result.data.message);
+      }else{
+        setRows([]);
+        console.error("Expected result.data", result.data.message);
+      }
     } catch (error) {
-      // setIsError(true);
+      setRows([]);
+      console.error("Failed to fetch order details",error);
     }
   };
 
@@ -84,7 +90,7 @@ export default function CompleteTable() {
             isError==true&&<Typography>Network Error</Typography>
           } */}
         <TableContainerStyled sx={{ height: "100%", overflowX: "auto" }}>
-          <Table  aria-label="sticky table" sx={{ minWidth: 100 }}>
+          <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
             <TableHead>
               <TableRow>
                 <StyledTableCell>OrderID</StyledTableCell>
@@ -96,7 +102,7 @@ export default function CompleteTable() {
             </TableHead>
 
             <TableBody>
-              {rows &&
+              {rows.length>0 ?(
                 rows.map((row) => (
                   <StyledTableRow key={row.Order_id}>
                     <StyledTableCell>{row.Order_id}</StyledTableCell>
@@ -116,7 +122,19 @@ export default function CompleteTable() {
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                ))
+              ):(
+                <StyledTableRow>
+                    <StyledTableCell colSpan={5}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
+                          <FeedbackIcon sx={{ mr: 3, color:"red" }} />
+                          <Typography sx={{ color: "red", fontSize: 20 }}>
+                              No orders in Complete Order List.
+                          </Typography>
+                        </Box>
+                    </StyledTableCell>
+                  </StyledTableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainerStyled>

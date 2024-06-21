@@ -12,6 +12,8 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import { Typography } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -63,7 +65,7 @@ export default function RegisteredTable() {
     getRegisterdpersonDetails();
   },[]);
 
-  const [rows, setRows] = React.useState();
+  const [rows, setRows] = React.useState([]);
 
   const getRegisterdpersonDetails = async () => {
     try {
@@ -71,11 +73,18 @@ export default function RegisteredTable() {
         `${BACKEND_URL}/branchuser/RegisterdpersonDetails`
       );
       console.log(results);
-      console.log(results.data.message[0]);
-      setRows(results.data.message);
+      if(Array.isArray(results.data.message)){
+        setRows(results.data.message);
+      }else{
+        setRows([]);
+        console.error("Expected result.data", result.data.message);
+      }
+      // console.log(results.data.message[0]);
+      // setRows(results.data.message);
     }
     catch(error){
-
+      setRows([]);
+      console.error("Failed to fetch order details",error);
     }
   };
 
@@ -96,7 +105,7 @@ export default function RegisteredTable() {
           </TableHead>
 
           <TableBody>
-          {rows &&
+          {rows.length>0 ?(
             rows.map((row) => (
               <StyledTableRow key={row.BranchUser_id} >
                 <StyledTableCell>{row.BranchUser_id}</StyledTableCell>
@@ -117,7 +126,19 @@ export default function RegisteredTable() {
                 </Button>
                 </StyledTableCell>
               </StyledTableRow>
-            ))}
+            ))
+          ):(
+            <StyledTableRow>
+                    <StyledTableCell colSpan={5}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
+                          <FeedbackIcon sx={{ mr: 3, color:"red" }} />
+                          <Typography sx={{ color: "red", fontSize: 20 }}>
+                              No Details in Registerd List.
+                          </Typography>
+                        </Box>
+                    </StyledTableCell>
+                  </StyledTableRow>
+          )}
           </TableBody>
           
         </Table>

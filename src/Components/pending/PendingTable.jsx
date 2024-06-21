@@ -12,6 +12,8 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import { Typography } from "@mui/material";
 // import { Typography } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -56,13 +58,12 @@ const TableContainerStyled = styled(TableContainer)({
 
 export default function PendingTable() {
   const navigate = useNavigate();
+  const [rows, setRows] = React.useState([]);
+  // const [isError,setIsError]=React.useState(false);
 
   useEffect(() => {
     getpendingOrderDetails();
   }, []);
-
-  const [rows, setRows] = React.useState();
-  // const [isError,setIsError]=React.useState(false);
 
   const getpendingOrderDetails = async () => {
     try {
@@ -70,11 +71,18 @@ export default function PendingTable() {
         `${BACKEND_URL}/orders/pendingorderDetails`
       );
       console.log(result);
+
       console.log(result.data.message[0]);
+    if (Array.isArray(result.data.message)) {
       setRows(result.data.message);
-    } catch (error) {
-      // setIsError(true);
+    } else {
+      setRows([]);
+      console.error("Expected result", result.data.message);
     }
+  } catch (error) {
+    setRows([]);
+    console.error("Failed to fetch order details", error);
+  }
   };
 
   return (
@@ -84,7 +92,7 @@ export default function PendingTable() {
             isError==true&&<Typography>Network Error</Typography>
           } */}
         <TableContainerStyled sx={{ height: "100%", overflowX: "auto" }}>
-          <Table  aria-label="sticky table" sx={{ minWidth: 100 }}>
+          <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
             <TableHead>
               <TableRow>
                 <StyledTableCell>OrderID</StyledTableCell>
@@ -96,7 +104,7 @@ export default function PendingTable() {
             </TableHead>
 
             <TableBody>
-              {rows &&
+              {rows.length > 0 ? (
                 rows.map((row) => (
                   <StyledTableRow key={row.Order_id}>
                     <StyledTableCell>{row.Order_id}</StyledTableCell>
@@ -116,7 +124,19 @@ export default function PendingTable() {
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                ))
+              ):(
+                <StyledTableRow>
+                    <StyledTableCell colSpan={5}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
+                          <FeedbackIcon sx={{ mr: 3, color:"red" }} />
+                          <Typography sx={{ color: "red", fontSize: 20 }}>
+                              No orders in Pending Order List.
+                          </Typography>
+                        </Box>
+                    </StyledTableCell>
+                  </StyledTableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainerStyled>
