@@ -23,6 +23,7 @@ import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { BACKEND_URL,ID } from "../../Constants/index";
+import Cookies from 'js-cookie';
 
 const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
 const steptyle = {
@@ -179,9 +180,13 @@ export default function CompeteForm() {
   //   console.log("pickup imergency "+fromData.P_imergency)
   //   console.log("pickup district "+fromData.P_district)
 
-   
-    axios
-      .post(`${BACKEND_URL}/orders`, {
+    const JWT_TOKEN = Cookies.get('accessToken')
+    console.log(JWT_TOKEN)
+    
+    
+  
+      axios
+      .post(`${BACKEND_URL}/orders`,{
         sfname: fromData.S_fname,
         slname: fromData.S_lname,
         sstreet: fromData.S_street,
@@ -211,7 +216,7 @@ export default function CompeteForm() {
         pbranch: fromData.P_branch,
         padminID:ID
         
-      })
+      },{headers:{Authorization:`bearer ${JWT_TOKEN}`}})
       .then(function (response) {
         console.log(response);
         if(response.data.success === 1){
@@ -228,6 +233,8 @@ export default function CompeteForm() {
       .catch(function (error) {
         console.log(error);
       });
+ 
+    
   }
 
   const handleNext = () => {

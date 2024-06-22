@@ -39,6 +39,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Account() {
+ 
   const [openpopup, setopenpopup] = React.useState(false);
   const [openConpopup, setopenConpopup] = React.useState(false);
   const [openChange, setChange] = React.useState(false);
@@ -72,14 +73,11 @@ export default function Account() {
 
   useEffect(() => {
     setLoading(true);
+
     axios
-      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`,{
-        headers:{
-          'access_token':localStorage.getItem('login')
-        }
-      })
-    
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
       .then(function (response) {
+
         setLoading(false);
         setFormdata({
           ...formdata,

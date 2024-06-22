@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Pulseloader from "react-spinners/PulseLoader";
 import {
@@ -10,7 +10,7 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import { json, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -18,11 +18,13 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import Cookies from 'js-cookie';
 
 export default function SignIn() {
   const navigation = useNavigate();
   const [error,setError] = useState(null);
   const [loading, setLoading] = useState(false)
+
 
 
   const validationSchema = yup.object({
@@ -39,9 +41,11 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
 
+
+    onSubmit: (values) => {
       setLoading(true)
+    
       axios
         .post("http://localhost:9000/admin",{
           userName: values.userName,
@@ -49,15 +53,12 @@ export default function SignIn() {
         })
         .then(function (response) {
           setLoading(false)
-          //console.log(response.data.token)
-          //localStorage.setItem('login',response.data.token)
           localStorage.setItem('adminID',response.data.adminID)
-
-       
-
-          console.log(localStorage.getItem('login'))
+          const token = response.data.accessToken ;
+          Cookies.set('accessToken', token);
           if (response.data.success === 1) {
             navigation("/dashboard");
+            window.location.reload();
 
           } else {
             setError("Invalid Username or Password, Please try again.")

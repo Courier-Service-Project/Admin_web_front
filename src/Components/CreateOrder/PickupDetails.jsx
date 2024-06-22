@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 export default function PickupDetails({fromData,setFormData}) {
   const District = ['Hambantota', 'Mathara','Colombo', 'Gampaha'];
-  const branch = ['Galle', 'Matara'];
+  const branch = ['Galle', 'Matara',"Tangalle"];
   const Payment = ['Online', 'Sender','Receiver'];
   const Vehical = ['Car', 'Bike','Mathara', 'Three-Wheel'];
   const status = ['Immergency', 'Normal'];
