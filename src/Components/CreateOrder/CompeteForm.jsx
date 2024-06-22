@@ -99,7 +99,6 @@ export default function CompeteForm() {
         throw new Error("Unknown step");
     }
   }
-  //................................
   function senderValid() {
     setErr(null);
     const data = senderValidation(
@@ -114,7 +113,6 @@ export default function CompeteForm() {
       return 1;
     }
   }
-  //................................
   function recieverValid() {
     setErr(null);
     const data = RecieverValidation(
@@ -132,7 +130,6 @@ export default function CompeteForm() {
       return 1;
     }
   }
-  //.............................
   function pickValid() {
     setErr(null);
     const data = PickupValidation(
