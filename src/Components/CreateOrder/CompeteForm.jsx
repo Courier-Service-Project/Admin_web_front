@@ -19,7 +19,6 @@ import {
 } from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
 import axios from "axios";
-import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Alert from "@mui/material/Alert";
