@@ -5,7 +5,7 @@ export const data = [
   ["Task", "Orders per Day"],
   ["New Orders", 11],
   ["Pending", 2],
-  ["In Progress", 2],
+  ["In - Progress", 2],
   ["Complete", 2],
 ];
 
@@ -20,7 +20,7 @@ export function PieChart() {
       chartType="PieChart"
       data={data}
       options={options}
-      width={"100%"}
+      width={"350px"}
       height={"400px"}
     />
   );

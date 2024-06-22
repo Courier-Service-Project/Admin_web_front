@@ -12,9 +12,7 @@ import{
   TextField,
 } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
-import DropDistrict from "../../Components/pending/DropDistrict";
-import DropHomeTown from "../../Components/pending/DropHomeTown";
-import DropVehical from "../../Components/pending/DropVehicle";
+
 
 
 

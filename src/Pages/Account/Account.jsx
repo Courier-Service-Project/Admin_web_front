@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
@@ -25,8 +25,10 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Avatar from "react-avatar-edit";
-import {BACKEND_URL} from "../../Constants/index"
-//////////////////////
+import { BACKEND_URL, ID } from "../../Constants/index";
+import ChangePass from "../../Components/Account/ChangePass";
+import AccSkeleton from "./AccSkeleton";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -37,8 +39,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Account() {
+ 
   const [openpopup, setopenpopup] = React.useState(false);
   const [openConpopup, setopenConpopup] = React.useState(false);
+  const [openChange, setChange] = React.useState(false);
+
+  const [loading, setLoading] = React.useState(false);
 
   const [formdata, setFormdata] = React.useState({
     fName: "",
@@ -46,23 +52,6 @@ export default function Account() {
     eGmail: "",
     tTele: "",
   });
-
-  const id = 1;
-
-  axios
-    .get(`${BACKEND_URL}/profileDget/` + id)
-    .then(function (response) {
-      setFormdata({
-        ...formdata,
-        fName: response.data.data[0].fname,
-        fLame: response.data.data[0].lname,
-        eGmail: response.data.data[0].email,
-        tTele: response.data.data[0].tele,
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
 
   const [open, setOpen] = React.useState(false);
 
@@ -73,22 +62,35 @@ export default function Account() {
     setOpen(false);
   };
 
-  const [image, setimage] = React.useState();
-
-  //
-
-  const [src, setScr] = React.useState(null);
   const [preview, setpreview] = React.useState(profile);
-
   const onClose = () => {
     setpreview(preview);
   };
-
   const onCrop = (view) => {
     setpreview(view);
+    alert(preview)
   };
 
-  ////////////////////////////////
+  useEffect(() => {
+    setLoading(true);
+
+    axios
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`)
+      .then(function (response) {
+
+        setLoading(false);
+        setFormdata({
+          ...formdata,
+          fName: response.data.data[0].FirstName,
+          fLame: response.data.data[0].LastName,
+          eGmail: response.data.data[0].Email,
+          tTele: response.data.data[0].Tele,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
@@ -116,166 +118,163 @@ export default function Account() {
             </Typography>
           </Box>
           <Divider sx={{ mb: 8, ml: 3 }} />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              px: 4,
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              {/* <Avatar
-                alt="Remy Sharp"
-                src={profile}
-                sx={{ width: 150, height: 150 }}
-              /> */}
-              {/*  */}
-              <Box>
-                <img
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                  }}
-                  src={preview}
-                  alt="profile"
-                />
 
-                {/* <Button variant="outlined" onClick={handleClickOpen}>
-                  Open dialog
-                </Button> */}
-
-                <BootstrapDialog
-                  onClose={handleClose}
-                  aria-labelledby="customized-dialog-title"
-                  open={open}
-                >
-                  <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Change Profile Image
-                  </DialogTitle>
-                  <IconButton
-                    aria-label="close"
-                    onClick={handleClose}
-                    sx={{
-                      position: "absolute",
-                      right: 8,
-                      top: 8,
-                      color: (theme) => theme.palette.grey[500],
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                  <DialogContent dividers>
-                    <Avatar
-                      width={400}
-                      height={300}
-                      onCrop={onCrop}
-                      onClose={onClose}
-                      // onBeforeFileLoad={this.onBeforeFileLoad}
-                      // src={this.state.src}
-                    />
-                    {/* <img src={preview} alt="Preview" /> */}
-                  </DialogContent>
-                  <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
-                      Save changes
-                    </Button>
-                  </DialogActions>
-                </BootstrapDialog>
-              </Box>
-
-              {/*  */}
-
-              <Box sx={{ ml: 3 }}>
-                <Typography sx={{ fontSize: 20, mb: 1 }}>
-                  Profile picture
-                </Typography>
-                <Typography sx={{ fontSize: 10 }}>
-                  PNG,JPEG under 15MB
-                </Typography>
-              </Box>
-            </Box>
+          {loading ? (
+            <AccSkeleton />
+          ) : (
             <Box>
-              <Button
-                variant="contained"
-                sx={updateimg}
-                onClick={handleClickOpen}
-              >
-                Change Image
-              </Button>
-              <Button variant="contained" sx={deleteimg}>
-                Delete Image
-              </Button>
-            </Box>
-          </Box>
-          <Box sx={{ mt: 7, ml: 3 }}>
-            <Typography sx={{ fontWeight: "bold", mb: 2 }}>
-              Full Name
-            </Typography>
-
-            <Grid container spacing={5}>
-              <Grid item xs={4}>
-                <Typography color={"#9e9e9e"}>First name</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  sx={{ boxShadow: 1 }}
-                  id="fname"
-                  defaultValue="########"
-                  value={formdata.fName}
-                  InputProps={{
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircleIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography color={"#9e9e9e"}>Last name</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  sx={{ boxShadow: 1 }}
-                  id="lname"
-                  defaultValue="###########"
-                  value={formdata.fLame}
-                  InputProps={{
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircleIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={4}
+              <Box
                 sx={{
-                  justifyContent: "right",
                   display: "flex",
-                  alignItems: "end",
-                  pr: 4,
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  px: 4,
                 }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => setopenpopup(true)}
-                  sx={changebtn}
-                >
-                  Change name
-                </Button>
-              </Grid>
-            </Grid>
-            <Divider sx={{ mt: 8, mb: 4 }} />
-          </Box>
-          <Box sx={{ mt: 4, ml: 3 }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* ....................................................................... */}
+                  
+                  <Box>
+                    <img
+                      style={{
+                        width: "200px",
+                        height: "200px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                      src={preview}
+                      alt="profile"
+                    />
+
+                    <BootstrapDialog
+                      onClose={handleClose}
+                      aria-labelledby="customized-dialog-title"
+                      open={open}
+                    >
+                      <DialogTitle
+                        sx={{ m: 0, p: 2 }}
+                        id="customized-dialog-title"
+                      >
+                        Change Profile Image
+                      </DialogTitle>
+                      <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                          position: "absolute",
+                          right: 8,
+                          top: 8,
+                          color: (theme) => theme.palette.grey[500],
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                      <DialogContent dividers>
+                        <Avatar
+                          width={400}
+                          height={300}
+                          onCrop={onCrop}
+                          onClose={onClose}
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button autoFocus onClick={handleClose}>
+                          Save changes
+                        </Button>
+                      </DialogActions>
+                    </BootstrapDialog>
+                  </Box>
+
+                  <Box sx={{ ml: 3 }}>
+                    <Typography sx={{ fontSize: 20, mb: 1 }}>
+                      Profile picture
+                    </Typography>
+                    <Typography sx={{ fontSize: 10 }}>
+                      PNG,JPEG under 15MB
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box>
+                  <Button
+                    variant="contained"
+                    sx={updateimg}
+                    onClick={handleClickOpen}
+                  >
+                    Change Image
+                  </Button>
+                  <Button variant="contained" sx={deleteimg}>
+                    Delete Image
+                  </Button>
+                </Box>
+              </Box>
+ {/* ....................................................................... */}
+
+              <Box sx={{ mt: 7, ml: 3 }}>
+                <Typography sx={{ fontWeight: "bold", mb: 2 }}>
+                  Full Name
+                </Typography>
+
+                <Grid container spacing={5}>
+                  <Grid item xs={4}>
+                    <Typography color={"#9e9e9e"}>First name</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      sx={{ boxShadow: 1 }}
+                      id="fname"
+                      defaultValue="########"
+                      value={formdata.fName}
+                      InputProps={{
+                        readOnly: true,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircleIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography color={"#9e9e9e"}>Last name</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      sx={{ boxShadow: 1 }}
+                      id="lname"
+                      defaultValue="###########"
+                      value={formdata.fLame}
+                      InputProps={{
+                        readOnly: true,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircleIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={4}
+                    sx={{
+                      justifyContent: "right",
+                      display: "flex",
+                      alignItems: "end",
+                      pr: 4,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => setopenpopup(true)}
+                      sx={changebtn}
+                    >
+                      Change name
+                    </Button>
+                  </Grid>
+                </Grid>
+                <Divider sx={{ mt: 8, mb: 4 }} />
+              </Box>
+              <Box sx={{ mt: 4, ml: 3 }}>
             <Typography sx={{ fontWeight: "bold" }}>Contact Info</Typography>
             <Typography
               variant="caption"
@@ -389,22 +388,43 @@ export default function Account() {
                   pr: 4,
                 }}
               >
-                <Button variant="contained" sx={changebtn}>
+                <Button
+                  variant="contained"
+                  onClick={() => setChange(true)}
+                  sx={changebtn}
+                >
                   Change Password
                 </Button>
               </Grid>
             </Grid>
+       
             <Divider sx={{ mt: 8, mb: 4 }} />
           </Box>
+            </Box>
+          )}
         </Box>
       </Box>
 
-      <Popup openpopup={openpopup} setopenpopup={setopenpopup} />
-      console.log(openConpopup)
-      {/* <PopupContact
-        openpopup={openConpopup}
-        setopenpopup={setopenConpopup}F
-      /> */}
+      {formdata.fLame && formdata.fName && (
+        <Popup
+          openpopup={openpopup}
+          setopenpopup={setopenpopup}
+          plname={formdata.fLame}
+          pfname={formdata.fName}
+          setFormdata={setFormdata}
+        />
+      )}
+
+      {formdata.eGmail && formdata.tTele && (
+        <PopupContact
+          openpopup={openConpopup}
+          setopenpopup={setopenConpopup}
+          pEmail={formdata.eGmail}
+          pTele={formdata.tTele}
+        />
+      )}
+
+      <ChangePass openpopup={openChange} setopenpopup={setChange} />
     </Box>
   );
 }
