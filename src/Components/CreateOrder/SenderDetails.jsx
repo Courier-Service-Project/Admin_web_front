@@ -53,6 +53,23 @@ export default function SenderDetails({ fromData, setFormData }) {
         <Grid item xs={12} sm={8}>
         {/* empty */}
         </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            required
+            name="S_email"
+            label="Email"
+            fullWidth
+            autoComplete="off"
+            variant="standard"
+            value={fromData.S_email}
+            onChange={(event) =>
+              setFormData({ ...fromData, S_email: event.target.value })
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={8}>
+        {/* empty */}
+        </Grid>
         <Grid item xs={3}>
           <TextField
             name="S_streestNo"

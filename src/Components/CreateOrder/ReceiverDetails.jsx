@@ -54,6 +54,21 @@ export default function ReceiverDetails({fromData,setFormData}) {
         <Grid item xs={12} sm={8}>
         {/* empty */}
         </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            required
+            name="R_email"
+            label="Email"
+            fullWidth
+            autoComplete="off"
+            variant="standard"
+            value={fromData.R_email}
+            onChange={(event)=>setFormData({...fromData,R_email:event.target.value})}
+          />
+        </Grid>
+        <Grid item xs={12} sm={8}>
+        {/* empty */}
+        </Grid>
         <Grid item xs={3}>
         <Autocomplete
             disablePortal
