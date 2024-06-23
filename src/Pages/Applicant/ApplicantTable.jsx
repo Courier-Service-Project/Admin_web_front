@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -8,6 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
 import './ApplicantTable.css';
+import { useNavigate } from 'react-router-dom';
+import { Button,Typography } from '@mui/material';
+import axios from 'axios';
+import { BACKEND_URL } from '../../Constants';
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import { Padding } from '@mui/icons-material';
+
 
 const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -23,6 +30,7 @@ const StyledTableCell = styled(TableCell)(( ) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    Padding:8,
 
   },
 }));
@@ -48,35 +56,33 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const TableContainerStyled = styled(TableContainer)({
   maxHeight : '475px', // Set a fixed height for the table container
-  overflowY: 'auto',
+  overflowY: 'scroll',
   maxWidth: '100%'  // Allow vertical scrolling
 });
 
-function createData(applicantid, name, pdistrict, ptown, vehicle,action) {
-  return { applicantid, name, pdistrict, ptown, vehicle,action };
-}
-
-const rows = [
-    createData('2141N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2142N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2143N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2144N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2145N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2146N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2147N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2148N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2149N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2150N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2151N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2152N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2153N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-    createData('2154N', 'Rajapaksha', 'Matara', 'Rahula', 'Bike','Details'),
-];
-
-
-
-
 export default function ApplicantTable() {
+  const navigate = useNavigate();
+  const [rows,SetRows] = useState([])
+  useEffect(() =>{
+    getApplicantDetails();
+  },[]);
+
+  const getApplicantDetails = async () =>{
+    try{
+      const result = await axios.get(`${BACKEND_URL}/admin/applicantDetails`);
+      if(Array.isArray(result.data.message)){ 
+      //console.log(result.data.message[0]);
+      SetRows(result.data.message)
+      }else{
+        SetRows([]);
+        console.error("Expected result.data",result.data.message);
+      }
+    }
+    catch(error){
+      SetRows([]);
+        console.error("Failed to fetch order details",error);
+    }
+  };
   return (
         <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
         <Box style = {{display:'flex', justifyContent:'center'}}>
@@ -86,33 +92,47 @@ export default function ApplicantTable() {
           <TableRow> 
           <StyledTableCell >Applicant ID</StyledTableCell>
           <StyledTableCell >Name</StyledTableCell>
-          <StyledTableCell >District</StyledTableCell>
-          <StyledTableCell >HomeTown</StyledTableCell>
+          <StyledTableCell >City</StyledTableCell>
+          <StyledTableCell >Branch</StyledTableCell>
           <StyledTableCell >Vehicle</StyledTableCell>
           <StyledTableCell >Action</StyledTableCell>
           </TableRow>
           </TableHead>
 
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.applicantid} >
-                <TableCell>{row.applicantid}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.pdistrict}</TableCell>
-                <TableCell>{row.ptown}</TableCell>
-                <TableCell>{row.vehicle}</TableCell>
-                <TableCell>
-                  
-                  <a
-                    href={`/ApplicantPerson/${row.applicantid}`}
-                    className="hover-link"
-                  >
-                    {row.action}
-                  </a>
-
-                </TableCell>
+            {rows.length>0 ?(
+            rows.map((row) => (
+              <StyledTableRow key={row.id} >
+                <StyledTableCell>{row.id}</StyledTableCell>
+                <StyledTableCell>{row.FirstName}</StyledTableCell>
+                <StyledTableCell>{row.City}</StyledTableCell>
+                <StyledTableCell>{row.BranchLocation}</StyledTableCell>
+                <StyledTableCell>{row.Vehice_Type}</StyledTableCell>
+                <StyledTableCell>
+                  <Button
+                    className="hover-link red-button"
+                    onClick={() => 
+                      navigate(`/ApplicantPerson/${row.id}`,{
+                        state: {applicantid:row.id},
+                      })
+                    }
+                  >View
+                  </Button>
+                  </StyledTableCell>
               </StyledTableRow>
-            ))}
+            ))
+          ):(
+            <StyledTableRow>
+                    <StyledTableCell colSpan={6}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:0 }}>
+                          <FeedbackIcon sx={{ mr: 3, color:"red" }} />
+                          <Typography sx={{ color: "red", fontSize: 20 }}>
+                              No orders in Applicant List.
+                          </Typography>
+                        </Box>
+                    </StyledTableCell>
+                  </StyledTableRow>
+          )}
           </TableBody>
           
         </Table>

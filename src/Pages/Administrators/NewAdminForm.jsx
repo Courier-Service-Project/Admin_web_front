@@ -4,6 +4,14 @@ import TextField from '@mui/material/TextField';
 import { Paper, Button } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import DistrictDrop from '../../Components/DropDowns/City';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import axios from 'axios';
+import { BACKEND_URL } from '../../Constants';
+
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -16,8 +24,15 @@ const adminformSchema = Yup.object({
   N_lname: Yup.string().min(3).required("Please enter your last name."),
   N_email: Yup.string().email("Please enter valid email").required("Please enter your email."),
   N_telephone: Yup.string().matches(telephoneRegex, "Please enter your valid telephone number").required("Please enter your telephone number."),
-  N_password: Yup.string().matches(passwordRegex, "Please enter a valid password").required("Please enter your password."),
-  N_pasConfirm: Yup.string().oneOf([Yup.ref("N_password")], "Passwords do not match!").required("Please confirm your password."),
+  N_dob: Yup.date()
+    .nullable()
+    .required("Please enter your date of birth.")
+    .test("DOB", "You must be at least 18 years old", function (value) {
+      return dayjs().diff(dayjs(value), 'year') >= 18;
+    }),
+    N_streetNo: Yup.string().min(3).required("Please enter your first name."),
+    N_street: Yup.string().min(3).required("Please enter your first name."),
+    N_city: Yup.string().min(3).required("Please enter your first name."),
   //N_dob: Yup.date().nullable().required("Please enter your date of birth."),
 });
 
@@ -26,15 +41,37 @@ const initialValues = {
   N_lname: "",
   N_telephone: "",
   N_email: "",
-  N_pasConfirm: "",
-  N_password: "",
+  N_streetNo: "",
+  N_street: "",
+  N_city: "",
   N_dob:null
 };
 
 const NewAdminForm = () => {
+  const sendRequest = async (values) =>{
+    const formData ={
+      values:values
+    }
+    try{
+      const result = await axios.post(`${BACKEND_URL}/admin/postAdminData`,formData)
+      //console.log("im here")
+      console.log(result);
+    }
+    catch(error){
+      console.log(error.message);
+      
+    }
+  }
   const onSubmit = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+    adminformSchema.validate(values)
+    .then(() => {
+      sendRequest(values);
+      //console.log(values);
+      actions.resetForm();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   };
 
   return (
@@ -44,11 +81,11 @@ const NewAdminForm = () => {
         validationSchema={adminformSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, touched, setFieldValue}) => (
+        {({ errors, touched, setFieldValue,values}) => (
           <Form className="admin_form">
             <Paper style={{ padding: '50px', marginBottom: "10px", marginTop: "10px" }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
                   <Field name="N_fname"
                     as={TextField}
                     label="First Name"
@@ -58,7 +95,7 @@ const NewAdminForm = () => {
                     helperText={touched.N_fname && errors.N_fname}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={4}>
                   <Field name="N_lname"
                   as={TextField}
                   label="Last Name"
@@ -68,29 +105,29 @@ const NewAdminForm = () => {
                   helperText={touched.N_lname && errors.N_lname}
                   />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Grid item xs={12} >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Field name="N_dob">
                       {({ field }) => (
                         <DatePicker
-                        {...field}
-                        label="Date of Birth"
-                        value={field.value}
-                        onChange={(value) => setFieldValue('N_dob', value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            error={touched.N_dob && !!errors.N_dob}
-                            helperText={touched.N_dob && errors.N_dob}
-                          />
-                        )}
+                          {...field}
+                          label="Date of Birth"
+                          value={field.value}
+                          onChange={(value) => setFieldValue('N_dob', value)}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              fullWidth
+                              error={touched.N_dob && !!errors.N_dob}
+                              helperText={touched.N_dob && errors.N_dob}
+                            />
+                          )}
                         />
                       )}
                     </Field>
                   </LocalizationProvider>
-                </Grid> */}
-                <Grid item xs={12} sm={6}>
+                </Grid>
+                <Grid item xs={12} sm={4}>
                   <Field name="N_telephone"
                     as={TextField}
                     label="Telephone No."
@@ -106,31 +143,39 @@ const NewAdminForm = () => {
                     type="email"
                     label="Email"
                     variant="standard"
-                    fullWidth
+                    style={{ width: "50%" }}
                     error={touched.N_email && !!errors.N_email}
                     helperText={touched.N_email && errors.N_email}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field name="N_password"
+                <Grid item xs={12} sm={4}>
+                  <Field name="N_streetNo"
                     as={TextField}
-                    type="password"
-                    label="Password"
+                    label="Street No."
                     variant="standard"
                     fullWidth
-                    error={touched.N_password && !!errors.N_password}
-                    helperText={touched.N_password && errors.N_password}
+                    error={touched.N_streetNo && !!errors.N_streetNo}
+                    helperText={touched.N_streetNo && errors.N_streetNo}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field name="N_pasConfirm"
+                <Grid item xs={12} sm={4}>
+                  <Field name="N_street"
                     as={TextField}
-                    type="password"
-                    label="Confirm Password"
+                    label="Street"
                     variant="standard"
                     fullWidth
-                    error={touched.N_pasConfirm && !!errors.N_pasConfirm}
-                    helperText={touched.N_pasConfirm && errors.N_pasConfirm}
+                    error={touched.N_street && !!errors.N_street}
+                    helperText={touched.N_street && errors.N_street}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                <Field name="N_city"
+                    as={TextField}
+                    label="City"
+                    variant="standard"
+                    fullWidth
+                    error={touched.N_city && !!errors.N_city}
+                    helperText={touched.N_city && errors.N_city}
                     />
                 </Grid>
               </Grid>
