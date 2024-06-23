@@ -19,19 +19,25 @@ export default function Pendingalert(props) {
 
   return (
     <React.Fragment>
-      <Button fullWidth  size="large" variant="contained" color={props.color} 
-        sx={{
-            // bgcolor: "#00897b",
-            // marginTop: '10px',
-            // marginLeft: '200px',
-            // ":hover": {
-            //     bgcolor: "#009688",
-            //     color: "#616161",
-            // },
-            margin: "30px 0 10px 0 ",borderRadius: "50px"
+      <Button fullWidth  size="large" variant="contained"
+          style={{
+            backgroundColor: props.color,
+            margin: "30px 0 10px 0",
+            borderRadius: "50px",
+            gap:'10px'
         }}
+        // sx={{
+        //     // bgcolor: "#00897b",
+        //     // marginTop: '10px',
+        //     // marginLeft: '200px',
+        //     // ":hover": {
+        //     //     bgcolor: "#009688",
+        //     //     color: "#616161",
+        //     // },
+        //     margin: "30px 0 10px 0 ",borderRadius: "50px"
+        // }}
       onClick={handleClickOpen}>
-        {props.button}
+        {props.Icon}{props.button}
       </Button>
       <Dialog
         open={open}
@@ -56,7 +62,7 @@ export default function Pendingalert(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} sx={{ color: "black" }}>{props.buttonName1}</Button>
-          <Button variant="contained" color={props.bcolor} onClick={props.onClick1} autoFocus>
+          <Button variant="contained" style={{backgroundColor: props.bcolor}} onClick={props.onClick1} autoFocus>
             {props.buttonName2}
           </Button>
         </DialogActions>

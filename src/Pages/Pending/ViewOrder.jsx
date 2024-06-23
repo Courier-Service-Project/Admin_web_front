@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
@@ -12,6 +12,10 @@ import FormSubTitle from "../../Components/pending/FormSubTitle";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import Pendingalert from "../../Components/pending/Pendingalert";
+import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 
 export default function ViewOrder() {
   const [viewOrderData, setViewOrderData] = useState(null);
@@ -206,9 +210,8 @@ export default function ViewOrder() {
             <Box sx={{ ml: 4, mr: 4, mt: 5, mb: 5 }}>
               <Card
                 sx={{
-                  boxShadow: 3,
-                  border: "2px solid green",
-                  borderRadius: 3,
+                  boxShadow:1,
+                  border: "1px solid grey",
                 }}
               >
                 <CardContent>
@@ -547,21 +550,22 @@ export default function ViewOrder() {
 
                     <Grid container spacing={1} sx={{ mt: 3 }}>
 
-                      <Grid
+                    <Grid
                         item
                         xs={12}
                         md={4}
                         style={{ margin: "0 auto", padding: "0 20px" }}
                       >
                         <Pendingalert
-                          color="success"
-                          button="Confirm Order"
-                          title="Confirm Order"
-                          text="Are you sure you want to confirm this order?"
+                          color="#bdbdbd"
+                          Icon = {<DeleteIcon/>}
+                          button="Delete Order"
+                          title="Delete Order"
+                          text="Are you sure you want to delete this order?"
                           buttonName1="Cancel"
-                          buttonName2="Confirm"
-                          bcolor="success"
-                          onClick1={handleConfirmdata}
+                          buttonName2="Delete"
+                          bcolor="#bdbdbd"
+                          onClick1={handledeleteOrder}
                         />
                       </Grid>
 
@@ -574,10 +578,12 @@ export default function ViewOrder() {
                         {save? (<Button
                           fullWidth
                           size="large"
-                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px" }}
+                          style={{backgroundColor:"#00acc1"}}
+                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px",gap:'15px'}}
                           variant="contained"
                           onClick={handlEditdata}
                         >
+                          <EditIcon/>
                           Edit Order
                         </Button>
                         ):(
@@ -593,16 +599,19 @@ export default function ViewOrder() {
                         //   onClick1={sendSave}
                         // />
                         
-                        
+                       
                         <Button
                           fullWidth
                           size="large"
-                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px" }}
+                          style={{backgroundColor:"#0288d1"}}
+                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
                           variant="contained"
                           onClick={sendSave}
                         >
+                          <SaveIcon/>
                           Save Edit
                         </Button>
+                  
                       )}
                       
                       </Grid>
@@ -614,16 +623,18 @@ export default function ViewOrder() {
                         style={{ margin: "0 auto", padding: "0 20px" }}
                       >
                         <Pendingalert
-                          color="error"
-                          button="Delete Order"
-                          title="Delete Order"
-                          text="Are you sure you want to delete this order?"
+                          color="#4caf50"
+                          Icon = {<CheckCircleIcon/>}
+                          button="Confirm Order"
+                          title="Confirm Order"
+                          text="Are you sure you want to confirm this order?"
                           buttonName1="Cancel"
-                          buttonName2="Delete"
-                          bcolor="error"
-                          onClick1={handledeleteOrder}
+                          buttonName2="Confirm"
+                          bcolor="#4caf50"
+                          onClick1={handleConfirmdata}
                         />
                       </Grid>
+
                     </Grid>
                   </Box>
                 </CardContent>
