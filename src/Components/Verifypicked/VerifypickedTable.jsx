@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "./CompleteTable.css";
+import "../../Components/complete/CompleteTable.css";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -55,31 +55,29 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function CompleteTable() {
+export default function VerifypickedTable() {
   const navigate = useNavigate();
+  const [rows, setRows] = React.useState([]);
 
   useEffect(() => {
-    getcompleteOrderDetails();
+    getVerifyPickedOrderList();
   }, []);
 
-  const [rows, setRows] = React.useState([]);
-  // const [isError,setIsError]=React.useState(false);
-
-  const getcompleteOrderDetails = async () => {
+  const getVerifyPickedOrderList = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/completeorderDetails`
+        `${BACKEND_URL}/orders/verifypickedorderDetails`
       );
       console.log(result);
-      if(Array.isArray(result.data.message)){
+      if (Array.isArray(result.data.message)) {
         setRows(result.data.message);
-      }else{
+      } else {
         setRows([]);
         console.error("Expected result.data", result.data.message);
       }
     } catch (error) {
       setRows([]);
-      console.error("Failed to fetch order details",error);
+      console.error("Failed to fetch order details", error);
     }
   };
 
@@ -113,7 +111,7 @@ export default function CompleteTable() {
                       <Button
                         className="hover-link red-button"
                         onClick={() =>
-                          navigate(`/completeorder/${row.Order_id}`, {
+                          navigate(`/verifypickedorder/${row.Order_id}`, {
                             state: { orderId: row.Order_id },
                           })
                         }
@@ -129,7 +127,7 @@ export default function CompleteTable() {
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Complete Order List.
+                              No orders in Verify Picked Orders List.
                           </Typography>
                         </Box>
                     </StyledTableCell>

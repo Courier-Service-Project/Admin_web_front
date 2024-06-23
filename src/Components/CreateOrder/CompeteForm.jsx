@@ -9,18 +9,23 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
 import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
-import {senderValidation ,RecieverValidation,PickupValidation} from "../../Validation/Validation";
+import {
+  senderValidation,
+  RecieverValidation,
+  PickupValidation,
+} from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
 import axios from "axios";
-import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Alert from '@mui/material/Alert';
-import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import { BACKEND_URL, ID } from "../../Constants/index";
 
 const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
 const steptyle = {
@@ -41,23 +46,38 @@ const steptyle = {
 
 export default function CompeteForm() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [err,setErr] = React.useState(null);
+  const [err, setErr] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [resSuccess, setResSuccess] = React.useState(true);
   const [fromData, setFormData] = React.useState({
-    S_name: "",
+    S_fname: "",
+    S_lname: "",
     S_telephone: "",
-    S_address: "",
-    R_name: "",
+    S_city: "",
+    S_street: "",
+    S_streestNo: "",
+    S_email: "",
+
+    R_lname: "",
+    R_fname: "",
     R_telephone: "",
     R_district: "",
     R_HomeTown: "",
-    R_address: "",
-    P_address: "",
+    R_streetNo: "",
+    R_street: "",
+    R_email: "",
+
+    P_street: "",
+    P_streetNo: "",
     P_district: "",
     P_VehicalType: "",
     P_telephone: "",
     P_paymentMethod: "",
     P_specialNote: "",
     P_homeTown: "",
+    P_imergency: "",
+    P_branch: "",
+    P_distanceCost: "",
   });
 
   function refreshPage() {
@@ -78,101 +98,99 @@ export default function CompeteForm() {
         throw new Error("Unknown step");
     }
   }
-  //................................
   function senderValid() {
-    setErr(null)
+    setErr(null);
     const data = senderValidation(
-      fromData.S_name,
-      fromData.S_address,
-      fromData.S_telephone
-    )
-    console.log(data)
-    if(data){
-      setErr(data.Error)
+      fromData.S_fname,
+      fromData.S_city,
+      fromData.S_telephone,
+      fromData.S_email
+    );
+    console.log(data);
+    if (data) {
+      setErr(data.Error);
       return 1;
-
     }
   }
-  //................................
   function recieverValid() {
-    setErr(null)
+    setErr(null);
     const data = RecieverValidation(
-      fromData.R_name,
+      fromData.R_fname,
       fromData.R_district,
       fromData.R_HomeTown,
-      fromData.R_telephone
-    )
-      console.log(data)
+      fromData.R_telephone,
+      fromData.R_province,
+      fromData.R_email
+    );
+    console.log(data);
 
     if (data) {
-      setErr(data.Error)
+      setErr(data.Error);
       return 1;
     }
   }
-  //.............................
   function pickValid() {
-     setErr(null)
+    setErr(null);
     const data = PickupValidation(
-      fromData.P_VehicalType,
-      fromData.P_address,
       fromData.P_homeTown,
       fromData.P_paymentMethod,
       fromData.P_telephone,
       fromData.P_district,
-    )
-      console.log(data)
+      fromData.P_branch,
+      fromData.P_imergency,
+      fromData.P_distanceCost,
+      fromData.P_VehicalType
+    );
+    console.log(data);
 
     if (data) {
-      setErr(data.Error)
+      setErr(data.Error);
       return 1;
     }
   }
 
   function sendDetails() {
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Order Placed",
-      showConfirmButton: false,
-      timer: 2500,
-    });
-
-    // console.log(fromData.S_name)
-    // console.log(fromData.S_address)
-    // console.log(fromData.S_telephone)
-    // console.log(fromData.R_name)
-    // console.log(fromData.R_telephone)
-    // console.log(fromData.R_district)
-    // console.log(fromData.R_HomeTown)
-    // console.log(fromData.R_address)
-    // console.log(fromData.P_address)
-    // console.log(fromData.P_district)
-    // console.log(fromData.P_VehicalType)
-    // console.log(fromData.P_telephone)
-    // console.log(fromData.P_paymentMethod)
-    // console.log(fromData.P_specialNote)
-    // console.log(fromData.P_homeTown)
-   
     axios
-      .post("http://localhost:3000/src/routes/createOrder", {
-        sname: fromData.S_name,
-        saddress: fromData.S_address,
+      .post(`${BACKEND_URL}/orders`, {
+        sfname: fromData.S_fname,
+        slname: fromData.S_lname,
+        sstreet: fromData.S_street,
+        sstreetNo: fromData.S_streestNo,
+        scity: fromData.S_city,
         stelephone: fromData.S_telephone,
-        rname: fromData.R_name,
+        sEmail: fromData.S_email,
+
+        rfname: fromData.R_lname,
+        rlname: fromData.R_fname,
+        rprovince: fromData.R_province,
         rtelephone: fromData.R_telephone,
         rdistric: fromData.R_district,
         rhometown: fromData.R_HomeTown,
-        raddress: fromData.R_address,
-        paddress: fromData.P_address,
+        rstreetNo: fromData.R_streetNo,
+        rstreet: fromData.R_street,
+        rEmail: fromData.R_email,
+
+        pstreetNo: fromData.P_streetNo,
+        pstreet: fromData.P_street,
+        phometown: fromData.P_homeTown,
         pdistrict: fromData.P_district,
         pvehicaltype: fromData.P_VehicalType,
         ptelephone: fromData.P_telephone,
         ppaymentmethod: fromData.P_paymentMethod,
         pspecialnote: fromData.P_specialNote,
-        phometown: fromData.P_homeTown,
+        pimergency: fromData.P_imergency,
+        pdistancecost: fromData.P_distanceCost,
+        pbranch: fromData.P_branch,
+        padminID: ID,
       })
       .then(function (response) {
         console.log(response);
+        if (response.data.success === 1) {
+          setResSuccess(true);
+          setLoading(false);
+        } else {
+          setResSuccess(false);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -197,6 +215,7 @@ export default function CompeteForm() {
       }
       sendDetails();
     }
+    setLoading(true);
     setActiveStep(activeStep + 1);
   };
 
@@ -218,55 +237,91 @@ export default function CompeteForm() {
           </Stepper>
           {activeStep === steps.length ? (
             <React.Fragment>
-              <Typography variant="h5" gutterBottom>
-                Order is Placed.
-              </Typography>
-              <Typography variant="subtitle1">
-                Order has been sent to the pending order list.
-              </Typography>
-              <Button
-                size="small"
-                onClick={refreshPage}
-                variant="contained"
-                sx={{
-                  p: 1,
-                  mt: 5,
-                  bgcolor: "#00897b",
-                  ":hover": {
-                    bgcolor: "#4db6ac",
-                    color: "#fff",
-                  },
-                }}
-                startIcon={<AddCircleOutlineIcon style={{ fontSize: 20 }} />}
-              >
-                <Typography sx={{ fontSize: 13 }}>New Order</Typography>
-              </Button>
+              {loading ? (
+                <LinearProgress sx={{ my: 6 }} color="success" />
+              ) : resSuccess? (<Box>
+                <Typography variant="h5" gutterBottom>
+                  Order is Placed.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Order has been sent to the pending order list.
+                </Typography>
+                <Button
+                  size="small"
+                  onClick={refreshPage}
+                  variant="contained"
+                  sx={{
+                    p: 1,
+                    mt: 5,
+                    bgcolor: "#00897b",
+                    ":hover": {
+                      bgcolor: "#4db6ac",
+                      color: "#fff",
+                    },
+                  }}
+                  startIcon={
+                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                  }
+                >
+                  <Typography sx={{ fontSize: 13 }}>New Order</Typography>
+                </Button>
+              </Box>) : (<Box>
+                <Typography variant="h5" gutterBottom>
+                  Order is Not Placed.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Re-Try.
+                </Typography>
+                <Button
+                  size="small"
+                  onClick={refreshPage}
+                  variant="contained"
+                  sx={{
+                    p: 1,
+                    mt: 5,
+                    bgcolor: "#00897b",
+                    ":hover": {
+                      bgcolor: "#4db6ac",
+                      color: "#fff",
+                    },
+                  }}
+                  startIcon={
+                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                  }
+                >
+                  <Typography sx={{ fontSize: 13 }}>Try Again</Typography>
+                </Button>
+              </Box>)}
             </React.Fragment>
           ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
-              {err?<Box sx={{ width: '100%',mt:3 }}>
-      <Collapse in={err}>
-        <Alert
-          severity="error"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setErr(null);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          {err}
-        </Alert>
-      </Collapse>
-    </Box>:""}
+              {err ? (
+                <Box sx={{ width: "100%", mt: 3 }}>
+                  <Collapse in={err}>
+                    <Alert
+                      severity="error"
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setErr(null);
+                          }}
+                        >
+                          <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                      }
+                      sx={{ mb: 2 }}
+                    >
+                      {err}
+                    </Alert>
+                  </Collapse>
+                </Box>
+              ) : (
+                ""
+              )}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {activeStep !== 0 && (
                   <Button

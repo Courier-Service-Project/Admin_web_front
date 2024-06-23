@@ -17,10 +17,10 @@ import { BACKEND_URL } from "../../Constants";
 
 
 
-export default function CompleteOrder() {
-  const [CompleteOrderData, setCompleteOrderData]=useState(null);
+export default function ProgressOrderdetails() {
+  const [InprogressOrderData, setInprogressOrderData]=useState(null);
 
-  const { orderNo2 } = useParams();
+  const { orderNo3 } = useParams();
     const location = useLocation();
 
     const { orderId } = location.state || {};
@@ -30,9 +30,9 @@ export default function CompleteOrder() {
       
         try {
           console.log(`Fetching order details for ID: ${orderId}`);
-          const response = await axios.get(`${BACKEND_URL}/orders/completeorderdetailsbyid/${orderId}`);
-          console.log('Admin Details:', response.data);
-          setCompleteOrderData(response.data.message[0]);
+          const response = await axios.get(`${BACKEND_URL}/orders/inprogressorderdetailsbyid/${orderId}`);
+          console.log('Order Details:', response.data);
+          setInprogressOrderData(response.data.message[0]);
         
       } catch (error) {
           console.error('Error fetching order details:', error);
@@ -45,7 +45,7 @@ export default function CompleteOrder() {
       }
   }, [orderId]);
     
-  console.log(CompleteOrderData);
+  console.log(InprogressOrderData);
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh"}}>
         <Navbar />
@@ -55,9 +55,9 @@ export default function CompleteOrder() {
           <Box component="main" sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}>
             <Box sx={{ mx: 4 }}>
               <Typography sx={{ fontSize: 30, fontWeight: 'bold' }}>
-                {CompleteOrderData ? (
+                {InprogressOrderData ? (
                 <div>
-                    <AppsIcon sx={{ mr: 3 }} />OrderID - {CompleteOrderData.Order_id}
+                    <AppsIcon sx={{ mr: 3 }} />OrderID - {InprogressOrderData.Order_id}
                 </div>
             ) : (
               <div>Loading order details...</div>
@@ -73,23 +73,23 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12}>
               <Box sx={{p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {InprogressOrderData ? (
                 <div>
-                    Name : {CompleteOrderData.CustomerFirstName + " " + CompleteOrderData.CustomerLastName}
+                    Name : {InprogressOrderData.CustomerFirstName + " " + InprogressOrderData.CustomerLastName}
                 </div>
             ) : (
                 <div>Loading order details...</div>
             )}
-          {/* Name : {CompleteOrderData.CusFirstName} */}
+          {/* Name : {viewOrderData.CusFirstName} */}
               </Box>
               </Grid>
 
               <Grid item xs={12} md={8}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box xs={5} sx={{ p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {InprogressOrderData ? (
                 <div>
-                    Telephone No : {CompleteOrderData.Customermobile}
+                    Telephone No : {InprogressOrderData.Customermobile}
                 </div>
               ) : (
                 <div>Loading order details...</div>
@@ -100,9 +100,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {InprogressOrderData ? (
                 <div>
-                    City : {CompleteOrderData.Customercity}
+                    City : {InprogressOrderData.Customercity}
                 </div>
               ) : (
                 <div>Loading order details...</div>
@@ -116,9 +116,9 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12}>
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                        Name : {CompleteOrderData.FirstName + " " + CompleteOrderData.LastName}
+                        Name : {InprogressOrderData.FirstName + " " + InprogressOrderData.LastName}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -129,9 +129,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none' }} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                        DiliveryProvince : {CompleteOrderData.DiliveryProvince}
+                        DiliveryProvince : {InprogressOrderData.DiliveryProvince}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -142,9 +142,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                        DiliveryDistrict : {CompleteOrderData.DiliveryDistrict}
+                        DiliveryDistrict : {InprogressOrderData.DiliveryDistrict}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -155,9 +155,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={3}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                         StreetNo : {CompleteOrderData.StreetNo}
+                         StreetNo : {InprogressOrderData.StreetNo}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -168,9 +168,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={3}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                         Street : {CompleteOrderData.Street}
+                         Street : {InprogressOrderData.Street}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -181,9 +181,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                         City : {CompleteOrderData.City}
+                         City : {InprogressOrderData.City}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -194,9 +194,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {InprogressOrderData ? (
                     <div>
-                         Telephone NO : {CompleteOrderData.mobile}
+                         Telephone NO : {InprogressOrderData.mobile}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -211,9 +211,9 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {InprogressOrderData ? (
                       <div>
-                          Pickup_StreetNo : {CompleteOrderData.Pickup_StreetNo}
+                          Pickup_StreetNo : {InprogressOrderData.Pickup_StreetNo}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -223,9 +223,9 @@ export default function CompleteOrder() {
 
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {InprogressOrderData ? (
                       <div>
-                          Pickup_Street : {CompleteOrderData.Pickup_Street}
+                          Pickup_Street : {InprogressOrderData.Pickup_Street}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -235,22 +235,9 @@ export default function CompleteOrder() {
 
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {InprogressOrderData ? (
                       <div>
-                          Pickup_City : {CompleteOrderData.Pickup_City}
-                      </div>
-                    ) : (
-                      <div>Loading order details...</div>
-                    )}
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-              <Divider sx={{ marginBottom: 1, border:'none'}} />
-                <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
-                      <div>
-                          Pickup_District : {CompleteOrderData.Pickup_District}
+                          Pickup_City : {InprogressOrderData.Pickup_City}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -261,9 +248,22 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {InprogressOrderData ? (
                       <div>
-                          Order_Type: {CompleteOrderData.Emmergency}
+                          Pickup_District : {InprogressOrderData.Pickup_District}
+                      </div>
+                    ) : (
+                      <div>Loading order details...</div>
+                    )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+              <Divider sx={{ marginBottom: 1, border:'none'}} />
+                <Box sx={{p:1, border: '1px solid grey' }}>
+                    {InprogressOrderData ? (
+                      <div>
+                          Order_Type: {InprogressOrderData.Emmergency}
                       </div>
                     ) : (
                       <div>Loading order details...</div>

@@ -36,6 +36,7 @@ export default function BasicGrid() {
     const fetchOrderCount = async () => {
         try {
             const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
+
             setOrderCount(result.data.message);
         } catch (error) {
             setError("Network error. Please try again.");
@@ -45,8 +46,10 @@ export default function BasicGrid() {
 
     const perCount = async () => {
         try {
+
             const result = await axios.get(`${BACKEND_URL}/admin/peronCount`);
             setRegPerCount(result.data);
+
             console.log(result);
             // const reg = regPerCount.data;
             // console.log("reg:" ,reg)
@@ -159,44 +162,7 @@ export default function BasicGrid() {
                 </Grid>
             </Grid>
 
-            {/* <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: '#fff',
-                    borderRadius: '16px', 
-                    borderWidth: 5,
-                    shadowColor: '#D8FDFB',
-                    elevation: 20,
-                    shadowOpacity: 0.9,                
-                    boxShadow: 24,
-                    p: 4,
-                }}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" color="#44D55" display="flex" alignItems="center">
-                        <WarningAmberIcon sx={{ ml: 14 , mr:2, color: 'red'}} /> Error
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2, ml:7 }} color="#044B55">
-                        {error}
-                    </Typography>
-                    <Button onClick={handleTryAgain} variant="contained" sx={{ mt: 2, ml:14, bgcolor:"#0A4851",
-                    ":hover": {
-                        bgcolor: "#12636E",
-                        color: "#fff",
-                        },
-                    }}  >
-                        Try Again
-                    </Button>
-                </Box>
-            </Modal> */}
-
+            
             <RetryModal
                 open={open}
                 onClose={handleClose}

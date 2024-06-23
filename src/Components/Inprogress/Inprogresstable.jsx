@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "./CompleteTable.css";
+import "./Inprogresstable.css";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -55,32 +55,32 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function CompleteTable() {
+export default function Inprogresstable() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getcompleteOrderDetails();
-  }, []);
-
   const [rows, setRows] = React.useState([]);
   // const [isError,setIsError]=React.useState(false);
 
-  const getcompleteOrderDetails = async () => {
+  useEffect(() => {
+    getInprogressOrderDetails();
+  }, []);
+
+  const getInprogressOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/completeorderDetails`
+        `${BACKEND_URL}/orders/InprogressorderDetails`
       );
       console.log(result);
-      if(Array.isArray(result.data.message)){
-        setRows(result.data.message);
-      }else{
-        setRows([]);
-        console.error("Expected result.data", result.data.message);
-      }
-    } catch (error) {
+
+    if (Array.isArray(result.data.message)) {
+      setRows(result.data.message);
+    } else {
       setRows([]);
-      console.error("Failed to fetch order details",error);
+      console.error("Expected result.data", result.data.message);
     }
+  } catch (error) {
+    setRows([]);
+    console.error("Failed to fetch order details", error);
+  }
   };
 
   return (
@@ -102,7 +102,7 @@ export default function CompleteTable() {
             </TableHead>
 
             <TableBody>
-              {rows.length>0 ?(
+            {rows.length > 0 ? (
                 rows.map((row) => (
                   <StyledTableRow key={row.Order_id}>
                     <StyledTableCell>{row.Order_id}</StyledTableCell>
@@ -113,7 +113,7 @@ export default function CompleteTable() {
                       <Button
                         className="hover-link red-button"
                         onClick={() =>
-                          navigate(`/completeorder/${row.Order_id}`, {
+                          navigate(`/inprogressorder/${row.Order_id}`, {
                             state: { orderId: row.Order_id },
                           })
                         }
@@ -122,19 +122,19 @@ export default function CompleteTable() {
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))
-              ):(
-                <StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow>
                     <StyledTableCell colSpan={5}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Complete Order List.
+                              No orders in progress List.
                           </Typography>
                         </Box>
                     </StyledTableCell>
                   </StyledTableRow>
-              )}
+                )}
             </TableBody>
           </Table>
         </TableContainerStyled>

@@ -1,23 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from '@mui/icons-material/Apps';
 import { Typography } from "@mui/material";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
+import axios from "axios";
 import{
   Card,
   CardContent,
   Divider,
-  TextField,
 } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
+import { useParams, useLocation } from 'react-router-dom';
+import { BACKEND_URL } from "../../Constants";
 
 
 
 
+export default function RegisterdPerson() {
+  const [registeredPersonData, setregisteredPersonData]=useState(null);
 
-export default function ViewOrder() {
+  const {registerdid} = useParams();
+    const location = useLocation();
+
+    const { orderId } = location.state || {};
+
+    const fetchOrderById = async(orderId)=>{
+    try{
+      console.log(`Fetching order details for ID: ${orderId}`);
+      const response = await axios.get(`${BACKEND_URL}/branchuser/RegisterdpersonDetailsbyid/${orderId}`);
+      console.log('Order Details:', response.data);
+      setregisteredPersonData(response.data.message[0]);
+      }
+      catch(error){
+        console.log('Error fetching order details:', error);
+      }
+    };
+
+    useEffect(()=>{
+      if(orderId){
+        fetchOrderById(orderId);
+      }
+    },[orderId]);
+
+    console.log(registeredPersonData);
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh"}}>
         <Navbar />
@@ -27,8 +54,13 @@ export default function ViewOrder() {
           <Box component="main" sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}>
             <Box sx={{ mx: 4 }}>
               <Typography sx={{ fontSize: 30, fontWeight: 'bold' }}>
-                <AppsIcon sx={{ mr: 3 }} />
-                RegisteredID - 2001N
+              {registeredPersonData ? (
+                <div>
+                    <AppsIcon sx={{ mr: 3 }} />RegisterdID - {registeredPersonData.BranchUser_id}
+                </div>
+            ) : (
+              <div>Loading order details...</div>
+            )}
               </Typography>
             </Box>
             <Box sx={{ml:4,mr:4,mt:5,mb:5}}>
@@ -36,176 +68,97 @@ export default function ViewOrder() {
         <CardContent>
           <Box component="form" sx={{m:4}}>
           <FormSubTitle subTitle="Register Details" />
-        <Divider sx={{ mb:4,border:1}} />
-        <Grid container spacing={6}>
-        <Grid item xs={6} >
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="First Name"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your First name"
-                  fullWidth
-                  required
-                />
-        </Grid>
-        <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Last Name"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your Last name"
-                  fullWidth
-                  required
-                />
-        </Grid>
-        </Grid>
-
-        <Divider sx={{ mb:1,border:0 }} />
+        <Divider sx={{ marginBottom: 1 , border:1}} />
+        <Grid container spacing={1} sx={{mt:3}}>
         <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Address"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your Address"
-                  fullWidth
-                  required
-                />
-        </Grid>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    Name : {registeredPersonData.FirstName + " " + registeredPersonData.LastName}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    StreetNo : {registeredPersonData.StreetNo}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    Street : {registeredPersonData.Street}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    City : {registeredPersonData.City}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={8}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    Email : {registeredPersonData.Email}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    NewUser : {registeredPersonData.NewUser}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={8}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    BranchLocation : {registeredPersonData.branchLocation}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
+          <Grid item xs={12} md={8}>
+              <Box sx={{p:1, border: '1px solid grey' }}>
+              {registeredPersonData ? (
+                <div>
+                    Telephone : {registeredPersonData.Mobile}
+                </div>
+            ) : (
+                <div>Loading order details...</div>
+            )}
+          </Box>
+          </Grid>
 
-        <Divider sx={{ mb:1,border:0 }} />
-        <Grid container spacing={6}>
-        <Grid item xs={6}>
-                <TextField
-                  type="tel"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Telephone"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your Phone Number"
-                  fullWidth
-                  required
-                />
-              </Grid>
-
-        <Grid item xs={6}>
-                <TextField
-                  type="Email"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Email"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your Email"
-                  fullWidth
-                  required
-                />
-              </Grid>
-        </Grid>
-
-        <Divider sx={{ mb:1,border:0 }} />
-        <Grid container spacing={6}>
-        <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="NIC NO"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your NIC Number"
-                  fullWidth
-                  required
-                />
-        </Grid>
-
-        <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="DOB"
-                  variant="standard"
-                  size="small"
-                  placeholder="Enter Your birthday"
-                  fullWidth
-                  required
-                />
-        </Grid>
-        </Grid>
-
-        <Divider sx={{ mb:1,border:0 }} />
-        <Grid container spacing={6}>
-        <Grid item xs={6}>
-                <TextField
-                  type="number"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Hours Available for Work"
-                  variant="standard"
-                  fullWidth
-                  size="small"
-                  placeholder=""
-                  required
-                />
-        </Grid>
-        <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Registerd Date"
-                  variant="standard"
-                  fullWidth
-                  size="small"
-                  placeholder=""
-                  required
-                />
-        </Grid>
-        </Grid>
-
-        <Divider sx={{ mb:1,border:0 }} />
-        <Grid container spacing={6}>
-        <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Vehicle Type"
-                  variant="standard"
-                  size="small"
-                  fullWidth
-                  placeholder=""
-                  
-                  required
-                />
-        </Grid>
-        </Grid>
-
-        <Divider sx={{ mb:1,border:0 }} />
-        <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  margin="dense"
-                  id="standard-basic"
-                  label="Experience in Courier Services (if any)"
-                  variant="standard"
-                  size="small"
-                  multiline
-                  rows={3}
-                  placeholder="Type here....."
-                  fullWidth
-                  required
-                />
         </Grid>
         
           </Box>

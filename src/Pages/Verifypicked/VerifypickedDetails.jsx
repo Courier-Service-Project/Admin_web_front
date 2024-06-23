@@ -9,30 +9,44 @@ import axios from "axios";
 import{
   Card,
   CardContent,
-  Divider,
+  Divider
 } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from "../../Constants";
+import Pendingalert from "../../Components/pending/Pendingalert";
 
 
+export default function VerifypickedDetails() {
+  const [VerifypickedData, setVerifypickedData]=useState(null);
 
-export default function CompleteOrder() {
-  const [CompleteOrderData, setCompleteOrderData]=useState(null);
-
-  const { orderNo2 } = useParams();
+    const { orderNo4 } = useParams();
     const location = useLocation();
-
+    const navigate = useNavigate();
     const { orderId } = location.state || {};
+
+    const handleVerifyPicked = async () => {
+      await confirmhandleVerifydata(VerifypickedData.Order_id);
+      navigate("/verifypicked");
+    };
+
+    const confirmhandleVerifydata = async (orderId) => {
+      try {
+        const result = await axios.patch(`${BACKEND_URL}/orders/updateverifyPickedorderDetails/${orderId}`);
+        console.log(result);
+      } catch (error) {
+        console.error('Error confirming order:', error);
+      }
+    };
 
    
       const fetchOrderById = async(orderId)=>{
       
         try {
           console.log(`Fetching order details for ID: ${orderId}`);
-          const response = await axios.get(`${BACKEND_URL}/orders/completeorderdetailsbyid/${orderId}`);
-          console.log('Admin Details:', response.data);
-          setCompleteOrderData(response.data.message[0]);
+          const response = await axios.get(`${BACKEND_URL}/orders/verifypickedorderDetails/${orderId}`);
+          console.log('VerifyPicked Details:', response.data);
+          setVerifypickedData(response.data.message[0]);
         
       } catch (error) {
           console.error('Error fetching order details:', error);
@@ -45,7 +59,7 @@ export default function CompleteOrder() {
       }
   }, [orderId]);
     
-  console.log(CompleteOrderData);
+  console.log(VerifypickedData);
   return (
     <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh"}}>
         <Navbar />
@@ -55,9 +69,9 @@ export default function CompleteOrder() {
           <Box component="main" sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}>
             <Box sx={{ mx: 4 }}>
               <Typography sx={{ fontSize: 30, fontWeight: 'bold' }}>
-                {CompleteOrderData ? (
+                {VerifypickedData ? (
                 <div>
-                    <AppsIcon sx={{ mr: 3 }} />OrderID - {CompleteOrderData.Order_id}
+                    <AppsIcon sx={{ mr: 3 }} />OrderID - {VerifypickedData.Order_id}
                 </div>
             ) : (
               <div>Loading order details...</div>
@@ -73,9 +87,9 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12}>
               <Box sx={{p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {VerifypickedData ? (
                 <div>
-                    Name : {CompleteOrderData.CustomerFirstName + " " + CompleteOrderData.CustomerLastName}
+                    Name : {VerifypickedData.CustomerFirstName + " " + VerifypickedData.CustomerLastName}
                 </div>
             ) : (
                 <div>Loading order details...</div>
@@ -87,9 +101,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={8}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box xs={5} sx={{ p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {VerifypickedData ? (
                 <div>
-                    Telephone No : {CompleteOrderData.Customermobile}
+                    Telephone No : {VerifypickedData.Customermobile}
                 </div>
               ) : (
                 <div>Loading order details...</div>
@@ -100,9 +114,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-              {CompleteOrderData ? (
+              {VerifypickedData ? (
                 <div>
-                    City : {CompleteOrderData.Customercity}
+                    City : {VerifypickedData.Customercity}
                 </div>
               ) : (
                 <div>Loading order details...</div>
@@ -116,9 +130,9 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12}>
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                        Name : {CompleteOrderData.FirstName + " " + CompleteOrderData.LastName}
+                        Name : {VerifypickedData.FirstName + " " + VerifypickedData.LastName}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -129,9 +143,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none' }} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                        DiliveryProvince : {CompleteOrderData.DiliveryProvince}
+                        DiliveryProvince : {VerifypickedData.DiliveryProvince}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -142,9 +156,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                        DiliveryDistrict : {CompleteOrderData.DiliveryDistrict}
+                        DiliveryDistrict : {VerifypickedData.DiliveryDistrict}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -155,9 +169,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={3}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                         StreetNo : {CompleteOrderData.StreetNo}
+                         StreetNo : {VerifypickedData.StreetNo}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -168,9 +182,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={3}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                         Street : {CompleteOrderData.Street}
+                         Street : {VerifypickedData.Street}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -181,9 +195,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                         City : {CompleteOrderData.City}
+                         City : {VerifypickedData.City}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -194,9 +208,9 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
               <Box sx={{p:1, border: '1px solid grey' }}>
-                  {CompleteOrderData ? (
+                  {VerifypickedData ? (
                     <div>
-                         Telephone NO : {CompleteOrderData.mobile}
+                         Telephone NO : {VerifypickedData.mobile}
                     </div>
                   ) : (
                     <div>Loading order details...</div>
@@ -211,9 +225,9 @@ export default function CompleteOrder() {
             <Grid container spacing={1} sx={{mt:3}}>
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {VerifypickedData ? (
                       <div>
-                          Pickup_StreetNo : {CompleteOrderData.Pickup_StreetNo}
+                          Pickup_StreetNo : {VerifypickedData.Pickup_StreetNo}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -223,9 +237,9 @@ export default function CompleteOrder() {
 
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {VerifypickedData ? (
                       <div>
-                          Pickup_Street : {CompleteOrderData.Pickup_Street}
+                          Pickup_Street : {VerifypickedData.Pickup_Street}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -235,22 +249,9 @@ export default function CompleteOrder() {
 
               <Grid item xs={12} md={4}>
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {VerifypickedData ? (
                       <div>
-                          Pickup_City : {CompleteOrderData.Pickup_City}
-                      </div>
-                    ) : (
-                      <div>Loading order details...</div>
-                    )}
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-              <Divider sx={{ marginBottom: 1, border:'none'}} />
-                <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
-                      <div>
-                          Pickup_District : {CompleteOrderData.Pickup_District}
+                          Pickup_City : {VerifypickedData.Pickup_City}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
@@ -261,15 +262,44 @@ export default function CompleteOrder() {
               <Grid item xs={12} md={4}>
               <Divider sx={{ marginBottom: 1, border:'none'}} />
                 <Box sx={{p:1, border: '1px solid grey' }}>
-                    {CompleteOrderData ? (
+                    {VerifypickedData ? (
                       <div>
-                          Order_Type: {CompleteOrderData.Emmergency}
+                          Pickup_District : {VerifypickedData.Pickup_District}
                       </div>
                     ) : (
                       <div>Loading order details...</div>
                     )}
                 </Box>
               </Grid>
+
+              <Grid item xs={12} md={4}>
+              <Divider sx={{ marginBottom: 1, border:'none'}} />
+                <Box sx={{p:1, border: '1px solid grey' }}>
+                    {VerifypickedData ? (
+                      <div>
+                          Order_Type: {VerifypickedData.Emmergency}
+                      </div>
+                    ) : (
+                      <div>Loading order details...</div>
+                    )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}></Grid>
+
+              <Grid item xs={12} md={4} style={{ margin: "0 auto", padding: "0 20px" }}>
+                        <Pendingalert
+                          color="success"
+                          button="Confirm Order"
+                          title="Confirm Order"
+                          text="Are you sure you want to confirm this order?"
+                          buttonName1="Cancel"
+                          buttonName2="Confirm"
+                          bcolor="success"
+                          onClick1={handleVerifyPicked}
+                        />
+                </Grid>
+                            
 
             </Grid>
           </Box>

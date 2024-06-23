@@ -7,7 +7,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import RegisteredTable from "../../Components/Registered/RegisteredTable";
 export default function Registered() {
   return (
-  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
+  <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh",minWidth:"100%", width: "fit-content"}}>
       <Navbar />
       <Box height={75}  />
       <Box sx={{ display: "flex"}}>

@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "./CompleteTable.css";
+import "../../Components/complete/CompleteTable.css";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -55,31 +55,32 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function CompleteTable() {
-  const navigate = useNavigate();
+export default function VerifydiliveryTable() {
+     const navigate = useNavigate();
+     const [rows, setRows] = React.useState([]);
+     // const [isError,setIsError]=React.useState(false);
 
-  useEffect(() => {
-    getcompleteOrderDetails();
-  }, []);
+    useEffect(() => {
+        getVerifydiliveryOrderList();
+   }, []);
 
-  const [rows, setRows] = React.useState([]);
-  // const [isError,setIsError]=React.useState(false);
-
-  const getcompleteOrderDetails = async () => {
+  const getVerifydiliveryOrderList = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/completeorderDetails`
+        `${BACKEND_URL}/orders/verifydiliveryorderDetails`
       );
       console.log(result);
       if(Array.isArray(result.data.message)){
+        console.log(result.data.message);
         setRows(result.data.message);
       }else{
         setRows([]);
         console.error("Expected result.data", result.data.message);
       }
+      
     } catch (error) {
       setRows([]);
-      console.error("Failed to fetch order details",error);
+      console.error("Failed to fetch order details", error);
     }
   };
 
@@ -112,11 +113,11 @@ export default function CompleteTable() {
                     <StyledTableCell>
                       <Button
                         className="hover-link red-button"
-                        onClick={() =>
-                          navigate(`/completeorder/${row.Order_id}`, {
-                            state: { orderId: row.Order_id },
-                          })
-                        }
+                         onClick={() =>
+                           navigate(`/verifydiliveryorder/${row.Order_id}`, {
+                             state: { orderId: row.Order_id },
+                           })
+                         }
                       >
                         View Order
                       </Button>
@@ -129,12 +130,13 @@ export default function CompleteTable() {
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Complete Order List.
+                              No orders in Verify Dilivery Order List.
                           </Typography>
                         </Box>
                     </StyledTableCell>
                   </StyledTableRow>
-              )}
+              )
+            }
             </TableBody>
           </Table>
         </TableContainerStyled>
