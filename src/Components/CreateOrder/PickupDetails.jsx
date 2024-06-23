@@ -6,10 +6,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import axios from "axios";
 
 export default function PickupDetails({fromData,setFormData}) {
-  const [getbranch, setBranch] = useState(" ");
+  const [getbranch, setBranch] = useState(['Loading']);
   useEffect(() => {
     const fetchBranch = async () => {
-      try {
+      try { 
         const response = await axios.get("http://localhost:9000/branch");
         const branch = response.data.Data;
         setBranch(branch);
