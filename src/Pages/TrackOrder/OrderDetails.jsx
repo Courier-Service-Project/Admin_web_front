@@ -1,12 +1,16 @@
 import React from 'react';
-import { Typography, Stepper, Step, StepLabel, Card, CardContent } from '@mui/material';
+import { Typography, Stepper, Step, StepLabel, Card, CardContent, Box } from '@mui/material';
+import { BorderAllRounded } from '@mui/icons-material';
 
 const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiveSteps }) => {
   const steps = [
+    { label: 'Verify Confirm'},
     { label: 'Pending Order' },
-    { label: 'Pickup Order' },
+    { label: 'Selected Order' },
+    { label:'Verify Picked'},
     { label: 'On Delivery' },
-    { label: 'Order Delivered' },
+    {label: 'Verify Dilivery'},
+    { label: 'Order Delivered' },  
   ];
 
   const steptyle = {
@@ -46,8 +50,8 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
   return (
     <>
     {orderStatus && (
-    <div>
-      <div style={{ padding: '80px', display: 'flex', alignItems: 'center', paddingTop: '30px', marginTop: '20px' }}>
+    <Box>
+      <Box style={{ padding: '80px', display: 'flex', alignItems: 'center', paddingTop: '30px', marginTop: '20px',BorderAllRounded }}>
         <Typography variant="h6" fontWeight='600' color={{}}>
           Order Id: {orderId}
         </Typography>
@@ -59,7 +63,7 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
             Expected Delivery Date: {orderDetails[orderId]['Estimated Delivery']}
           </Typography>
         )}
-      </div>
+      </Box>
       <div style={{ paddingTop: '10px' }}>
         <Stepper activeStep={activeStep} sx={steptyle} alternativeLabel>
           {steps.map((step, index) => (
@@ -116,7 +120,7 @@ const OrderDetails = ({ orderId, orderStatus, orderDetails, activeStep, setActiv
           </CardContent>
         </Card>
       </div>
-    </div>
+    </Box>
     )}
     </>
   );

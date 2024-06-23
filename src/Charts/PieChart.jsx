@@ -3,6 +3,7 @@ import { Chart } from "react-google-charts";
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { BACKEND_URL } from '../Constants';
 
 export function PieChart() {
   const [orderCount, setOrderCount] = useState([]);
@@ -12,7 +13,7 @@ export function PieChart() {
 
     const fetchOrderCount = async () => {
         try {
-        const result = await axios.get(`http://192.168.117.94:9000/orders/orderCounts`);
+        const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
         setOrderCount(result.data.message);
         console.log(result);
         }
