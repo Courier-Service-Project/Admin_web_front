@@ -38,7 +38,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "#D9D9D9",
   },
   "&:hover": {
-    backgroundColor: "#ffcdd2",
+    backgroundColor: "#ffebee",
   },
   "&:hover td:nth-child(1)": {
     borderLeft: "5px solid red",

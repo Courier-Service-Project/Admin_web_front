@@ -25,7 +25,7 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 15,
     // backgroundColor:"red"
   },
 }));
@@ -64,7 +64,7 @@ export default function BranchTable() {
   const getBranchDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/branchDetails`
+        `${BACKEND_URL}/branch/branchDetails`
       );
       console.log(result);
       if(Array.isArray(result.data.message)){

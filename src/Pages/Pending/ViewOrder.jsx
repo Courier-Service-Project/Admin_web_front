@@ -16,6 +16,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 export default function ViewOrder() {
   const [viewOrderData, setViewOrderData] = useState(null);
@@ -45,14 +47,6 @@ export default function ViewOrder() {
     P_homeTown: "",
     P_district: "",
     p_ordertype:"",
-    // P_VehicalType: "",
-    // P_telephone: "",
-    // P_paymentMethod: "",
-    // P_specialNote: "",
-    // P_homeTown: "",
-    // P_imergency: "",
-    // P_branch: "",
-    // P_distanceCost: "",
     
   });
 
@@ -118,17 +112,6 @@ export default function ViewOrder() {
         phometown: fromData.P_homeTown,
         pdistrict: fromData.P_district,
         potype:fromData.p_ordertype,
-
-        // sstreet: fromData.S_street,
-        // sstreetNo: fromData.S_streestNo,
-        // pvehicaltype: fromData.P_VehicalType,
-        // ptelephone: fromData.P_telephone,
-        // ppaymentmethod: fromData.P_paymentMethod,
-        // pspecialnote: fromData.P_specialNote,
-        // pimergency: fromData.P_imergency,
-        // pdistancecost: fromData.P_distanceCost,
-        // pbranch: fromData.P_branch,
-        // padminID:ID
         
       })
       .then(function (response) {
@@ -137,7 +120,7 @@ export default function ViewOrder() {
       .catch(function (error) {
         console.log(error);
       });
-      navigate("/Pending");
+      window.location.reload();
   };
 
 

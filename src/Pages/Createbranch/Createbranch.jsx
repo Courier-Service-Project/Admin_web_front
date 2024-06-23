@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -12,8 +12,26 @@ import FormSubTitle from "../../Components/pending/FormSubTitle";
 import { BACKEND_URL } from "../../Constants";
 import SaveIcon from '@mui/icons-material/Save';
 import BranchTable1 from "../../Components/Createbranch/BranchTable";
+import Autocomplete from '@mui/material/Autocomplete';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 export default function BranchDetails() {
+
+  const [alert, setAlert] = useState({ severity: '', message: '', visible: false });
+
+  const District = ['Hambantota', 'Mathara','Galle','Colombo', 'Gampaha'];
+  const Province = [
+    "Central",
+    "Eastern",
+    "North Central",
+    "Northern",
+    "North Western",
+    "Sabaragamuwa",
+    "Southern",
+    "Uva",
+    "Western"
+];
 
    const [fromData, setFormData] = React.useState({
       B_location:"",
@@ -24,7 +42,7 @@ export default function BranchDetails() {
   const sendSave = async () => {
 
     axios
-      .post(`${BACKEND_URL}/orders/createNewBranch`,{
+      .post(`${BACKEND_URL}/branch/createNewBranch`,{
          br_location:fromData.B_location,
          br_district:fromData.B_district,
          br_province:fromData.B_province,
@@ -36,6 +54,7 @@ export default function BranchDetails() {
       .catch(function (error) {
         console.log(error);
       });
+      window.location.reload();
   };
     return (
       <React.Fragment>
@@ -65,11 +84,54 @@ export default function BranchDetails() {
                 >
                   <CardContent>
                     <Box component="form" sx={{ m: 4 }}>
-                      <FormSubTitle subTitle="Branch Details" />
+                      <FormSubTitle subTitle=" Add Branch Details" />
                       <Divider sx={{ marginBottom: 1, border: 1 }} />
                       <Grid container spacing={4} sx={{ mt: 3 }}>
-                        
-  
+                      <Grid item xs={12} sm={4}>
+                      <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Province}
+                            value={fromData.B_province}
+                            onChange={(event, value) => setFormData({ ...fromData, B_province:value })}
+                            renderInput={(params) => (
+                              <TextField
+                              {...params}
+                              required
+                            name="B_province"
+                            label="Province"
+                            fullWidth
+                            autoComplete="family-name"
+                            variant="standard"
+                              />
+                            )}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} sm={4}>
+
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={District}
+                            value={fromData.B_district}
+                            onChange={(event, value) => setFormData({ ...fromData, B_district:value })}
+                            renderInput={(params) => (
+                              <TextField
+                              {...params}
+                              required
+                            name="B_district"
+                            label="District"
+                            fullWidth
+                            autoComplete="family-name"
+                            variant="standard"
+                              />
+                            )}
+                          />
+                        </Grid>
+
+                        <Grid item xs={12} sm={4}></Grid>
+
                         <Grid item xs={12} sm={4}>
                         <TextField
                             required
@@ -83,36 +145,8 @@ export default function BranchDetails() {
                           />
                         </Grid>
 
-                        <Grid item xs={12} sm={4}>
-                        <TextField
-                            required
-                            name="B_district"
-                            label="District"
-                            fullWidth
-                            autoComplete="off"
-                            variant="standard"
-                            value={fromData.B_district}
-                            onChange={(event)=>setFormData({...fromData,B_district:event.target.value})}
-                          />
-                        </Grid>
-
-                        <Grid item xs={12} sm={4}></Grid>
-
-                        <Grid item xs={12} sm={4}>
-                        <TextField
-                            required
-                            name="B_province"
-                            label="Province"
-                            fullWidth
-                            autoComplete="off"
-                            variant="standard"
-                            value={fromData.B_province}
-                            onChange={(event)=>setFormData({...fromData,B_province:event.target.value})}
-                          />
-                        </Grid>
-
                         <Grid container justifyContent="flex-end">
-                        <Grid item xs={12} md={3}>
+                        <Grid item xs={10} md={3}>
                         <Button
                            fullWidth
                            size="large"
