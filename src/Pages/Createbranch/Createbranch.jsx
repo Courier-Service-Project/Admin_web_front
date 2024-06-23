@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
-import { CircularProgress, Typography } from "@mui/material";
+import {Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
@@ -11,21 +11,23 @@ import { Card, CardContent, Divider, Button } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
 import { BACKEND_URL } from "../../Constants";
 import SaveIcon from '@mui/icons-material/Save';
+import BranchTable1 from "../../Components/Createbranch/BranchTable";
 
 export default function BranchDetails() {
 
-  // const [fromData, setFormData] = React.useState({
-  //    B_location:"",
-  //    B_district:"",
-  //    B_province:"",
-  //  });
+   const [fromData, setFormData] = React.useState({
+      B_location:"",
+      B_district:"",
+      B_province:"",
+    });
 
-  const setFormData = async () => {
+  const sendSave = async () => {
+
     axios
       .post(`${BACKEND_URL}/orders/createNewBranch`,{
-        // br_location:fromData.B_location,
-        // br_district:fromData.B_district,
-        // br_province:fromData.B_province,
+         br_location:fromData.B_location,
+         br_district:fromData.B_district,
+         br_province:fromData.B_province,
         
       })
       .then(function (response) {
@@ -34,7 +36,6 @@ export default function BranchDetails() {
       .catch(function (error) {
         console.log(error);
       });
-      navigate("/Pending");
   };
     return (
       <React.Fragment>
@@ -66,10 +67,10 @@ export default function BranchDetails() {
                     <Box component="form" sx={{ m: 4 }}>
                       <FormSubTitle subTitle="Branch Details" />
                       <Divider sx={{ marginBottom: 1, border: 1 }} />
-                      <Grid container spacing={2} sx={{ mt: 3 }}>
+                      <Grid container spacing={4} sx={{ mt: 3 }}>
                         
   
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sm={4}>
                         <TextField
                             required
                             name="B_location"
@@ -82,7 +83,7 @@ export default function BranchDetails() {
                           />
                         </Grid>
 
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sm={4}>
                         <TextField
                             required
                             name="B_district"
@@ -95,7 +96,9 @@ export default function BranchDetails() {
                           />
                         </Grid>
 
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sm={4}></Grid>
+
+                        <Grid item xs={12} sm={4}>
                         <TextField
                             required
                             name="B_province"
@@ -116,7 +119,7 @@ export default function BranchDetails() {
                            style={{backgroundColor:"#0288d1"}}
                            sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
                            variant="contained"
-                          //  onClick={sendSave}
+                           onClick={sendSave}
                            >
                           <SaveIcon/>
                             Save
@@ -129,6 +132,18 @@ export default function BranchDetails() {
                   </CardContent>
                 </Card>
               </Box>
+
+              <Box sx={{ mx: 4 }}>
+                <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
+                    <div>
+                      <AppsIcon sx={{ mr: 3 }} />
+                      Branch Details
+                    </div>
+                </Typography>
+              </Box>
+            
+            <BranchTable1/>
+
             </Box>
           </Box>
         </Box>
