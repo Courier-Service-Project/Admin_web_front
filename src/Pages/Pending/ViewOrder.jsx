@@ -588,29 +588,30 @@ export default function ViewOrder() {
                         </Button>
                         ):(
                         
-                        //   <Pendingalert
-                        //   color= "error"
-                        //   button="Edit Order"
-                        //   title="Edit Order"
-                        //   text="Are you sure save this changes ?"
-                        //   buttonName1="Cancel"
-                        //   buttonName2="Confirm"
-                        //   bcolor="error"
-                        //   onClick1={sendSave}
-                        // />
+                          <Pendingalert
+                          color= "#0288d1"
+                          Icon={<SaveIcon/>}
+                          button=" Save Edit"
+                          title="Save Order"
+                          text="Are you sure save this changes ?"
+                          buttonName1="Cancel"
+                          buttonName2="Save"
+                          bcolor="0288d1"
+                          onClick1={sendSave}
+                        />
                         
                        
-                        <Button
-                          fullWidth
-                          size="large"
-                          style={{backgroundColor:"#0288d1"}}
-                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
-                          variant="contained"
-                          onClick={sendSave}
-                        >
-                          <SaveIcon/>
-                          Save Edit
-                        </Button>
+                        // <Button
+                        //   fullWidth
+                        //   size="large"
+                        //   style={{backgroundColor:"#0288d1"}}
+                        //   sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
+                        //   variant="contained"
+                        //   onClick={sendSave}
+                        // >
+                        //   <SaveIcon/>
+                        //   Save Edit
+                        // </Button>
                   
                       )}
                       

@@ -30,8 +30,6 @@ import ArticleIcon from "@mui/icons-material/Article";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from '@mui/icons-material/Logout';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
-import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -146,23 +144,11 @@ export default function Sidenav() {
                 </ListItemIcon>
                 <ListItemText primary="Pending" />
               </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/verifypicked")}>
-                <ListItemIcon>
-                  <VerifiedUserOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Verify Picked" />
-              </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/progress")}>
                 <ListItemIcon>
                   <AutorenewIcon />
                 </ListItemIcon>
                 <ListItemText primary="In Progress"  />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/verifydilivery")}>
-                <ListItemIcon>
-                  <TaskOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Verify Dilivery" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/complete")}>
                 <ListItemIcon>
