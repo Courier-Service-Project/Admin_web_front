@@ -1,15 +1,33 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import axios from "axios";
 
 export default function PickupDetails({fromData,setFormData}) {
+  const [getbranch, setBranch] = useState(" ");
+  useEffect(() => {
+    const fetchBranch = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/branch");
+        const branch = response.data.Data;
+        setBranch(branch);
+      } catch (error) {
+        console.log(error + " Error loading Branch");
+      }
+    };
+    fetchBranch();
+  }, []);
+
+  console.log(getbranch)
+
+
   const District = ['Hambantota', 'Mathara','Colombo', 'Gampaha'];
-  const branch = ['Galle', 'Matara'];
-  const Payment = ['Online', 'Sender','Receiver'];
-  const Vehical = ['Car', 'Bike','Mathara', 'Three-Wheel'];
+  const Payment = ['Sender','Receiver'];
+  const Vehical = ['Car', 'Bike','Three-Wheel'];
   const status = ['Immergency', 'Normal'];
+  console.log(status)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -40,22 +58,15 @@ export default function PickupDetails({fromData,setFormData}) {
             onChange={(event)=>setFormData({...fromData,P_street:event.target.value})}
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
-        <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={branch}
-            onChange={(event, value) => setFormData({ ...fromData, P_homeTown:value })}
-            renderInput={(params) => (
-              <TextField
-              {...params}
-              required
-              name="P_homeTown"
-              label="Home Town"
-              fullWidth
-              variant="standard"
-              />
-            )}
+      <Grid item xs={3}>
+          <TextField
+            name="P_homeTown"
+            label="Home Town"
+            fullWidth
+            autoComplete="off"
+            variant="standard"
+            value={fromData.P_homeTown}
+            onChange={(event)=>setFormData({...fromData,P_homeTown:event.target.value})}
           />
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -64,7 +75,7 @@ export default function PickupDetails({fromData,setFormData}) {
       <Grid item xs={3}>
       <Autocomplete
             disablePortal
-            options={branch}
+            options={getbranch}
             value={fromData.P_branch}
             onChange={(event, value) => setFormData({ ...fromData, P_branch:value })}
             renderInput={(params) => (

@@ -77,7 +77,7 @@ export default function RegisteredTable() {
         setRows(results.data.message);
       }else{
         setRows([]);
-        console.error("Expected result.data", result.data.message);
+        console.error("Expected result.data", results.data.message);
       }
       // console.log(results.data.message[0]);
       // setRows(results.data.message);

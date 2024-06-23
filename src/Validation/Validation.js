@@ -8,24 +8,30 @@ export const CheckEmpty = (data) => {
 
 
 
-export const senderValidation = (sname,saddress,stele) => {
+export const senderValidation = (sname,saddress,stele,semail) => {
 if(CheckEmpty(sname)){ 
     return ({textField:"Name", Error:"Name is required"})
   }else if(CheckEmpty(stele)){
     return ({textField:"Telephone", Error:"Telephone number is required"})
+  }else if(CheckEmpty(semail)){
+    return ({textField:"email", Error:"Email number is required"})
   }else if(CheckEmpty(saddress)){
     return ({textField:"Address", Error:"HomeTown is required"}) 
   }else if(!stele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
     return ({textField:"Telephone", Error:"Invalid Telephone number"})
+  }else if(!semail.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim)){
+    return ({textField:"email", Error:"Invalid Email"})
   }else
   return 0
 };
 
-export const RecieverValidation = (rname,rdistrict,rhometown,rtele,rprovince) => {
+export const RecieverValidation = (rname,rdistrict,rhometown,rtele,rprovince,remail) => {
 if(CheckEmpty(rname)){ 
     return ({textField:"Name", Error:"Name is required"})
   }else if(CheckEmpty(rtele)){
     return ({textField:"Telephone", Error:"Telephone is required"})
+  }else if(CheckEmpty(remail)){
+    return ({textField:"Telephone", Error:"Email is required"})
   }else if(CheckEmpty(rprovince)){
     return ({textField:"rprovince", Error:"Province is Compulsory"})
   }else if(CheckEmpty(rdistrict)){
@@ -33,6 +39,8 @@ if(CheckEmpty(rname)){
   }else if(CheckEmpty(rhometown)){
     return ({textField:"HomeTown", Error:"Hometown is required"})
   }else if(!rtele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
+    return ({textField:"Telephone", Error:"Invalid Telephone number"})
+  }else if(!remail.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim)){
     return ({textField:"Telephone", Error:"Invalid Telephone number"})
   }else
   return 0

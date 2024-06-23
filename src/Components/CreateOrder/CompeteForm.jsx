@@ -9,20 +9,23 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
-import {senderValidation ,RecieverValidation,PickupValidation} from "../../Validation/Validation";
+import {
+  senderValidation,
+  RecieverValidation,
+  PickupValidation,
+} from "../../Validation/Validation";
 import PickupDetails from "./PickupDetails";
 import axios from "axios";
-import Swal from "sweetalert2";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Alert from '@mui/material/Alert';
-import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import { BACKEND_URL,ID } from "../../Constants/index";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import { BACKEND_URL, ID } from "../../Constants/index";
 
 const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
 const steptyle = {
@@ -43,16 +46,17 @@ const steptyle = {
 
 export default function CompeteForm() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [err,setErr] = React.useState(null);
-  const [loading, setLoading] = React.useState(true)
+  const [err, setErr] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [resSuccess, setResSuccess] = React.useState(true);
   const [fromData, setFormData] = React.useState({
-
     S_fname: "",
     S_lname: "",
     S_telephone: "",
     S_city: "",
     S_street: "",
     S_streestNo: "",
+    S_email: "",
 
     R_lname: "",
     R_fname: "",
@@ -61,6 +65,7 @@ export default function CompeteForm() {
     R_HomeTown: "",
     R_streetNo: "",
     R_street: "",
+    R_email: "",
 
     P_street: "",
     P_streetNo: "",
@@ -93,42 +98,39 @@ export default function CompeteForm() {
         throw new Error("Unknown step");
     }
   }
-  //................................
   function senderValid() {
-    setErr(null)
+    setErr(null);
     const data = senderValidation(
       fromData.S_fname,
       fromData.S_city,
       fromData.S_telephone,
-      
-    )
-    console.log(data)
-    if(data){
-      setErr(data.Error)
+      fromData.S_email
+    );
+    console.log(data);
+    if (data) {
+      setErr(data.Error);
       return 1;
-
     }
   }
-  //................................
   function recieverValid() {
-    setErr(null)
+    setErr(null);
     const data = RecieverValidation(
       fromData.R_fname,
       fromData.R_district,
       fromData.R_HomeTown,
       fromData.R_telephone,
       fromData.R_province,
-    )
-      console.log(data)
+      fromData.R_email
+    );
+    console.log(data);
 
     if (data) {
-      setErr(data.Error)
+      setErr(data.Error);
       return 1;
     }
   }
-  //.............................
   function pickValid() {
-     setErr(null)
+    setErr(null);
     const data = PickupValidation(
       fromData.P_homeTown,
       fromData.P_paymentMethod,
@@ -137,49 +139,17 @@ export default function CompeteForm() {
       fromData.P_branch,
       fromData.P_imergency,
       fromData.P_distanceCost,
-      fromData.P_VehicalType,
-      
-    )
-      console.log(data)
+      fromData.P_VehicalType
+    );
+    console.log(data);
 
     if (data) {
-      setErr(data.Error)
+      setErr(data.Error);
       return 1;
     }
   }
 
   function sendDetails() {
-   
-
-  //   console.log("sender firstname"+fromData.S_fname)
-  //   console.log("sender lastname"+fromData.S_lname)
-  //   console.log("sender streetNo"+fromData.S_streestNo)
-  //   console.log("sender street"+fromData. S_street)
-  //   console.log("sender city"+fromData.S_city)
-  //   console.log("sender telepphone"+fromData.S_telephone)
-
-  //   console.log("Receiver firstname"+fromData.R_fname)
-  //   console.log("Receiver lastname"+fromData.R_lname)
-  //   console.log("Receiver Telephone"+fromData.R_telephone)
-  //   console.log("Receiver District"+fromData.R_district)
-  //   console.log("Receiver province"+fromData.R_province)
-  //   console.log("Receiver streetNo"+fromData.R_streetNo)
-  //   console.log("Receiver street"+fromData.R_street)
-  //   console.log("Receiver city"+fromData.R_HomeTown)
-
-  //   console.log("pickup street "+fromData.P_street)
-  //   console.log("pickup streetNo "+fromData.P_streetNo)
-  //  console.log("pickup vehicalType "+fromData.P_VehicalType)
-  //  console.log("pickup telephone "+fromData.P_telephone)
-  //  console.log("pickup paymnet "+fromData.P_paymentMethod)
-  //  console.log("pickup specialnote "+fromData.P_specialNote)
-  //  console.log("pickup hometown "+fromData.P_homeTown)
-  //   console.log("pickup distancecost "+fromData.P_distanceCost)
-  //   console.log("pickup branch "+fromData.P_branch)
-  //   console.log("pickup imergency "+fromData.P_imergency)
-  //   console.log("pickup district "+fromData.P_district)
-
-   
     axios
       .post(`${BACKEND_URL}/orders`, {
         sfname: fromData.S_fname,
@@ -188,6 +158,7 @@ export default function CompeteForm() {
         sstreetNo: fromData.S_streestNo,
         scity: fromData.S_city,
         stelephone: fromData.S_telephone,
+        sEmail: fromData.S_email,
 
         rfname: fromData.R_lname,
         rlname: fromData.R_fname,
@@ -197,6 +168,7 @@ export default function CompeteForm() {
         rhometown: fromData.R_HomeTown,
         rstreetNo: fromData.R_streetNo,
         rstreet: fromData.R_street,
+        rEmail: fromData.R_email,
 
         pstreetNo: fromData.P_streetNo,
         pstreet: fromData.P_street,
@@ -209,20 +181,15 @@ export default function CompeteForm() {
         pimergency: fromData.P_imergency,
         pdistancecost: fromData.P_distanceCost,
         pbranch: fromData.P_branch,
-        padminID:ID
-        
+        padminID: ID,
       })
       .then(function (response) {
         console.log(response);
-        if(response.data.success === 1){
-         setLoading(false)
-          // Swal.fire({
-          //   position: "center",
-          //   icon: "success",
-          //   title: "Order Placed",
-          //   showConfirmButton: false,
-          //   timer: 2500,
-          // });
+        if (response.data.success === 1) {
+          setResSuccess(true);
+          setLoading(false);
+        } else {
+          setResSuccess(false);
         }
       })
       .catch(function (error) {
@@ -248,7 +215,7 @@ export default function CompeteForm() {
       }
       sendDetails();
     }
-    setLoading(true)
+    setLoading(true);
     setActiveStep(activeStep + 1);
   };
 
@@ -270,57 +237,91 @@ export default function CompeteForm() {
           </Stepper>
           {activeStep === steps.length ? (
             <React.Fragment>
-              
-              {loading? <LinearProgress sx={{my:6}} color="success" />:<Box><Typography variant="h5" gutterBottom>
-                Order is Placed.
-              </Typography>
-              <Typography variant="subtitle1">
-                Order has been sent to the pending order list.
-              </Typography>
-              <Button
-                size="small"
-                onClick={refreshPage}
-                variant="contained"
-                sx={{
-                  p: 1,
-                  mt: 5,
-                  bgcolor: "#00897b",
-                  ":hover": {
-                    bgcolor: "#4db6ac",
-                    color: "#fff",
-                  },
-                }}
-                startIcon={<AddCircleOutlineIcon style={{ fontSize: 20 }} />}
-              >
-                <Typography sx={{ fontSize: 13 }}>New Order</Typography>
-              </Button></Box>}
-              
+              {loading ? (
+                <LinearProgress sx={{ my: 6 }} color="success" />
+              ) : resSuccess? (<Box>
+                <Typography variant="h5" gutterBottom>
+                  Order is Placed.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Order has been sent to the pending order list.
+                </Typography>
+                <Button
+                  size="small"
+                  onClick={refreshPage}
+                  variant="contained"
+                  sx={{
+                    p: 1,
+                    mt: 5,
+                    bgcolor: "#00897b",
+                    ":hover": {
+                      bgcolor: "#4db6ac",
+                      color: "#fff",
+                    },
+                  }}
+                  startIcon={
+                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                  }
+                >
+                  <Typography sx={{ fontSize: 13 }}>New Order</Typography>
+                </Button>
+              </Box>) : (<Box>
+                <Typography variant="h5" gutterBottom>
+                  Order is Not Placed.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Re-Try.
+                </Typography>
+                <Button
+                  size="small"
+                  onClick={refreshPage}
+                  variant="contained"
+                  sx={{
+                    p: 1,
+                    mt: 5,
+                    bgcolor: "#00897b",
+                    ":hover": {
+                      bgcolor: "#4db6ac",
+                      color: "#fff",
+                    },
+                  }}
+                  startIcon={
+                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                  }
+                >
+                  <Typography sx={{ fontSize: 13 }}>Try Again</Typography>
+                </Button>
+              </Box>)}
             </React.Fragment>
           ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
-              {err?<Box sx={{ width: '100%',mt:3 }}>
-      <Collapse in={err}>
-        <Alert
-          severity="error"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setErr(null);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          {err}
-        </Alert>
-      </Collapse>
-    </Box>:""}
+              {err ? (
+                <Box sx={{ width: "100%", mt: 3 }}>
+                  <Collapse in={err}>
+                    <Alert
+                      severity="error"
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setErr(null);
+                          }}
+                        >
+                          <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                      }
+                      sx={{ mb: 2 }}
+                    >
+                      {err}
+                    </Alert>
+                  </Collapse>
+                </Box>
+              ) : (
+                ""
+              )}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {activeStep !== 0 && (
                   <Button
