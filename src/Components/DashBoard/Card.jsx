@@ -18,6 +18,9 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { BACKEND_URL } from '../../Constants';
+import RetryModal from '../Alert/RetryModal';
+
 
 export default function BasicGrid() {
     const [orderCount, setOrderCount] = useState({});
@@ -32,7 +35,7 @@ export default function BasicGrid() {
 
     const fetchOrderCount = async () => {
         try {
-            const result = await axios.get('http://192.168.117.94:9000/orders/orderCounts');
+            const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
             setOrderCount(result.data.message);
         } catch (error) {
             setError("Network error. Please try again.");
@@ -42,9 +45,11 @@ export default function BasicGrid() {
 
     const perCount = async () => {
         try {
-            const result = await axios.get('http://192.168.117.94:9000/admin/regCount');
-            setRegPerCount(result.data.message);
+            const result = await axios.get(`${BACKEND_URL}/admin/peronCount`);
+            setRegPerCount(result.data);
             console.log(result);
+            // const reg = regPerCount.data;
+            // console.log("reg:" ,reg)
         } catch (error) {
             setError("Network error. Please try again.");
             setOpen(true);
@@ -111,7 +116,7 @@ export default function BasicGrid() {
                     <Stack spacing={2}>
                         <Grid item xs={12}>
                             <CardCom 
-                                title={regPerCount.regPerCount} 
+                                title={regPerCount.reg} 
                                 text="Registered Courier persons" 
                                 width="100%" 
                                 titlefw="1000"
@@ -124,7 +129,7 @@ export default function BasicGrid() {
                         </Grid>
                         <Grid item xs={12}>
                             <CardCom 
-                                title="150" 
+                                title={regPerCount.app}
                                 text="Applicants" 
                                 width="100%" 
                                 titlefw="1000"
@@ -154,7 +159,7 @@ export default function BasicGrid() {
                 </Grid>
             </Grid>
 
-            <Modal
+            {/* <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
@@ -190,7 +195,14 @@ export default function BasicGrid() {
                         Try Again
                     </Button>
                 </Box>
-            </Modal>
+            </Modal> */}
+
+            <RetryModal
+                open={open}
+                onClose={handleClose}
+                error={error}
+                onclick1={handleTryAgain}
+            />
         </Box>
     );
 }

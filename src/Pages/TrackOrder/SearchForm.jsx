@@ -19,7 +19,7 @@ const SearchForm = ({ orderId, handleOrderIdChange, handleSearch, showSearch }) 
               },
             }}
           />
-          <Button  disabled={orderId == null} variant="contained" style={{ marginLeft: "20px" }} onClick={handleSearch} sx={{
+          <Button variant="contained" style={{ marginLeft: "20px" }} onClick={handleSearch} sx={{
             bgcolor: "#00897b",
             height:  "60px",
             width: "100px",
