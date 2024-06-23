@@ -75,7 +75,7 @@ const Newregistrationform = () => {
     // console.log("values:",values)
     // console.log("formData:",formData)
     try{
-      const result=await axios.post(`${BACKEND_URL}/admin/postApplicantData`,formData)
+      const result=await axios.post(`${BACKEND_URL}/applicant/postApplicantData`,formData)
       //setLoading(true);
       console.log(result);
       //setLoading(false);
@@ -96,7 +96,7 @@ const Newregistrationform = () => {
       sendRequest(values);
     // console.log(values);
     //setOpen(true);
-    actions.resetForm();
+    //actions.resetForm();
     })
     .catch((error) => {
       setShowErrorAlert(true);
