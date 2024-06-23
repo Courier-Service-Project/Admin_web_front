@@ -69,7 +69,7 @@ export default function ApplicantTable() {
 
   const getApplicantDetails = async () =>{
     try{
-      const result = await axios.get(`${BACKEND_URL}/admin/applicantDetails`);
+      const result = await axios.get(`${BACKEND_URL}/applicant/applicantDetails`);
       if(Array.isArray(result.data.message)){ 
       //console.log(result.data.message[0]);
       SetRows(result.data.message)

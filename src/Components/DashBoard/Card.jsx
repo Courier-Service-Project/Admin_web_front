@@ -47,7 +47,7 @@ export default function BasicGrid() {
     const perCount = async () => {
         try {
 
-            const result = await axios.get(`${BACKEND_URL}/admin/peronCount`);
+            const result = await axios.get(`${BACKEND_URL}/applicant/peronCount`);
             setRegPerCount(result.data);
 
             console.log(result);

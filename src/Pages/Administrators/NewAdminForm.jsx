@@ -53,7 +53,7 @@ const NewAdminForm = () => {
       values:values
     }
     try{
-      const result = await axios.post(`${BACKEND_URL}/admin/postAdminData`,formData)
+      const result = await axios.post(`${BACKEND_URL}/applicant/postAdminData`,formData)
       //console.log("im here")
       console.log(result);
     }
@@ -67,7 +67,7 @@ const NewAdminForm = () => {
     .then(() => {
       sendRequest(values);
       //console.log(values);
-      actions.resetForm();
+      //actions.resetForm();
     })
     .catch((error) => {
       console.log(error);

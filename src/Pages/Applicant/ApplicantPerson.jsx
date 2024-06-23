@@ -33,7 +33,7 @@ export default function ViewApplicant() {
 
     const getApplicantDetailsById = async (applicantid) => {
         try {
-            const result = await axios.get(`${BACKEND_URL}/admin/applicantDetailsById/${applicantid}`);
+            const result = await axios.get(`${BACKEND_URL}/applicant/applicantDetailsById/${applicantid}`);
             console.log(result.data.message);
             setApplicantData(result.data.message);
         } catch (error) {
@@ -47,7 +47,7 @@ export default function ViewApplicant() {
     const deleteApplicantPerson = async (applicantid) => {
         try{
             console.log(applicantid)
-            const result = await axios.delete(`${BACKEND_URL}/admin/applicantPersonDelete/${applicantid}`);
+            const result = await axios.delete(`${BACKEND_URL}/applicant/applicantPersonDelete/${applicantid}`);
             console.log(result);
             console.log("delete...");
             navigate("/applicant");
@@ -63,7 +63,7 @@ export default function ViewApplicant() {
         console.log("Sending request with values:", values);
         console.log(applicationId)
         try {
-            const result = await axios.post(`${BACKEND_URL}/admin/postregistereddata/${applicationId}`, { values });
+            const result = await axios.post(`${BACKEND_URL}/applicant/postregistereddata/${applicationId}`, { values });
             console.log(result);
             navigate("/applicant");
         } catch (error) {
