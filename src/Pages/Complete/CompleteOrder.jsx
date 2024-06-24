@@ -65,7 +65,7 @@ export default function CompleteOrder() {
               </Typography>
             </Box>
             <Box sx={{ml:4,mr:4,mt:5,mb:5}}>
-      <Card sx={{boxShadow:3,border:"2px solid green",borderRadius:3}}>
+      <Card sx={{boxShadow:1,border: "1px solid grey"}}>
         <CardContent>
           <Box component="form" sx={{m:4}}>
             <FormSubTitle subTitle="Sender Details" />

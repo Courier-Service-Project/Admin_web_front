@@ -30,6 +30,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from '@mui/icons-material/Logout';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import AddHomeIcon from '@mui/icons-material/AddHome';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -223,6 +224,12 @@ export default function Sidenav() {
               </ListItemButton>
             </List>
           </Collapse>
+          <ListItemButton onClick={()=>navigate("/createbranch")}>
+            <ListItemIcon>
+              <AddHomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create Branch" />
+          </ListItemButton>
           <ListItemButton onClick={()=>navigate("/account")}>
             <ListItemIcon>
               <SettingsIcon />

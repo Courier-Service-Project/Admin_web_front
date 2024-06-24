@@ -7,10 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "./CompleteTable.css";
 import axios from "axios";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Typography } from "@mui/material";
@@ -28,7 +25,7 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 15,
     // backgroundColor:"red"
   },
 }));
@@ -55,20 +52,19 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function CompleteTable() {
-  const navigate = useNavigate();
+export default function BranchTable() {
 
   useEffect(() => {
-    getcompleteOrderDetails();
+    getBranchDetails();
   }, []);
 
   const [rows, setRows] = React.useState([]);
-  // const [isError,setIsError]=React.useState(false);
+ 
 
-  const getcompleteOrderDetails = async () => {
+  const getBranchDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/completeorderDetails`
+        `${BACKEND_URL}/branch/branchDetails`
       );
       console.log(result);
       if(Array.isArray(result.data.message)){
@@ -93,43 +89,28 @@ export default function CompleteTable() {
           <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
             <TableHead>
               <TableRow>
-                <StyledTableCell>OrderID</StyledTableCell>
-                <StyledTableCell>Customer Name</StyledTableCell>
-                <StyledTableCell>Pickup District</StyledTableCell>
-                <StyledTableCell>Pickup HomeTown</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+                <StyledTableCell>Location</StyledTableCell>
+                <StyledTableCell>District</StyledTableCell>
+                <StyledTableCell>Province</StyledTableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {rows.length>0 ?(
                 rows.map((row) => (
-                  <StyledTableRow key={row.Order_id}>
-                    <StyledTableCell>{row.Order_id}</StyledTableCell>
-                    <StyledTableCell>{row.FirstName}</StyledTableCell>
-                    <StyledTableCell>{row.Pickup_District}</StyledTableCell>
-                    <StyledTableCell>{row.Pickup_City}</StyledTableCell>
-                    <StyledTableCell>
-                      <Button
-                        className="hover-link red-button"
-                        onClick={() =>
-                          navigate(`/completeorder/${row.Order_id}`, {
-                            state: { orderId: row.Order_id },
-                          })
-                        }
-                      >
-                        View Order
-                      </Button>
-                    </StyledTableCell>
+                  <StyledTableRow key={row.branchLocation}>
+                    <StyledTableCell>{row.branchLocation}</StyledTableCell>
+                    <StyledTableCell>{row.branchDistrict}</StyledTableCell>
+                    <StyledTableCell>{row.branchProvince}</StyledTableCell>
                   </StyledTableRow>
                 ))
               ):(
                 <StyledTableRow>
-                    <StyledTableCell colSpan={5}>
+                    <StyledTableCell colSpan={3}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Complete Order List.
+                              No Details in Branch List.
                           </Typography>
                         </Box>
                     </StyledTableCell>

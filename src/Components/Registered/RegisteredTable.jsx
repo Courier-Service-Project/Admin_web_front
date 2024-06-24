@@ -29,7 +29,7 @@ const StyledTableCell = styled(TableCell)(( ) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 15,
+    padding: 8,
   },
 }));
 
@@ -39,7 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   // hover effect
   '&:hover': {
-    backgroundColor: '#ffcdd2',
+    backgroundColor: '#ffebee',
   },
   // blue left border on hover
   '&:hover td:nth-child(1)': {
