@@ -90,3 +90,29 @@ export const PickupValidation = (
     return { textField: "Telephone", Error: "Invalid Telephone number" };
   } else return 0;
 };
+
+export const branchValidation = (bprvovince, bdis, blocation) => {
+  if (CheckEmpty(bprvovince)) {
+    return { textField: "province", Error: "Province is required" };
+  } else if (CheckEmpty(bdis)) {
+    return { textField: "District", Error: "District is required" };
+  } else if (CheckEmpty(blocation)) {
+    return { textField: "Location", Error: "Location is required" };
+  } else return 0;
+};
+
+export const pendinSenderValidation = (sfname, slname, scity, stele) => {
+  if (CheckEmpty(sfname)) {
+    return { textField: "First Name", Error: "First Name is required" };
+  } else if (CheckEmpty(slname)) {
+    return { textField: "Last Name", Error: "Last Name is required" };
+  } else if (CheckEmpty(scity)) {
+    return { textField: "City", Error: "City is required" };
+  } else if (CheckEmpty(stele)) {
+    return { textField: "Telephone", Error: "Telephone Number is required" };
+  } else if (
+    !stele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
+  ) {
+    return { textField: "Telephone", Error: "Invalid Telephone number" };
+  } else return 0;
+};

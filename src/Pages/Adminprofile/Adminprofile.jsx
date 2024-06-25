@@ -3,17 +3,16 @@ import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AppsIcon from '@mui/icons-material/Apps';
+import AppsIcon from "@mui/icons-material/Apps";
 import Admincard from "../../Components/administrators/Admincard";
 import { Grid, Divider } from "@mui/material";
-import pramuditha from '../../Assets/pramuditha.png';
-import fphoto1 from '../../Assets/fphoto1.jpg'
-import fphoto2 from '../../Assets/fphoto2.jpg'
+import pramuditha from "../../Assets/pramuditha.png";
+import fphoto1 from "../../Assets/fphoto1.jpg";
+import fphoto2 from "../../Assets/fphoto2.jpg";
 import axios from "axios";
 import { BACKEND_URL } from "../../Constants";
 
-export default function Adminprofile(){
-
+export default function Adminprofile() {
   useEffect(() => {
     getAdminprofileDetails();
   }, []);
@@ -34,37 +33,39 @@ export default function Adminprofile(){
   };
 
   return (
-    <Box  sx={{bgcolor: "#e0f2f1",minHeight:"100vh"}}>
+    <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
       <Navbar />
-      <Box height={75}  />
-      <Box sx={{ display: "flex"}}>
+      <Box height={75} />
+      <Box sx={{ display: "flex" }}>
         <Sidenav />
-        <Box component="main" sx={{ flexGrow: 1, p: 3,m:3,bgcolor:"white",boxShadow:1  }}>
-          <Box sx={{mx:3}}>
-            <Typography sx={{fontSize:30,fontWeight: 'bold'}}>
-              <AppsIcon sx={{mr:3}}/>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}
+        >
+          <Box sx={{ mx: 3 }}>
+            <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
+              <AppsIcon sx={{ mr: 3 }} />
               Admin Profile
             </Typography>
           </Box>
 
-          <Box sx={{m:3}}>
+          <Box sx={{ m: 3 }}>
             <Grid container spacing={3}>
-            {AdminprofileData &&
-              AdminprofileData.map((admin) => (
-                <Grid item xs={12} key={admin}>
-                  <Admincard
-                    name={admin.FirstName+ " " +admin.LastName}
-                    email={admin.Email}
-                    telephone={admin.mobile}
-                    photoSrc={admin.photoSrc}
-                    admin_Id={admin.admin_Id}
-                  />
-                </Grid>
-              ))}
+              {AdminprofileData &&
+                AdminprofileData.map((admin) => (
+                  <Grid item xs={12} key={admin}>
+                    <Admincard
+                      name={admin.FirstName + " " + admin.LastName}
+                      email={admin.Email}
+                      telephone={admin.mobile}
+                      photoSrc={admin.photoSrc}
+                      admin_Id={admin.admin_Id}
+                    />
+                  </Grid>
+                ))}
             </Grid>
-            <Divider sx={{ marginBottom: 4 , border:'none'}} />
+            <Divider sx={{ marginBottom: 4, border: "none" }} />
           </Box>
-
         </Box>
       </Box>
     </Box>

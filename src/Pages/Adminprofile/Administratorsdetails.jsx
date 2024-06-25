@@ -146,7 +146,7 @@ export default function Administratordetails() {
                   type="text"
                   margin="dense"
                   id="standard-basic"
-                  label="Telephone No 1:"
+                  label="Telephone No"
                   variant="standard"
                   size="small"
                   fullWidth
