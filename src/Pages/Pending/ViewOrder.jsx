@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
@@ -12,44 +12,57 @@ import FormSubTitle from "../../Components/pending/FormSubTitle";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import Pendingalert from "../../Components/pending/Pendingalert";
-import DeleteIcon from '@mui/icons-material/Delete';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import { pendinSenderValidation } from "../../Validation/Validation.js";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 export default function ViewOrder() {
+  const [openA, setOpenA] = React.useState(false);
+
+  const handleClose = () => {
+    setOpenA(false);
+  };
+
   const [viewOrderData, setViewOrderData] = useState(null);
-  const [edit,setEdit] = useState(true);
-  const [save,setSave] = useState(true);
+  const [edit, setEdit] = useState(true);
+  const [save, setSave] = useState(true);
+  const [open, setOpen] = React.useState(null);
   const { orderNo } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { orderId } = location.state || {};
 
   const [fromData, setFormData] = React.useState({
-    OrderID:"",
+    OrderID: "",
     S_fname: "",
     S_lname: "",
     S_city: "",
     S_telephone: "",
 
-    R_province:"",
+    R_province: "",
     R_district: "",
     R_streetNo: "",
     R_street: "",
     R_HomeTown: "",
     R_telephone: "",
-  
+
     P_streetNo: "",
     P_street: "",
     P_homeTown: "",
     P_district: "",
-    p_ordertype:"",
-    
+    p_ordertype: "",
   });
-
 
   const handleConfirmdata = async () => {
     await confirmData(viewOrderData.Order_id);
@@ -82,22 +95,37 @@ export default function ViewOrder() {
   };
 
   const handlEditdata = async () => {
-    setEdit(false)
-    setSave(false)
+    setEdit(false);
+    setSave(false);
   };
 
   const sendSave = async () => {
-    //  console.log("Receiver city"+fromData.R_HomeTown)
+    const data = pendinSenderValidation(
+      fromData.S_fname,
+      fromData.S_lname,
+      fromData.S_city,
+      fromData.S_telephone
+    );
+    if (data) {
+      setOpen(data.Error);
+    } else {
+      setOpenA(true);
+    }
+  };
+
+  const comsendsave = async () => {
+    setSave(true);
+    setOpenA(false);
     axios
-      .post(`${BACKEND_URL}/orders/editpendingorderdetails`,{
-        OrID:fromData.OrderID,
-        customerid:fromData.cusID,
-        reciverid:fromData.recID,
+      .post(`${BACKEND_URL}/orders/editpendingorderdetails`, {
+        OrID: fromData.OrderID,
+        customerid: fromData.cusID,
+        reciverid: fromData.recID,
         sfname: fromData.S_fname,
         slname: fromData.S_lname,
         scity: fromData.S_city,
         stelephone: fromData.S_telephone,
-       
+
         rprovince: fromData.R_province,
         rdistric: fromData.R_district,
         rstreetNo: fromData.R_streetNo,
@@ -111,18 +139,15 @@ export default function ViewOrder() {
         pstreet: fromData.P_street,
         phometown: fromData.P_homeTown,
         pdistrict: fromData.P_district,
-        potype:fromData.p_ordertype,
-        
+        potype: fromData.p_ordertype,
       })
       .then(function (response) {
         console.log(response);
       })
       .catch(function (error) {
-        console.log(error);
+        alert("not   saved");
       });
-      window.location.reload();
   };
-
 
   const fetchOrderById = async (orderId) => {
     try {
@@ -130,40 +155,35 @@ export default function ViewOrder() {
         `${BACKEND_URL}/orders/pendingorderdetailsbyid/${orderId}`
       );
       setViewOrderData(response.data.message[0]);
-      console.log(response.data.message[0])
+      console.log(response.data.message[0]);
       setFormData({
         ...fromData,
 
-        OrderID:response.data.message[0].Order_id,
-        cusID:response.data.message[0].cus_id,
-        S_fname:response.data.message[0].CustomerFirstName,
-        S_lname:response.data.message[0].CustomerLastName,
-        S_city:response.data.message[0].Customercity,
-        S_telephone:response.data.message[0].Customermobile,
-       
-        recID:response.data.message[0].recieverId,
-        R_province:response.data.message[0].DiliveryProvince,
-        R_district:response.data.message[0].DiliveryDistrict,
-        R_streetNo:response.data.message[0].StreetNo,
-        R_street:response.data.message[0].Street,
-        R_HomeTown:response.data.message[0].City,
-        R_telephone:response.data.message[0].mobile,
+        OrderID: response.data.message[0].Order_id,
+        cusID: response.data.message[0].cus_id,
+        S_fname: response.data.message[0].CustomerFirstName,
+        S_lname: response.data.message[0].CustomerLastName,
+        S_city: response.data.message[0].Customercity,
+        S_telephone: response.data.message[0].Customermobile,
 
-        P_streetNo:response.data.message[0].Pickup_StreetNo,
-        P_street:response.data.message[0].Pickup_Street,
-        P_homeTown:response.data.message[0].Pickup_City,
-        P_district:response.data.message[0].Pickup_District,
-        p_ordertype:response.data.message[0].Emmergency,
-        
-      })
-    
+        recID: response.data.message[0].recieverId,
+        R_province: response.data.message[0].DiliveryProvince,
+        R_district: response.data.message[0].DiliveryDistrict,
+        R_streetNo: response.data.message[0].StreetNo,
+        R_street: response.data.message[0].Street,
+        R_HomeTown: response.data.message[0].City,
+        R_telephone: response.data.message[0].mobile,
+
+        P_streetNo: response.data.message[0].Pickup_StreetNo,
+        P_street: response.data.message[0].Pickup_Street,
+        P_homeTown: response.data.message[0].Pickup_City,
+        P_district: response.data.message[0].Pickup_District,
+        p_ordertype: response.data.message[0].Emmergency,
+      });
     } catch (error) {
       console.error("Error fetching order details:", error);
     }
   };
-
-  
-
 
   useEffect(() => {
     if (orderId) {
@@ -184,16 +204,16 @@ export default function ViewOrder() {
           >
             <Box sx={{ mx: 4 }}>
               <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
-                  <div>
-                    <AppsIcon sx={{ mr: 3 }} />
-                    OrderID - {fromData.OrderID}
-                  </div>
+                <div>
+                  <AppsIcon sx={{ mr: 3 }} />
+                  OrderID - {fromData.OrderID}
+                </div>
               </Typography>
             </Box>
             <Box sx={{ ml: 4, mr: 4, mt: 5, mb: 5 }}>
               <Card
                 sx={{
-                  boxShadow:1,
+                  boxShadow: 1,
                   border: "1px solid grey",
                 }}
               >
@@ -202,8 +222,6 @@ export default function ViewOrder() {
                     <FormSubTitle subTitle="Sender Details" />
                     <Divider sx={{ marginBottom: 1, border: 1 }} />
                     <Grid container spacing={1} sx={{ mt: 3 }}>
-                      
-
                       <Grid item xs={12} md={6}>
                         <TextField
                           id="outlined-basic"
@@ -211,7 +229,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="S_fname"
                           fullWidth
                           variant="outlined"
@@ -232,7 +250,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="S_lname"
                           fullWidth
                           variant="outlined"
@@ -253,7 +271,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="S_city"
                           fullWidth
                           variant="outlined"
@@ -274,7 +292,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="S_telephone"
                           fullWidth
                           variant="outlined"
@@ -292,16 +310,14 @@ export default function ViewOrder() {
                     <FormSubTitle subTitle="Receiver Details" />
                     <Divider sx={{ marginBottom: 1, border: 1 }} />
                     <Grid container spacing={1} sx={{ mt: 3 }}>
-
-                      
-                    <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={6}>
                         <TextField
                           id="outlined-basic"
                           label="Province"
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_province"
                           fullWidth
                           variant="outlined"
@@ -322,7 +338,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_district"
                           fullWidth
                           variant="outlined"
@@ -343,7 +359,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_streetNo"
                           fullWidth
                           variant="outlined"
@@ -364,7 +380,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_street"
                           fullWidth
                           variant="outlined"
@@ -385,7 +401,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_HomeTown"
                           fullWidth
                           variant="outlined"
@@ -406,7 +422,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="R_telephone"
                           fullWidth
                           variant="outlined"
@@ -424,15 +440,14 @@ export default function ViewOrder() {
                     <FormSubTitle subTitle="Pickup Details" />
                     <Divider sx={{ marginBottom: 1, border: 1 }} />
                     <Grid container spacing={1} sx={{ mt: 3 }}>
-
-                    <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={6}>
                         <TextField
                           id="outlined-basic"
                           label="Street No"
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="P_streetNo"
                           fullWidth
                           variant="outlined"
@@ -453,7 +468,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="P_street"
                           fullWidth
                           variant="outlined"
@@ -474,7 +489,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="P_homeTown"
                           fullWidth
                           variant="outlined"
@@ -495,7 +510,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="P_district"
                           fullWidth
                           variant="outlined"
@@ -516,7 +531,7 @@ export default function ViewOrder() {
                           size="small"
                           InputProps={{
                             readOnly: edit,
-                          }}
+                          }}
                           name="p_ordertype"
                           fullWidth
                           variant="outlined"
@@ -531,17 +546,39 @@ export default function ViewOrder() {
                       </Grid>
                     </Grid>
 
-                    <Grid container spacing={1} sx={{ mt: 3 }}>
+                    <Box sx={{ width: "100%", mt:2 }}>
+                      <Collapse in={open}>
+                        <Alert
+                          severity="error"
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setOpen(false);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          }
+                          sx={{ mb: 2 }}
+                        >
+                          {open}
+                        </Alert>
+                      </Collapse>
+                    </Box>
 
-                    <Grid
+                    <Grid container sx={{ mt:1 }}>
+                      <Grid
                         item
                         xs={12}
-                        md={4}
-                        style={{ margin: "0 auto", padding: "0 20px" }}
+                        md={3}
+                        style={{ margin: "0 auto", padding: "10px 0px" }}
                       >
                         <Pendingalert
                           color="#bdbdbd"
-                          Icon = {<DeleteIcon/>}
+                          Icon={<DeleteIcon />}
                           button="Delete Order"
                           title="Delete Order"
                           text="Are you sure you want to delete this order?"
@@ -555,60 +592,63 @@ export default function ViewOrder() {
                       <Grid
                         item
                         xs={12}
-                        md={4}
-                        style={{ margin: "0 auto", padding: "0 20px" }}
+                        md={3}
+                        style={{ margin: "0 auto", padding: "10px 0px" }}
                       >
-                        {save? (<Button
-                          fullWidth
-                          size="large"
-                          style={{backgroundColor:"#00acc1"}}
-                          sx={{ margin: "30px 0 10px 0", borderRadius: "50px",gap:'15px'}}
-                          variant="contained"
-                          onClick={handlEditdata}
-                        >
-                          <EditIcon/>
-                          Edit Order
-                        </Button>
-                        ):(
-                        
-                          <Pendingalert
-                          color= "#0288d1"
-                          Icon={<SaveIcon/>}
-                          button=" Save Edit"
-                          title="Save Order"
-                          text="Are you sure save this changes ?"
-                          buttonName1="Cancel"
-                          buttonName2="Save"
-                          bcolor="0288d1"
-                          onClick1={sendSave}
-                        />
-                        
-                       
-                        // <Button
-                        //   fullWidth
-                        //   size="large"
-                        //   style={{backgroundColor:"#0288d1"}}
-                        //   sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
-                        //   variant="contained"
-                        //   onClick={sendSave}
-                        // >
-                        //   <SaveIcon/>
-                        //   Save Edit
-                        // </Button>
-                  
-                      )}
-                      
+                        {save ? (
+                          <Button
+                            fullWidth
+                            size="medium"
+                            variant="contained"
+                            style={{
+                              backgroundColor: "#00acc1",
+                              margin: "0px 0 0px 0",
+                              gap: "1px",
+                            }}
+                            onClick={handlEditdata}
+                          >
+                            <EditIcon />
+                            Edit Order
+                          </Button>
+                        ) : (
+                          <Button
+                            fullWidth
+                            size="medium"
+                            style={{
+                              backgroundColor: "#0288d1",
+                              margin: "0px 0 0px 0",
+                              gap: "3px",
+                            }}
+                            variant="contained"
+                            onClick={sendSave}
+                          >
+                            <SaveIcon />
+                            Save Edit
+                          </Button>
+
+                          // <Button
+                          //   fullWidth
+                          //   size="large"
+                          //   style={{backgroundColor:"#0288d1"}}
+                          //   sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
+                          //   variant="contained"
+                          //   onClick={sendSave}
+                          // >
+                          //   <SaveIcon/>
+                          //   Save Edit
+                          // </Button>
+                        )}
                       </Grid>
 
                       <Grid
                         item
                         xs={12}
-                        md={4}
-                        style={{ margin: "0 auto", padding: "0 20px" }}
+                        md={3}
+                        style={{ margin: "0 auto", padding: "10px 0px" }}
                       >
                         <Pendingalert
                           color="#4caf50"
-                          Icon = {<CheckCircleIcon/>}
+                          Icon={<CheckCircleIcon />}
                           button="Confirm Order"
                           title="Confirm Order"
                           text="Are you sure you want to confirm this order?"
@@ -618,7 +658,6 @@ export default function ViewOrder() {
                           onClick1={handleConfirmdata}
                         />
                       </Grid>
-
                     </Grid>
                   </Box>
                 </CardContent>
@@ -626,6 +665,34 @@ export default function ViewOrder() {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box>
+        <Dialog
+          open={openA}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          sx={{
+            "& .MuiDialog-paper": {
+              width: "500px",
+              maxWidth: "none",
+              padding: "10px",
+            },
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">
+           Save Order
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+            Are you sure you want to Save this change?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} sx={{ color: "black" }}>Cancel</Button>
+            <Button variant="contained" style={{ backgroundColor:"#0288d1" }} onClick={comsendsave} autoFocus>Save</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </React.Fragment>
   );
