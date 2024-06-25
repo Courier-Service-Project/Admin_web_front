@@ -4,9 +4,13 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
+import { BACKEND_URL, ID } from "../../Constants/index";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function PickupDetails({ fromData, setFormData }) {
   const [getbranch, setBranch] = useState(["Loading"]);
+  const [cost, setcost] = React.useState("");
+
   useEffect(() => {
     const fetchBranch = async () => {
       try {
@@ -20,19 +24,32 @@ export default function PickupDetails({ fromData, setFormData }) {
     fetchBranch();
   }, []);
 
-  console.log(getbranch);
+  React.useEffect(() => {
+    axios
+      .post(`${BACKEND_URL}/branch/getDistance`, {
+        Slocation: fromData.R_district,
+        Rlocation: fromData.P_district,
+      })
+      .then(function (response) {
+        localStorage.setItem("distance", response.data.data);
+        setcost(response.data.data);
+        setFormData({ ...fromData, P_distanceCost: response.data.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [fromData.P_district]);
 
   const District = ["Hambantota", "Mathara", "Colombo", "Gampaha"];
   const Payment = ["Sender", "Receiver"];
   const Vehical = ["Car", "Bike", "Three-Wheel"];
-  const status = ["Immergency", "Normal"];
-  console.log(status);
+  const status = ["Emergency", "Normal"];
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Pickup Details
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={3}>
           <TextField
             name="P_streetNo"
@@ -101,6 +118,7 @@ export default function PickupDetails({ fromData, setFormData }) {
             disablePortal
             id="combo-box-demo"
             options={District}
+            value={fromData.P_district}
             onChange={(event, value) =>
               setFormData({ ...fromData, P_district: value })
             }
@@ -116,7 +134,34 @@ export default function PickupDetails({ fromData, setFormData }) {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={2}>
+          <TextField
+            required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Rs :</InputAdornment>
+              ),
+              readOnly: true,
+            }}
+            sx={{
+              input: {
+                fontFamily: "monospace",
+                fontWeight: "500",
+                color: "#f43f5e",
+              },
+            }}
+            InputLabelProps={{
+              style: { color: "#9ca3af" },
+            }}
+            name="P_distanceCost"
+            label="Distance Cost"
+            fullWidth
+            autoComplete="off"
+            variant="standard"
+            value={cost}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -142,6 +187,7 @@ export default function PickupDetails({ fromData, setFormData }) {
             disablePortal
             id="combo-box-demo"
             options={Payment}
+            value={fromData.P_paymentMethod}
             onChange={(event, value) =>
               setFormData({ ...fromData, P_paymentMethod: value })
             }
@@ -163,6 +209,7 @@ export default function PickupDetails({ fromData, setFormData }) {
             fullWidth
             id="combo-box-demo"
             options={Vehical}
+            value={fromData.P_VehicalType}
             onChange={(event, value) =>
               setFormData({ ...fromData, P_VehicalType: value })
             }
@@ -204,23 +251,7 @@ export default function PickupDetails({ fromData, setFormData }) {
         <Grid item xs={12} sm={6}>
           {/* empty */}
         </Grid>
-        <Grid item xs={3}>
-          <TextField
-            required
-            name="P_distanceCost"
-            label="Distance Cost"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
-            value={fromData.P_distanceCost}
-            onChange={(event) =>
-              setFormData({ ...fromData, P_distanceCost: event.target.value })
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          {/* empty */}
-        </Grid>
+
         <Grid item xs={8}>
           <TextField
             name="P_specialNote"
