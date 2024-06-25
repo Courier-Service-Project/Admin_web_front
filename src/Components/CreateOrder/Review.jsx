@@ -268,7 +268,7 @@ export default function SenderDetails({ fromData, setFormData }) {
             <TextFR
               name="P_distanceCost"
               label="Distance Cost"
-              value={fromData.P_distanceCost}
+              value={localStorage.getItem("distance")}
               onChange={(event) =>
                 setFormData({ ...fromData, P_distanceCost: event.target.value })
               }

@@ -11,34 +11,34 @@ export default function PickupDetails({ fromData, setFormData }) {
   const [getbranch, setBranch] = useState(["Loading"]);
   const [cost, setcost] = React.useState("");
 
-  setFormData({ ...fromData, P_streetNo: cost });
+  useEffect(() => {
+    const fetchBranch = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/branch");
+        const branch = response.data.Data;
+        setBranch(branch);
+      } catch (error) {
+        console.log(error + " Error loading Branch");
+      }
+    };
+    fetchBranch();
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchBranch = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:9000/branch");
-  //       const branch = response.data.Data;
-  //       setBranch(branch);
-  //     } catch (error) {
-  //       console.log(error + " Error loading Branch");
-  //     }
-  //   };
-  //   fetchBranch();
-  // }, []);
-
-  // React.useEffect(() => {
-  //   axios
-  //     .post(`${BACKEND_URL}/branch/getDistance`, {
-  //       Slocation: fromData.R_district,
-  //       Rlocation: fromData.P_district,
-  //     })
-  //     .then(function (response) {
-  //       setcost(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }, [fromData.P_district]);
+  React.useEffect(() => {
+    axios
+      .post(`${BACKEND_URL}/branch/getDistance`, {
+        Slocation: fromData.R_district,
+        Rlocation: fromData.P_district,
+      })
+      .then(function (response) {
+        localStorage.setItem("distance", response.data.data);
+        setcost(response.data.data);
+        setFormData({ ...fromData, P_distanceCost: response.data.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [fromData.P_district]);
 
   const District = ["Hambantota", "Mathara", "Colombo", "Gampaha"];
   const Payment = ["Sender", "Receiver"];

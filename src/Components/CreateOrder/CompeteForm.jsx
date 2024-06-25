@@ -203,21 +203,21 @@ export default function CompeteForm() {
   }
 
   const handleNext = () => {
-    // if (activeStep === 0) {
-    //   if (senderValid()) {
-    //     return;
-    //   }
-    // }
-    // if (activeStep === 1) {
-    //   if (recieverValid()) {
-    //     return;
-    //   }
-    // }
-    // if (activeStep === 2) {
-    //   if (pickValid()) {
-    //     return;
-    //   }
-    // }
+    if (activeStep === 0) {
+      if (senderValid()) {
+        return;
+      }
+    }
+    if (activeStep === 1) {
+      if (recieverValid()) {
+        return;
+      }
+    }
+    if (activeStep === 2) {
+      if (pickValid()) {
+        return;
+      }
+    }
 
     if (activeStep === steps.length - 1) {
       sendDetails();
