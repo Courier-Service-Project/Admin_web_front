@@ -1,5 +1,5 @@
 export const CheckEmpty = (data) => {
-  if (data.trim() === "" || data.trim() === "") {
+  if (data === "") {
     return true;
   } else {
     return false;
@@ -91,7 +91,7 @@ export const PickupValidation = (
   } else return 0;
 };
 
-export const branchValidation = (bprvovince,bdis,blocation) => {
+export const branchValidation = (bprvovince, bdis, blocation) => {
   if (CheckEmpty(bprvovince)) {
     return { textField: "province", Error: "Province is required" };
   } else if (CheckEmpty(bdis)) {
@@ -114,5 +114,5 @@ export const pendinSenderValidation = (sfname, slname, scity, stele) => {
     !stele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
   ) {
     return { textField: "Telephone", Error: "Invalid Telephone number" };
-  }  else return 0;
+  } else return 0;
 };
