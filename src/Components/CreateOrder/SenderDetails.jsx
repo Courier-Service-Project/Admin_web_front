@@ -9,35 +9,45 @@ export default function SenderDetails({ fromData, setFormData }) {
       <Typography variant="h6" gutterBottom>
         Sender Details
       </Typography>
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         <Grid item xs={12} sm={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
+            variant="standard"
+            autoComplete="off"
+            fullWidth
             required
             name="S_fname"
             label="First name"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_fname}
-            onChange={(event)=>setFormData({...fromData,S_fname:event.target.value})}
+            onChange={(event) =>
+              setFormData({ ...fromData, S_fname: event.target.value })
+            }
           />
         </Grid>
         <Grid item xs={12} sm={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             name="S_lname"
             label="Last name"
             fullWidth
             autoComplete="off"
             variant="standard"
             value={fromData.S_lname}
-            onChange={(event)=>setFormData({...fromData,S_lname:event.target.value})}
+            onChange={(event) =>
+              setFormData({ ...fromData, S_lname: event.target.value })
+            }
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-        {/* empty */}
+          {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             required
             name="S_telephone"
             label="Telephone"
@@ -51,10 +61,12 @@ export default function SenderDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={12} sm={8}>
-        {/* empty */}
+          {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             required
             name="S_email"
             label="Email"
@@ -68,10 +80,12 @@ export default function SenderDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={12} sm={8}>
-        {/* empty */}
+          {/* empty */}
         </Grid>
         <Grid item xs={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             name="S_streestNo"
             label="Street No"
             fullWidth
@@ -85,6 +99,8 @@ export default function SenderDetails({ fromData, setFormData }) {
         </Grid>
         <Grid item xs={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             name="S_street"
             label="Street"
             fullWidth
@@ -98,6 +114,8 @@ export default function SenderDetails({ fromData, setFormData }) {
         </Grid>
         <Grid item xs={3}>
           <TextField
+            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             required
             name="S_city"
             label="HomeTown"
@@ -114,4 +132,3 @@ export default function SenderDetails({ fromData, setFormData }) {
     </React.Fragment>
   );
 }
-

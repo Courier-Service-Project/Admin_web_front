@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import SenderDetails from "./SenderDetails";
 import ReceiverDetails from "./ReceiverDetails";
+import Review from "./Review";
 import {
   senderValidation,
   RecieverValidation,
@@ -27,7 +28,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { BACKEND_URL, ID } from "../../Constants/index";
 
-const steps = ["Sender Details", "Receiver Detais", "Pickup Details"];
+const steps = [
+  "Sender Details",
+  "Receiver Detais",
+  "Pickup Details",
+  "Final Review",
+];
 const steptyle = {
   pt: 3,
   pb: 5,
@@ -47,6 +53,7 @@ const steptyle = {
 export default function CompeteForm() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [err, setErr] = React.useState(null);
+
   const [loading, setLoading] = React.useState(true);
   const [resSuccess, setResSuccess] = React.useState(true);
   const [fromData, setFormData] = React.useState({
@@ -94,6 +101,8 @@ export default function CompeteForm() {
         );
       case 2:
         return <PickupDetails fromData={fromData} setFormData={setFormData} />;
+      case 3:
+        return <Review fromData={fromData} setFormData={setFormData} />;
       default:
         throw new Error("Unknown step");
     }
@@ -106,7 +115,6 @@ export default function CompeteForm() {
       fromData.S_telephone,
       fromData.S_email
     );
-    console.log(data);
     if (data) {
       setErr(data.Error);
       return 1;
@@ -122,7 +130,6 @@ export default function CompeteForm() {
       fromData.R_province,
       fromData.R_email
     );
-    console.log(data);
 
     if (data) {
       setErr(data.Error);
@@ -141,8 +148,6 @@ export default function CompeteForm() {
       fromData.P_distanceCost,
       fromData.P_VehicalType
     );
-    console.log(data);
-
     if (data) {
       setErr(data.Error);
       return 1;
@@ -198,21 +203,23 @@ export default function CompeteForm() {
   }
 
   const handleNext = () => {
-    if (activeStep === 0) {
-      if (senderValid()) {
-        return;
-      }
-    }
-    if (activeStep === 1) {
-      if (recieverValid()) {
-        return;
-      }
-    }
+    // if (activeStep === 0) {
+    //   if (senderValid()) {
+    //     return;
+    //   }
+    // }
+    // if (activeStep === 1) {
+    //   if (recieverValid()) {
+    //     return;
+    //   }
+    // }
+    // if (activeStep === 2) {
+    //   if (pickValid()) {
+    //     return;
+    //   }
+    // }
 
     if (activeStep === steps.length - 1) {
-      if (pickValid()) {
-        return;
-      }
       sendDetails();
     }
     setLoading(true);
@@ -239,59 +246,61 @@ export default function CompeteForm() {
             <React.Fragment>
               {loading ? (
                 <LinearProgress sx={{ my: 6 }} color="success" />
-              ) : resSuccess? (<Box>
-                <Typography variant="h5" gutterBottom>
-                  Order is Placed.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Order has been sent to the pending order list.
-                </Typography>
-                <Button
-                  size="small"
-                  onClick={refreshPage}
-                  variant="contained"
-                  sx={{
-                    p: 1,
-                    mt: 5,
-                    bgcolor: "#00897b",
-                    ":hover": {
-                      bgcolor: "#4db6ac",
-                      color: "#fff",
-                    },
-                  }}
-                  startIcon={
-                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
-                  }
-                >
-                  <Typography sx={{ fontSize: 13 }}>New Order</Typography>
-                </Button>
-              </Box>) : (<Box>
-                <Typography variant="h5" gutterBottom>
-                  Order is Not Placed.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Re-Try.
-                </Typography>
-                <Button
-                  size="small"
-                  onClick={refreshPage}
-                  variant="contained"
-                  sx={{
-                    p: 1,
-                    mt: 5,
-                    bgcolor: "#00897b",
-                    ":hover": {
-                      bgcolor: "#4db6ac",
-                      color: "#fff",
-                    },
-                  }}
-                  startIcon={
-                    <AddCircleOutlineIcon style={{ fontSize: 20 }} />
-                  }
-                >
-                  <Typography sx={{ fontSize: 13 }}>Try Again</Typography>
-                </Button>
-              </Box>)}
+              ) : resSuccess ? (
+                <Box>
+                  <Typography variant="h5" gutterBottom>
+                    Order is Placed.
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Order has been sent to the pending order list.
+                  </Typography>
+                  <Button
+                    size="small"
+                    onClick={refreshPage}
+                    variant="contained"
+                    sx={{
+                      p: 1,
+                      mt: 5,
+                      bgcolor: "#00897b",
+                      ":hover": {
+                        bgcolor: "#4db6ac",
+                        color: "#fff",
+                      },
+                    }}
+                    startIcon={
+                      <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                    }
+                  >
+                    <Typography sx={{ fontSize: 13 }}>New Order</Typography>
+                  </Button>
+                </Box>
+              ) : (
+                <Box>
+                  <Typography variant="h5" gutterBottom>
+                    Order is Not Placed.
+                  </Typography>
+                  <Typography variant="subtitle1">Re-Try.</Typography>
+                  <Button
+                    size="small"
+                    onClick={refreshPage}
+                    variant="contained"
+                    sx={{
+                      p: 1,
+                      mt: 5,
+                      bgcolor: "#00897b",
+                      ":hover": {
+                        bgcolor: "#4db6ac",
+                        color: "#fff",
+                      },
+                    }}
+                    startIcon={
+                      <AddCircleOutlineIcon style={{ fontSize: 20 }} />
+                    }
+                  >
+                    <Typography sx={{ fontSize: 13 }}>Try Again</Typography>
+                  </Button>
+                </Box>
+              )}
             </React.Fragment>
           ) : (
             <React.Fragment>
