@@ -15,7 +15,6 @@ import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import { Typography } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import TableRowsIcon from '@mui/icons-material/TableRows';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {

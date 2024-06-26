@@ -86,7 +86,7 @@ export default function BranchDetails() {
               <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
                 <div>
                   <AppsIcon sx={{ mr: 3 }} />
-                  Create Branch
+                  Branch Details
                 </div>
               </Typography>
             </Box>
@@ -262,16 +262,6 @@ export default function BranchDetails() {
                 </Card>
               </Box>
             )}
-
-            <Box sx={{ mx: 4 }}>
-              <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
-                <div>
-                  <AppsIcon sx={{ mr: 3 }} />
-                  Branch Details
-                </div>
-              </Typography>
-            </Box>
-
             <BranchTable1 />
           </Box>
         </Box>

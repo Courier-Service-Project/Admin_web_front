@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Typography } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -111,6 +112,7 @@ export default function CompleteTable() {
                     <StyledTableCell>{row.Pickup_City}</StyledTableCell>
                     <StyledTableCell>
                       <Button
+                       sx={{gap:"5px"}}
                         className="hover-link red-button"
                         onClick={() =>
                           navigate(`/completeorder/${row.Order_id}`, {
@@ -119,6 +121,7 @@ export default function CompleteTable() {
                         }
                       >
                         View Order
+                        <VisibilityIcon style={{ fontSize: 20, color:"#e57373" }} />
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
