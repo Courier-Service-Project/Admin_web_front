@@ -12,9 +12,10 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import { Typography } from "@mui/material";
-// import { Typography } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import TableRowsIcon from '@mui/icons-material/TableRows';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,7 +30,7 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 15,
     // backgroundColor:"red"
   },
 }));
@@ -73,20 +74,20 @@ export default function PendingTable() {
       console.log(result);
 
       console.log(result.data.message[0]);
-    if (Array.isArray(result.data.message)) {
-      setRows(result.data.message);
-    } else {
+      if (Array.isArray(result.data.message)) {
+        setRows(result.data.message);
+      } else {
+        setRows([]);
+        console.error("Expected result", result.data.message);
+      }
+    } catch (error) {
       setRows([]);
-      console.error("Expected result", result.data.message);
+      console.error("Failed to fetch order details", error);
     }
-  } catch (error) {
-    setRows([]);
-    console.error("Failed to fetch order details", error);
-  }
   };
 
   return (
-    <Box style={{ paddingTop: "20px", marginLeft: "20px" , overflowX: "auto"}}>
+    <Box style={{ paddingTop: "20px", marginLeft: "20px", overflowX: "auto" }}>
       <Box style={{ display: "flex", justifyContent: "center" }}>
         {/* {
             isError==true&&<Typography>Network Error</Typography>
@@ -112,7 +113,8 @@ export default function PendingTable() {
                     <StyledTableCell>{row.Pickup_District}</StyledTableCell>
                     <StyledTableCell>{row.Pickup_City}</StyledTableCell>
                     <StyledTableCell>
-                      <Button
+                      <Button 
+                        sx={{gap:"5px"}}
                         className="hover-link red-button"
                         onClick={() =>
                           navigate(`/Pendingorder/${row.Order_id}`, {
@@ -120,22 +122,30 @@ export default function PendingTable() {
                           })
                         }
                       >
-                        View Order
+                         View Order
+                      <VisibilityIcon style={{ fontSize: 20, color:"#e57373" }} />
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))
-              ):(
+              ) : (
                 <StyledTableRow>
-                    <StyledTableCell colSpan={5}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
-                          <FeedbackIcon sx={{ mr: 3, color:"red" }} />
-                          <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Pending Order List.
-                          </Typography>
-                        </Box>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  <StyledTableCell colSpan={5}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mt: 2,
+                      }}
+                    >
+                      <FeedbackIcon sx={{ mr: 3, color: "red" }} />
+                      <Typography sx={{ color: "red", fontSize: 20 }}>
+                        No orders in Pending Order List.
+                      </Typography>
+                    </Box>
+                  </StyledTableCell>
+                </StyledTableRow>
               )}
             </TableBody>
           </Table>

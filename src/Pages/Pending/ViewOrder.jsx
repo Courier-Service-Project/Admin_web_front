@@ -27,6 +27,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+
 export default function ViewOrder() {
   const [openA, setOpenA] = React.useState(false);
 
@@ -104,7 +105,20 @@ export default function ViewOrder() {
       fromData.S_fname,
       fromData.S_lname,
       fromData.S_city,
-      fromData.S_telephone
+      fromData.S_telephone,
+      fromData.R_province,
+      fromData.R_district,
+      fromData.R_streetNo,
+      fromData.R_street,
+      fromData.R_HomeTown,
+      fromData.R_telephone,
+      // fromData.R_lname,
+      // fromData.R_fname,
+      fromData.P_streetNo,
+      fromData.P_street,
+      fromData.P_homeTown,
+      fromData.P_district,
+      fromData.p_ordertype
     );
     if (data) {
       setOpen(data.Error);
@@ -132,8 +146,8 @@ export default function ViewOrder() {
         rstreet: fromData.R_street,
         rhometown: fromData.R_HomeTown,
         rtelephone: fromData.R_telephone,
-        rfname: fromData.R_lname,
-        rlname: fromData.R_fname,
+        // rfname: fromData.R_lname,
+        // rlname: fromData.R_fname,
 
         pstreetNo: fromData.P_streetNo,
         pstreet: fromData.P_street,
@@ -142,10 +156,10 @@ export default function ViewOrder() {
         potype: fromData.p_ordertype,
       })
       .then(function (response) {
-        console.log(response);
+        setEdit(true);
       })
       .catch(function (error) {
-        alert("not   saved");
+        alert("not saved");
       });
   };
 
@@ -546,7 +560,7 @@ export default function ViewOrder() {
                       </Grid>
                     </Grid>
 
-                    <Box sx={{ width: "100%", mt:2 }}>
+                    <Box sx={{ width: "100%", mt: 2 }}>
                       <Collapse in={open}>
                         <Alert
                           severity="error"
@@ -569,7 +583,7 @@ export default function ViewOrder() {
                       </Collapse>
                     </Box>
 
-                    <Grid container sx={{ mt:1 }}>
+                    <Grid container sx={{ mt: 1 }}>
                       <Grid
                         item
                         xs={12}
@@ -680,17 +694,24 @@ export default function ViewOrder() {
             },
           }}
         >
-          <DialogTitle id="alert-dialog-title">
-           Save Order
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Save Order</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-            Are you sure you want to Save this change?
+              Are you sure you want to Save this change?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} sx={{ color: "black" }}>Cancel</Button>
-            <Button variant="contained" style={{ backgroundColor:"#0288d1" }} onClick={comsendsave} autoFocus>Save</Button>
+            <Button onClick={handleClose} sx={{ color: "black" }}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#0288d1" }}
+              onClick={comsendsave}
+              autoFocus
+            >
+              Save
+            </Button>
           </DialogActions>
         </Dialog>
       </Box>
