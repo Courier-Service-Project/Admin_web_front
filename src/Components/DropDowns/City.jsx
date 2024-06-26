@@ -27,7 +27,6 @@ export default function DistrictDrop({ label, name, value, onChange, error, help
         <MenuItem value="Beliatta">Beliatta</MenuItem>
         <MenuItem value="Embilipitiya">Embilipitiya</MenuItem>
         <MenuItem value="Tangalle">Tangalle</MenuItem>
-        <MenuItem value="Embilipitiya">Embilipitiya</MenuItem>
         <MenuItem value="Colombo">Colombo</MenuItem>
         <MenuItem value="Galle">Galle</MenuItem>
         <MenuItem value="Gampaha">Gampaha</MenuItem>
