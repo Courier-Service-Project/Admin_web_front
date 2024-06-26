@@ -101,18 +101,54 @@ export const branchValidation = (bprvovince, bdis, blocation) => {
   } else return 0;
 };
 
-export const pendinSenderValidation = (sfname, slname, scity, stele) => {
+export const pendinSenderValidation = (sfname, slname, scity, stele,rpro,rdis,rstno,rstreet,rcity,rtele,pstno,pstreet,pcity,pdis,ptype) => {
   if (CheckEmpty(sfname)) {
-    return { textField: "First Name", Error: "First Name is required" };
+    return { textField: "First Name", Error: "Sender First Name is required" };
   } else if (CheckEmpty(slname)) {
-    return { textField: "Last Name", Error: "Last Name is required" };
+    return { textField: "Last Name", Error: "Sender Last Name is required" };
   } else if (CheckEmpty(scity)) {
-    return { textField: "City", Error: "City is required" };
+    return { textField: "City", Error: "Sender City is required" };
   } else if (CheckEmpty(stele)) {
-    return { textField: "Telephone", Error: "Telephone Number is required" };
-  } else if (
+    return { textField: "Telephone", Error: "Sender Telephone Number is required" };
+  } 
+  
+  else if (CheckEmpty(rpro)) {
+    return { textField: "Province", Error: "Reciver province is required" };
+  } else if (CheckEmpty(rdis)) {
+    return { textField: "District", Error: "Reciver District is required" };
+  } else if (CheckEmpty(rstno)) {
+    return { textField: "Street NO", Error: "Reciver Street No Number is required" };
+  }else if (CheckEmpty(rstreet)) {
+    return { textField: "Street", Error: "Reciver Street is required" };
+  } else if (CheckEmpty(rcity)) {
+    return { textField: "City", Error: "Reciver City is required" };
+  } else if (CheckEmpty(rtele)) {
+    return { textField: "Telephone", Error: "Reciver Telephone Number is required" };
+  } 
+  
+  else if (CheckEmpty(pstno)) {
+    return { textField: "Street No", Error: "Pickup Street No is required" };
+  } else if (CheckEmpty(pstreet)) {
+    return { textField: "Street", Error: "Pickup Street is required" };
+  }
+  else if (CheckEmpty(pcity)) {
+    return { textField: "City", Error: "Pickup City is required" };
+  } else if (CheckEmpty(pdis)) {
+    return { textField: "District", Error: "Pickup District is required" };
+  }
+  else if (CheckEmpty(ptype)) {
+    return { textField: "Order_type", Error: "Order type is required" };
+  }
+
+
+   else if (
     !stele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
   ) {
-    return { textField: "Telephone", Error: "Invalid Telephone number" };
+    return { textField: "Telephone", Error: "Invalid Sender Telephone number" };
+  } 
+  else if (
+    !rtele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
+  ) {
+    return { textField: "Telephone", Error: "Invalid Reciver Telephone number" };
   } else return 0;
 };
