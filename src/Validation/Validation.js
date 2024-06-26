@@ -1,5 +1,7 @@
 export const CheckEmpty = (data) => {
-  if (data === "") {
+  if (data == null) {
+    return true;
+  } else if (data.trim() === "") {
     return true;
   } else {
     return false;
@@ -34,6 +36,8 @@ export const RecieverValidation = (
   rprovince,
   remail
 ) => {
+  console.log(rdistrict);
+
   if (CheckEmpty(rname)) {
     return { textField: "Name", Error: "Name is required" };
   } else if (CheckEmpty(rtele)) {
