@@ -23,6 +23,7 @@ import VerifypickedDetails from "./Pages/Verifypicked/VerifypickedDetails.jsx"
 import Verifydilivery from "./Pages/Veryfydilivery/Verifydilivery.jsx"
 import VerifydiliveryDetails from "./Pages/Veryfydilivery/VerifydiliveryDetails.jsx"
 import Createbranch from "./Pages/Createbranch/Createbranch.jsx";
+import Ondiliveryorderdetails from "./Pages/In-Progress/Ondiliveryorderdetails.jsx"
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route path="/verifydilivery" element={<Verifydilivery/>}/>
         <Route path="/verifydiliveryorder/:orderNo5" element={<VerifydiliveryDetails/>} />
         <Route path="/createbranch" element={<Createbranch/>} />
+        <Route path="Ondiliveryorder/:orderN06" element={<Ondiliveryorderdetails/>}/>
         </Routes>
       </BrowserRouter>
   );
