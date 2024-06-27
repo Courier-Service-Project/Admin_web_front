@@ -86,7 +86,7 @@ export default function BranchDetails() {
               <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
                 <div>
                   <AppsIcon sx={{ mr: 3 }} />
-                  Create Branch
+                  Branch Details
                 </div>
               </Typography>
             </Box>
@@ -124,8 +124,8 @@ export default function BranchDetails() {
                       <Divider
                         sx={{ marginBottom: 1, border: 1, width: "90%" }}
                       />
-                      <Grid container spacing={4} sx={{ mt: 3 }}>
-                        <Grid item xs={12} sm={3}>
+                      <Grid container spacing={3} sx={{mt:2}} >
+                        <Grid item xs={12} md={3}>
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -147,7 +147,7 @@ export default function BranchDetails() {
                             )}
                           />
                         </Grid>
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} md={3}>
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -169,7 +169,7 @@ export default function BranchDetails() {
                             )}
                           />
                         </Grid>
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} md={3}>
                           <TextField
                             required
                             name="B_location"
@@ -262,16 +262,6 @@ export default function BranchDetails() {
                 </Card>
               </Box>
             )}
-
-            <Box sx={{ mx: 4 }}>
-              <Typography sx={{ fontSize: 30, fontWeight: "bold" }}>
-                <div>
-                  <AppsIcon sx={{ mr: 3 }} />
-                  Branch Details
-                </div>
-              </Typography>
-            </Box>
-
             <BranchTable1 />
           </Box>
         </Box>

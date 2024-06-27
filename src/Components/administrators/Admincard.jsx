@@ -17,7 +17,7 @@ export default function Admincard(props) {
   };
 
   return (
-    <Card className="admin-card" sx={{ maxHeight: 280, boxShadow: 3, borderRadius: 4 }}>
+    <Card className="admin-card" sx={{ minHeight: 280, boxShadow: 3, borderRadius: 3 }}>
       <Box sx={{ m:2 }}>
         <Grid container>
           <Grid item xs={12} md={3} sx={{ pt: 3 }}>

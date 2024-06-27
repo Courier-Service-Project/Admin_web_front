@@ -17,10 +17,10 @@ import { BACKEND_URL } from "../../Constants";
 
 
 
-export default function ProgressOrderdetails() {
+export default function Ondiliveryorderdetails() {
   const [InprogressOrderData, setInprogressOrderData]=useState(null);
 
-  const { orderNo3 } = useParams();
+  const { orderNo6 } = useParams();
     const location = useLocation();
 
     const { orderId } = location.state || {};
@@ -30,7 +30,7 @@ export default function ProgressOrderdetails() {
       
         try {
           console.log(`Fetching order details for ID: ${orderId}`);
-          const response = await axios.get(`${BACKEND_URL}/orders/Onpickorderdetailsbyid/${orderId}`);
+          const response = await axios.get(`${BACKEND_URL}/orders/OndiliveryorderDetailbyid/${orderId}`);
           console.log('Order Details:', response.data);
           setInprogressOrderData(response.data.message[0]);
         
