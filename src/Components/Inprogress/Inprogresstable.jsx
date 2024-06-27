@@ -67,7 +67,7 @@ export default function Inprogresstable() {
   const getInprogressOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/InprogressorderDetails`
+        `${BACKEND_URL}/orders/OnpickorderDetails`
       );
       console.log(result);
 
@@ -129,7 +129,7 @@ export default function Inprogresstable() {
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in progress List.
+                              No orders in OnPick Orders List.
                           </Typography>
                         </Box>
                     </StyledTableCell>
