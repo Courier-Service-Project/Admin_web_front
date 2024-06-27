@@ -6,6 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { BACKEND_URL, ID } from "../../Constants/index";
 import InputAdornment from "@mui/material/InputAdornment";
+import TextFSRP from "./TextFSRP";
 
 export default function PickupDetails({ fromData, setFormData }) {
   const [getbranch, setBranch] = useState(["Loading"]);
@@ -51,12 +52,9 @@ export default function PickupDetails({ fromData, setFormData }) {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="P_streetNo"
             label="StreetNo"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.P_streetNo}
             onChange={(event) =>
               setFormData({ ...fromData, P_streetNo: event.target.value })
@@ -64,12 +62,9 @@ export default function PickupDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="P_street"
             label="Street"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.P_street}
             onChange={(event) =>
               setFormData({ ...fromData, P_street: event.target.value })
@@ -77,12 +72,10 @@ export default function PickupDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="P_homeTown"
             label="Home Town"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
+            required={true}
             value={fromData.P_homeTown}
             onChange={(event) =>
               setFormData({ ...fromData, P_homeTown: event.target.value })
@@ -94,6 +87,8 @@ export default function PickupDetails({ fromData, setFormData }) {
         </Grid>
         <Grid item xs={3}>
           <Autocomplete
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             disablePortal
             options={getbranch}
             value={fromData.P_branch}
@@ -115,6 +110,8 @@ export default function PickupDetails({ fromData, setFormData }) {
 
         <Grid item xs={12} sm={3}>
           <Autocomplete
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             disablePortal
             id="combo-box-demo"
             options={District}
@@ -165,13 +162,10 @@ export default function PickupDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            required
+          <TextFSRP
+            required={true}
             name="P_telephone"
             label="Telephone"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.P_telephone}
             onChange={(event) =>
               setFormData({ ...fromData, P_telephone: event.target.value })
@@ -184,6 +178,8 @@ export default function PickupDetails({ fromData, setFormData }) {
 
         <Grid item xs={12} sm={2}>
           <Autocomplete
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             disablePortal
             id="combo-box-demo"
             options={Payment}
@@ -205,6 +201,8 @@ export default function PickupDetails({ fromData, setFormData }) {
         </Grid>
         <Grid item xs={12} sm={2}>
           <Autocomplete
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             disablePortal
             fullWidth
             id="combo-box-demo"
@@ -228,6 +226,8 @@ export default function PickupDetails({ fromData, setFormData }) {
 
         <Grid item xs={2}>
           <Autocomplete
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             disablePortal
             fullWidth
             id="combo-box-demo"
@@ -253,12 +253,9 @@ export default function PickupDetails({ fromData, setFormData }) {
         </Grid>
 
         <Grid item xs={8}>
-          <TextField
+          <TextFSRP
             name="P_specialNote"
             label="Special Note"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.P_specialNote}
             onChange={(event) =>
               setFormData({ ...fromData, P_specialNote: event.target.value })

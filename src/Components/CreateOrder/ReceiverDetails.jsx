@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextFSRP from "./TextFSRP";
 
 export default function ReceiverDetails({ fromData, setFormData }) {
   const District = ["Hambantota", "Mathara", "Colombo", "Gampaha"];
@@ -14,13 +15,10 @@ export default function ReceiverDetails({ fromData, setFormData }) {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <TextField
-            required
+          <TextFSRP
+            required={true}
             name="R_fname"
             label="First Name"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_fname}
             onChange={(event) =>
               setFormData({ ...fromData, R_fname: event.target.value })
@@ -28,12 +26,9 @@ export default function ReceiverDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="R_lname"
             label="Last Name"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_lname}
             onChange={(event) =>
               setFormData({ ...fromData, R_lname: event.target.value })
@@ -44,13 +39,10 @@ export default function ReceiverDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            required
+          <TextFSRP
+            required={true}
             name="R_telephone"
             label="Telephone"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_telephone}
             onChange={(event) =>
               setFormData({ ...fromData, R_telephone: event.target.value })
@@ -61,13 +53,10 @@ export default function ReceiverDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            required
+          <TextFSRP
+            required={true}
             name="R_email"
             label="Email"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_email}
             onChange={(event) =>
               setFormData({ ...fromData, R_email: event.target.value })
@@ -80,6 +69,8 @@ export default function ReceiverDetails({ fromData, setFormData }) {
         <Grid item xs={3}>
           <Autocomplete
             disablePortal
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             id="combo-box-demo"
             options={Province}
             value={fromData.R_province}
@@ -104,6 +95,8 @@ export default function ReceiverDetails({ fromData, setFormData }) {
             disablePortal
             id="combo-box-demo"
             options={District}
+            sx={{ input: { fontFamily: "monospace", fontWeight: "300" } }}
+            inputProps={{ style: { textTransform: "uppercase" } }}
             value={fromData.R_district}
             onChange={(event, value) =>
               setFormData({ ...fromData, R_district: value })
@@ -125,12 +118,9 @@ export default function ReceiverDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="R_streetNo"
             label="Street No"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_streetNo}
             onChange={(event) =>
               setFormData({ ...fromData, R_streetNo: event.target.value })
@@ -139,12 +129,9 @@ export default function ReceiverDetails({ fromData, setFormData }) {
         </Grid>
 
         <Grid item xs={3}>
-          <TextField
+          <TextFSRP
             name="R_street"
             label="Street"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.R_street}
             onChange={(event) =>
               setFormData({ ...fromData, R_street: event.target.value })
@@ -152,13 +139,10 @@ export default function ReceiverDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            required
+          <TextFSRP
+            required={true}
             name="R_HomeTown"
             label="Home Town"
-            autoComplete="off"
-            fullWidth
-            variant="standard"
             value={fromData.R_HomeTown}
             onChange={(event) =>
               setFormData({ ...fromData, R_HomeTown: event.target.value })

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import TextFSRP from "./TextFSRP";
 
 export default function SenderDetails({ fromData, setFormData }) {
   return (
@@ -11,13 +11,8 @@ export default function SenderDetails({ fromData, setFormData }) {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
-            variant="standard"
-            autoComplete="off"
-            fullWidth
-            required
+          <TextFSRP
+            required={true}
             name="S_fname"
             label="First name"
             value={fromData.S_fname}
@@ -27,14 +22,9 @@ export default function SenderDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
+          <TextFSRP
             name="S_lname"
             label="Last name"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_lname}
             onChange={(event) =>
               setFormData({ ...fromData, S_lname: event.target.value })
@@ -45,15 +35,10 @@ export default function SenderDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
-            required
+          <TextFSRP
+            required={true}
             name="S_telephone"
             label="Telephone"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_telephone}
             onChange={(event) =>
               setFormData({ ...fromData, S_telephone: event.target.value })
@@ -64,15 +49,10 @@ export default function SenderDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={12} sm={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
-            required
+          <TextFSRP
+            required={true}
             name="S_email"
             label="Email"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_email}
             onChange={(event) =>
               setFormData({ ...fromData, S_email: event.target.value })
@@ -83,14 +63,9 @@ export default function SenderDetails({ fromData, setFormData }) {
           {/* empty */}
         </Grid>
         <Grid item xs={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
+          <TextFSRP
             name="S_streestNo"
             label="Street No"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_streestNo}
             onChange={(event) =>
               setFormData({ ...fromData, S_streestNo: event.target.value })
@@ -98,14 +73,9 @@ export default function SenderDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
+          <TextFSRP
             name="S_street"
             label="Street"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_street}
             onChange={(event) =>
               setFormData({ ...fromData, S_street: event.target.value })
@@ -113,15 +83,10 @@ export default function SenderDetails({ fromData, setFormData }) {
           />
         </Grid>
         <Grid item xs={3}>
-          <TextField
-            sx={{ input: { fontFamily: "monospace", fontWeight: "bold" } }}
-            inputProps={{ style: { textTransform: "uppercase" } }}
-            required
+          <TextFSRP
+            required={true}
             name="S_city"
             label="HomeTown"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={fromData.S_city}
             onChange={(event) =>
               setFormData({ ...fromData, S_city: event.target.value })
