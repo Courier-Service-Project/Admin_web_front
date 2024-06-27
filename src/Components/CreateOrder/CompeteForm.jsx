@@ -27,6 +27,7 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { BACKEND_URL, ID } from "../../Constants/index";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 const steps = [
   "Sender Details",
@@ -46,6 +47,21 @@ const steptyle = {
   "& .Mui-completed": {
     "& .MuiStepIcon-root": {
       color: "#4db6ac",
+    },
+  },
+};
+const steptyle1 = {
+  pt: 3,
+  pb: 5,
+  "& .Mui-active": {
+    "& .MuiStepIcon-root": {
+      color: "#dc2626",
+    },
+  },
+
+  "& .Mui-completed": {
+    "& .MuiStepIcon-root": {
+      color: "#dc2626",
     },
   },
 };
@@ -155,6 +171,7 @@ export default function CompeteForm() {
   }
 
   function sendDetails() {
+    setLoading(true);
     axios
       .post(`${BACKEND_URL}/orders`, {
         sfname: fromData.S_fname,
@@ -189,15 +206,16 @@ export default function CompeteForm() {
         padminID: ID,
       })
       .then(function (response) {
-        console.log(response);
+        setLoading(false);
         if (response.data.success === 1) {
           setResSuccess(true);
-          setLoading(false);
         } else {
           setResSuccess(false);
         }
       })
       .catch(function (error) {
+        setLoading(false);
+        setResSuccess(false);
         console.log(error);
       });
   }
@@ -235,7 +253,10 @@ export default function CompeteForm() {
       <CssBaseline />
       <Container component="main" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ px: 6, py: 3, my: 4 }}>
-          <Stepper activeStep={activeStep} sx={steptyle}>
+          <Stepper
+            activeStep={activeStep}
+            sx={resSuccess ? steptyle : steptyle1}
+          >
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -276,26 +297,30 @@ export default function CompeteForm() {
                 </Box>
               ) : (
                 <Box>
-                  <Typography variant="h5" gutterBottom>
-                    Order is Not Placed.
+                  <Typography variant="h5" color={"#b91c1c"} gutterBottom>
+                    Something went wrong while processing your order.
                   </Typography>
-                  <Typography variant="subtitle1">Re-Try.</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color={"#dc2626"}
+                    gutterBottom
+                  >
+                    Check your internet connection and try again.
+                  </Typography>
                   <Button
                     size="small"
-                    onClick={refreshPage}
+                    onClick={sendDetails}
                     variant="contained"
                     sx={{
                       p: 1,
                       mt: 5,
-                      bgcolor: "#00897b",
+                      bgcolor: "#dc2626",
                       ":hover": {
-                        bgcolor: "#4db6ac",
+                        bgcolor: "#be123c",
                         color: "#fff",
                       },
                     }}
-                    startIcon={
-                      <AddCircleOutlineIcon style={{ fontSize: 20 }} />
-                    }
+                    startIcon={<ReplayIcon style={{ fontSize: 20 }} />}
                   >
                     <Typography sx={{ fontSize: 13 }}>Try Again</Typography>
                   </Button>

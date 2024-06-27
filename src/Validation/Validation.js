@@ -1,7 +1,7 @@
 export const CheckEmpty = (data) => {
   if (data == null) {
     return true;
-  } else if (data.trim() === "") {
+  } else if (data === "") {
     return true;
   } else {
     return false;
