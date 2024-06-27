@@ -124,8 +124,8 @@ export default function ViewApplicant() {
                             <Typography variant="h6" fontWeight="600" gutterBottom>
                                 Applicant Information
                             </Typography>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} sm={4}>
+                            <Grid container spacing={3} columnSpacing={5}>
+                                <Grid item xs={12} md={4}>
                                     <TextField
                                         label="First Name"
                                         name="A_fname"
@@ -138,7 +138,7 @@ export default function ViewApplicant() {
                                         //onChange={e => setApplicantData({ ...applicantdata, FirstName: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={8}>
+                                <Grid item xs={12} md={4}>
                                     <TextField
                                         label="Last Name"
                                         name="A_lname"
@@ -300,7 +300,6 @@ export default function ViewApplicant() {
                                         InputProps={{
                                             sx: {color:'#696969',fontSize:'17px' }
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, E_LastName: e.target.value })}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -331,19 +330,8 @@ export default function ViewApplicant() {
                                     />
                                 </Grid>
                                 {/* <Grid> */}
-                                <Grid item xs={12} sm={6}>
-                                    {/* <Button variant="contained" color="primary" sx={{
-                                        bgcolor: "#cc473b",
-                                        marginTop: '10px',
-                                        marginLeft: '50px',
-                                        ":hover": {
-                                            bgcolor: "#d2554d",
-                                            color: "#616161",
-                                        },
-                                    }}
-                                    onClick={()=>{deleteApplicantPerson(applicantid)}}>
-                                        Reject
-                                    </Button> */}
+                                <Box>
+                                
                                     <AlertDialog
                                         bgcolor="error"
                                         button="Reject"
@@ -353,19 +341,8 @@ export default function ViewApplicant() {
                                         buttonName2="Delete"
                                         onClick1={()=>{deleteApplicantPerson(applicantid)}}
                                     />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    {/* <Button variant="contained" color="primary" sx={{
-                                        bgcolor: "#00897b",
-                                        marginTop: '10px',
-                                        marginLeft: '200px',
-                                        ":hover": {
-                                            bgcolor: "#009688",
-                                            color: "#616161",
-                                        },
-                                    }}>
-                                        Accept
-                                    </Button> */}
+                                
+                                
                                     <AlertDialog
                                         bgcolor="success"
                                         button="Accept"
@@ -375,7 +352,8 @@ export default function ViewApplicant() {
                                         buttonName2="Confirm"
                                         onClick1={()=>{onclick(applicantid)}}
                                     />
-                                </Grid>
+                                
+                                </Box>
                                 {/* </Grid> */}
                             </Grid>
                         </Paper>

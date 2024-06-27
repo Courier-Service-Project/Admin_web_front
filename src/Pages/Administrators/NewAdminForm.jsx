@@ -9,15 +9,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { BACKEND_URL } from '../../Constants';
-import { red } from '@mui/material/colors';
 
 const telephoneRegex = /^0\d{9}$/;
 
 const adminformSchema = Yup.object({
   N_fname: Yup.string().min(3).required("Please enter your first name."),
   N_lname: Yup.string().min(3).required("Please enter your last name."),
-  N_telephone: Yup.string().matches(telephoneRegex, "Please enter your valid telephone number").required("Please enter your telephone number."),
   N_email: Yup.string().email("Please enter valid email").required("Please enter your email."),
+  N_telephone: Yup.string().matches(telephoneRegex, "Please enter your valid telephone number").required("Please enter your telephone number."),
   N_dob: Yup.date()
     .nullable()
     .required("Please enter your date of birth.")
@@ -48,11 +47,11 @@ const NewAdminForm = () => {
     }
   }
   
-  const onSubmit = (values, {setSubmitting}) => {
+  const onSubmit = (values, actions,setSubmitting) => {
     adminformSchema.validate(values)
     .then(() => {
       sendRequest(values);
-      //actions.resetForm();
+      actions.resetForm();
       console.log(values);
       setSubmitting(false);
     })
@@ -95,8 +94,8 @@ const NewAdminForm = () => {
         return (
           <Form onSubmit={handleFormSubmit}>
             <Paper style={{ padding: '50px', marginBottom: "10px", marginTop: "10px" }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+            <Grid container spacing={3} columnSpacing={5}>
+              <Grid item xs={12} sm={3}>
                 <Field name="N_fname"
                   as={TextField}
                   label="First Name"
@@ -104,18 +103,10 @@ const NewAdminForm = () => {
                   fullWidth
                   />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <Field name="N_lname"
                   as={TextField}
                   label="Last Name"
-                  variant="standard"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="N_telephone"
-                  as={TextField}
-                  label="Telephone No."
                   variant="standard"
                   fullWidth
                 />
@@ -127,6 +118,14 @@ const NewAdminForm = () => {
                   label="Email"
                   variant="standard"
                   style={{ width: "50%" }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Field name="N_telephone"
+                  as={TextField}
+                  label="Telephone No."
+                  variant="standard"
+                  fullWidth
                 />
               </Grid>
               <Grid item xs={12} >
@@ -149,7 +148,7 @@ const NewAdminForm = () => {
                     </Field>
                   </LocalizationProvider>
                 </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <Field name="N_streetNo"
                   as={TextField}
                   label="Street No."
@@ -157,7 +156,7 @@ const NewAdminForm = () => {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <Field name="N_street"
                   as={TextField}
                   label="Street"
@@ -165,7 +164,7 @@ const NewAdminForm = () => {
                   fullWidth
                   />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <Field name="N_city"
                   as={TextField}
                   label="City"
@@ -188,9 +187,18 @@ const NewAdminForm = () => {
               </Box>
             )}
             <Grid item sx={12} sm={4} >
-            <Box mt={3} color={red}>
-              <Button type="submit" variant="contained" color="primary" sx={{marginLeft: '400px',marginTop: '20px'}} >
-                Next
+            <Box mt={3} display="flex" justifyContent="flex-end">
+              <Button type="submit" variant="contained" style={{marginLeft: '400px',marginTop: '20px'}} 
+              sx={{
+                p: 1,
+                mt: 5,
+                bgcolor: "#00897b",
+                ":hover": {
+                  bgcolor: "#4db6ac",
+                  color: "#fff",
+                },
+              }}>
+                Submit
               </Button>
             </Box>
             </Grid>

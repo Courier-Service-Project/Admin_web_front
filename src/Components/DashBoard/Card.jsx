@@ -87,7 +87,7 @@ export default function BasicGrid() {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <CardCom 
-                                title={orderCount.ondiliveryCount} 
+                                title={orderCount.onpickCount} 
                                 text="In progress" 
                                 width="100%" 
                                 height="145px"
