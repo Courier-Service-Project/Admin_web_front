@@ -55,19 +55,19 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function Inprogresstable() {
+export default function Ondiliverytable() {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState([]);
   // const [isError,setIsError]=React.useState(false);
 
   useEffect(() => {
-    getInprogressOrderDetails();
+    getOnDiliveryOrderDetails();
   }, []);
 
-  const getInprogressOrderDetails = async () => {
+  const getOnDiliveryOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/OnpickorderDetails`
+        `${BACKEND_URL}/orders/OndiliveryorderDetails`
       );
       console.log(result);
 
@@ -113,7 +113,7 @@ export default function Inprogresstable() {
                       <Button
                         className="hover-link red-button"
                         onClick={() =>
-                          navigate(`/inprogressorder/${row.Order_id}`, {
+                          navigate(`/Ondiliveryorder/${row.Order_id}`, {
                             state: { orderId: row.Order_id },
                           })
                         }
@@ -129,7 +129,7 @@ export default function Inprogresstable() {
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in OnPick Orders List.
+                              No orders in OnDilivery Orders List.
                           </Typography>
                         </Box>
                     </StyledTableCell>
