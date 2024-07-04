@@ -72,7 +72,7 @@ export default function Pending() {
                     </Typography>
                   }
                 />
-                <FormControlLabel
+                <FormControlLabel sx={{ml:"20px"}}
                   value="NEO"
                   control={<Radio />}
                   label={
