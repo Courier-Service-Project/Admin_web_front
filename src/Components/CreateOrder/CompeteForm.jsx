@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
-import { ToastContainer } from "react-toastify";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
@@ -27,6 +26,9 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { BACKEND_URL, ID } from "../../Constants/index";
+import Notify from "../Notify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const steps = [
   "Sender Details",
@@ -53,6 +55,8 @@ const steptyle = {
 export default function CompeteForm() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [err, setErr] = React.useState(null);
+
+  const [notify, setNotify] = React.useState(null);
 
   const [loading, setLoading] = React.useState(true);
   const [resSuccess, setResSuccess] = React.useState(true);
@@ -189,15 +193,45 @@ export default function CompeteForm() {
         padminID: ID,
       })
       .then(function (response) {
-        console.log(response);
         if (response.data.success === 1) {
+          toast.success("Order is Placed !", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
           setResSuccess(true);
           setLoading(false);
+          setNotify(response);
         } else {
+          toast.error("Order is Not Placed !", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
           setResSuccess(false);
         }
       })
       .catch(function (error) {
+        toast.warn("Check internet Connection !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         console.log(error);
       });
   }

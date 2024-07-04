@@ -8,11 +8,16 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { BACKEND_URL,ID } from "../../Constants/index";
+import { BACKEND_URL, ID } from "../../Constants/index";
+
+import { ToastContainer, toast } from "react-toastify";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -25,7 +30,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function Popup(props) {
   const { openpopup, setopenpopup } = props;
-  const [error,setError] = React.useState(null);
+  const [error, setError] = React.useState(null);
+
+  const [load, setLoad] = React.useState(false);
 
   const [formStep, setFormStep] = React.useState(0);
 
@@ -60,55 +67,57 @@ export default function Popup(props) {
     },
     validationSchema: validationSchema0,
     onSubmit: (values) => {
+      setLoad(true);
       axios
         .post(`${BACKEND_URL}/admin/CheckPrePassword`, {
           adminID: ID,
-          Password:values.prePass
+          Password: values.prePass,
         })
         .then(function (response) {
-          console.log(response.data.success)
-          if(response.data.success){
+          setLoad(false);
+          console.log(response);
+          if (response.data.success) {
             CompleteFormStep();
-          }else{
-            setError("Invalid Password Please Re-Enter")
+          } else {
+            setError("Invalid Password Please Re-Enter");
           }
         })
         .catch(function (error) {
           console.log(error);
         });
-
     },
   });
 
   const validationSchema1 = yup.object({
     newPass: yup.string("Enter New Password").required("password is required"),
-    comNewPass: yup.string()
-    .oneOf([yup.ref('newPass'), null], 'Passwords must match').required("password is required"),
-
+    comNewPass: yup
+      .string()
+      .oneOf([yup.ref("newPass"), null], "Passwords must match")
+      .required("password is required"),
   });
   const formik1 = useFormik({
     initialValues: {
       newPass: "",
-      comNewPass:""
+      comNewPass: "",
     },
     validationSchema: validationSchema1,
-    onSubmit: (values) => { 
+    onSubmit: (values) => {
       axios
         .post(`${BACKEND_URL}/admin/ChangePassword`, {
           adminID: ID,
-          newPassword:values.newPass,
-          comPassword:values.comNewPass
+          newPassword: values.newPass,
+          comPassword: values.comNewPass,
         })
         .then(function (response) {
-          console.log(response.data.success)
-          if(response.data.success){
+          setLoad(false);
+          console.log(response.data.success);
+          if (response.data.success) {
             CompleteFormStep();
           }
         })
         .catch(function (error) {
           console.log(error);
         });
-      
     },
   });
 
@@ -118,7 +127,8 @@ export default function Popup(props) {
     } else if (formStep === 0) {
       return (
         <Button sx={changebtn} onClick={formik0.handleSubmit} type="submit">
-          Next
+          Next <span style={{ margin: "0 5px" }}></span>
+          {load ? <CircularProgress sx={{ color: "white" }} size={20} /> : ""}
         </Button>
       );
     } else if (formStep === 1) {
@@ -157,59 +167,78 @@ export default function Popup(props) {
           >
             <CloseIcon />
           </IconButton>
-          <DialogContent dividers sx={{ width: "500px" }}>
+          <DialogContent
+            dividers
+            sx={{
+              width: "500px",
+            }}
+          >
             {formStep === 0 && (
               <section>
-                <TextField
-                  hiddenLabel
-                  label="Enter Pre Password"
-                  variant="outlined"
-                  size="small"
-                  sx={{ mr: 3, mb: 1.5 }}
-                  name="prePass"
-                  value={formik0.values.prePass}
-                  onChange={formik0.handleChange}
-                  onBlur={formik0.handleBlur}
-                  error={
-                    formik0.touched.prePass && Boolean(formik0.errors.prePass)
-                  }
-                  helperText={formik0.touched.prePass && formik0.errors.prePass}
-                />
-                <Typography sx={{color:"red",fontSize:"13px"}}> {error? error : ""}</Typography>
+                <Box>
+                  <TextField
+                    hiddenLabel
+                    label="Enter Pre Password"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mr: 3, mb: 1.5 }}
+                    name="prePass"
+                    value={formik0.values.prePass}
+                    onChange={formik0.handleChange}
+                    onBlur={formik0.handleBlur}
+                    error={
+                      formik0.touched.prePass && Boolean(formik0.errors.prePass)
+                    }
+                    helperText={
+                      formik0.touched.prePass && formik0.errors.prePass
+                    }
+                  />
+                  <Typography sx={{ color: "red", fontSize: "13px" }}>
+                    {" "}
+                    {error ? error : ""}
+                  </Typography>
+                </Box>
               </section>
             )}
             {formStep === 1 && (
               <section>
-                <TextField
-                  hiddenLabel
-                  label="Enter New Password"
-                  variant="outlined"
-                  size="small"
-                  sx={{ mr: 3, mb: 1.5 }}
-                  name="newPass"
-                  value={formik1.values.newPass}
-                  onChange={formik1.handleChange}
-                  onBlur={formik1.handleBlur}
-                  error={
-                    formik1.touched.newPass && Boolean(formik1.errors.newPass)
-                  }
-                  helperText={formik1.touched.newPass && formik1.errors.newPass}
-                />
-                <TextField
-                  hiddenLabel
-                  label="Enter New Password"
-                  variant="outlined"
-                  size="small"
-                  sx={{ mr: 3, mb: 1.5 }}
-                  name="comNewPass"
-                  value={formik1.values.comNewPass}
-                  onChange={formik1.handleChange}
-                  onBlur={formik1.handleBlur}
-                  error={
-                    formik1.touched.comNewPass && Boolean(formik1.errors.comNewPass)
-                  }
-                  helperText={formik1.touched.comNewPass && formik1.errors.comNewPass}
-                />
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <TextField
+                    hiddenLabel
+                    label="Enter New Password"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mr: 3, mb: 1.5 }}
+                    name="newPass"
+                    value={formik1.values.newPass}
+                    onChange={formik1.handleChange}
+                    onBlur={formik1.handleBlur}
+                    error={
+                      formik1.touched.newPass && Boolean(formik1.errors.newPass)
+                    }
+                    helperText={
+                      formik1.touched.newPass && formik1.errors.newPass
+                    }
+                  />
+                  <TextField
+                    hiddenLabel
+                    label="Enter New Password"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mr: 3, mb: 1.5 }}
+                    name="comNewPass"
+                    value={formik1.values.comNewPass}
+                    onChange={formik1.handleChange}
+                    onBlur={formik1.handleBlur}
+                    error={
+                      formik1.touched.comNewPass &&
+                      Boolean(formik1.errors.comNewPass)
+                    }
+                    helperText={
+                      formik1.touched.comNewPass && formik1.errors.comNewPass
+                    }
+                  />
+                </Box>
               </section>
             )}
             {formStep === 2 && (
@@ -221,6 +250,7 @@ export default function Popup(props) {
           <DialogActions>{renderButton()}</DialogActions>
         </form>
       </BootstrapDialog>
+      <ToastContainer />
     </React.Fragment>
   );
 }
