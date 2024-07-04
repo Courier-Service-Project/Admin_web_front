@@ -7,14 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "../../Components/complete/CompleteTable.css";
+import "./Inprogresstable.css";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Typography } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,7 +40,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "#D9D9D9",
   },
   "&:hover": {
-    backgroundColor: "#ffcdd2",
+    backgroundColor: "#ffebee",
   },
   "&:hover td:nth-child(1)": {
     borderLeft: "5px solid red",
@@ -57,30 +57,32 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function VerifypickedTable() {
+export default function ONBranchtable() {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState([]);
+  // const [isError,setIsError]=React.useState(false);
 
   useEffect(() => {
-    getVerifyPickedOrderList();
+    getOnBranchOrderDetails();
   }, []);
 
-  const getVerifyPickedOrderList = async () => {
+  const getOnBranchOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/verifypickedorderDetails`
+        `${BACKEND_URL}/orders/OnBranchOrderDetails`
       );
       console.log(result);
-      if (Array.isArray(result.data.message)) {
-        setRows(result.data.message);
-      } else {
-        setRows([]);
-        console.error("Expected result.data", result.data.message);
-      }
-    } catch (error) {
+
+    if (Array.isArray(result.data.message)) {
+      setRows(result.data.message);
+    } else {
       setRows([]);
-      console.error("Failed to fetch order details", error);
+      console.error("Expected result.data", result.data.message);
     }
+  } catch (error) {
+    setRows([]);
+    console.error("Failed to fetch order details", error);
+  }
   };
 
   return (
@@ -102,7 +104,7 @@ export default function VerifypickedTable() {
             </TableHead>
 
             <TableBody>
-              {rows.length>0 ?(
+            {rows.length > 0 ? (
                 rows.map((row) => (
                   <StyledTableRow key={row.Order_id}>
                     <StyledTableCell>{row.Order_id}</StyledTableCell>
@@ -111,10 +113,10 @@ export default function VerifypickedTable() {
                     <StyledTableCell>{row.Pickup_City}</StyledTableCell>
                     <StyledTableCell>
                       <Button
-                       sx={{gap:"5px",pl:"0.1px"}}
-                        className="hover-link red-button"
+                      sx={{gap:"5px",pl:"0.1px"}}
+                        className="hover-link button"
                         onClick={() =>
-                          navigate(`/verifypickedorder/${row.Order_id}`, {
+                          navigate(`/OnBranchorder/${row.Order_id}`, {
                             state: { orderId: row.Order_id },
                           })
                         }
@@ -124,19 +126,19 @@ export default function VerifypickedTable() {
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))
-              ):(
-                <StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow>
                     <StyledTableCell colSpan={5}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center',mt:2 }}>
                           <FeedbackIcon sx={{ mr: 3, color:"red" }} />
                           <Typography sx={{ color: "red", fontSize: 20 }}>
-                              No orders in Verify Picked Orders List.
+                              No orders in OnBranch Orders List.
                           </Typography>
                         </Box>
                     </StyledTableCell>
                   </StyledTableRow>
-              )}
+                )}
             </TableBody>
           </Table>
         </TableContainerStyled>

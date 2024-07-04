@@ -110,6 +110,8 @@ export const pendinSenderValidation = (
   slname,
   scity,
   stele,
+  rfname,
+  rlname,
   rpro,
   rdis,
   rstno,
@@ -120,7 +122,8 @@ export const pendinSenderValidation = (
   pstreet,
   pcity,
   pdis,
-  ptype
+  ptype,
+  pbloc
 ) => {
   if (CheckEmpty(sfname)) {
     return { textField: "First Name", Error: "Sender First Name is required" };
@@ -133,6 +136,10 @@ export const pendinSenderValidation = (
       textField: "Telephone",
       Error: "Sender Telephone Number is required",
     };
+  } else if (CheckEmpty(rfname)) {
+    return { textField: "First Name", Error: "Reciver First Name is required" };
+  } else if (CheckEmpty(rlname)) {
+    return { textField: "Last Name", Error: "Reciver Last Name is required" };
   } else if (CheckEmpty(rpro)) {
     return { textField: "Province", Error: "Reciver province is required" };
   } else if (CheckEmpty(rdis)) {
@@ -161,6 +168,11 @@ export const pendinSenderValidation = (
     return { textField: "District", Error: "Pickup District is required" };
   } else if (CheckEmpty(ptype)) {
     return { textField: "Order_type", Error: "Order type is required" };
+  } else if (CheckEmpty(pbloc)) {
+    return {
+      textField: "Branch Location",
+      Error: "Branch Location is required",
+    };
   } else if (
     !stele.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
   ) {
