@@ -105,7 +105,7 @@ export const branchValidation = (bprvovince, bdis, blocation) => {
   } else return 0;
 };
 
-export const pendinSenderValidation = (sfname, slname, scity, stele,rpro,rdis,rstno,rstreet,rcity,rtele,pstno,pstreet,pcity,pdis,ptype) => {
+export const pendinSenderValidation = (sfname, slname, scity, stele,rfname,rlname,rpro,rdis,rstno,rstreet,rcity,rtele,pstno,pstreet,pcity,pdis,ptype,pbloc) => {
   if (CheckEmpty(sfname)) {
     return { textField: "First Name", Error: "Sender First Name is required" };
   } else if (CheckEmpty(slname)) {
@@ -116,6 +116,11 @@ export const pendinSenderValidation = (sfname, slname, scity, stele,rpro,rdis,rs
     return { textField: "Telephone", Error: "Sender Telephone Number is required" };
   } 
   
+  else if (CheckEmpty(rfname)) {
+    return { textField: "First Name", Error: "Reciver First Name is required" };
+  }else if (CheckEmpty(rlname)) {
+    return { textField: "Last Name", Error: "Reciver Last Name is required" };
+  }
   else if (CheckEmpty(rpro)) {
     return { textField: "Province", Error: "Reciver province is required" };
   } else if (CheckEmpty(rdis)) {
@@ -142,6 +147,9 @@ export const pendinSenderValidation = (sfname, slname, scity, stele,rpro,rdis,rs
   }
   else if (CheckEmpty(ptype)) {
     return { textField: "Order_type", Error: "Order type is required" };
+  }
+  else if (CheckEmpty(pbloc)) {
+    return { textField: "Branch Location", Error: "Branch Location is required" };
   }
 
 

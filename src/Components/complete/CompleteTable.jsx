@@ -26,10 +26,11 @@ const StyledTableCell = styled(TableCell)(() => ({
     zIndex: 1,
     overflowX: "auto",
     height: "60px",
+    padding: 10,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 10,
     // backgroundColor:"red"
   },
 }));
@@ -112,8 +113,8 @@ export default function CompleteTable() {
                     <StyledTableCell>{row.Pickup_City}</StyledTableCell>
                     <StyledTableCell>
                       <Button
-                       sx={{gap:"5px"}}
-                        className="hover-link red-button"
+                       sx={{gap:"5px",pl:"0.1px"}}
+                        className="hover-link button"
                         onClick={() =>
                           navigate(`/completeorder/${row.Order_id}`, {
                             state: { orderId: row.Order_id },

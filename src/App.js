@@ -25,6 +25,7 @@ import VerifydiliveryDetails from "./Pages/Veryfydilivery/VerifydiliveryDetails.
 import Createbranch from "./Pages/Createbranch/Createbranch.jsx";
 import DetailsOrderTracker from "./Pages/TrackOrder/DetailsOrderTracker.jsx";
 import Ondiliveryorderdetails from "./Pages/In-Progress/Ondiliveryorderdetails.jsx";
+import OnBranchorderdetails from "./Pages/In-Progress/OnBranchOrderdetails.jsx";
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
           path="Ondiliveryorder/:orderN06"
           element={<Ondiliveryorderdetails />}
         />
+         <Route path="OnBranchorder/:orderNo7" element={<OnBranchorderdetails/>} />
       </Routes>
     </BrowserRouter>
   );
