@@ -57,19 +57,19 @@ const TableContainerStyled = styled(TableContainer)({
   maxWidth: "100%",
 });
 
-export default function PendingTable() {
+export default function NEPendingTable() {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState([]);
   // const [isError,setIsError]=React.useState(false);
 
   useEffect(() => {
-    getpendingOrderDetails();
+    getNEpendingOrderDetails();
   }, []);
 
-  const getpendingOrderDetails = async () => {
+  const getNEpendingOrderDetails = async () => {
     try {
       const result = await axios.get(
-        `${BACKEND_URL}/orders/pendingorderDetails`
+        `${BACKEND_URL}/orders/NEpendingorderDetails`
       );
       console.log(result);
 
