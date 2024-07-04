@@ -1,11 +1,11 @@
-button.red-button {
-    color: red;
+button.button {
+    color: #e91e63;
     text-transform: none;
     text-decoration: none;
     transition: text-decoration 0.2s ease-in-out;
   }
   
-  button.red-button:hover {
+  button.button:hover {
     background: none;
     text-decoration: underline;
   }
