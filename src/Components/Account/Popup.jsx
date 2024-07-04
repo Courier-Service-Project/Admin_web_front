@@ -10,10 +10,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { BACKEND_URL,ID } from "../../Constants/index";
-
+import { BACKEND_URL, ID } from "../../Constants/index";
 import { useFormik } from "formik";
 import * as yup from "yup";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -25,7 +28,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Popup(props) {
-  const { openpopup, setopenpopup, pfname, plname, setFormData } = props;
+  const { openpopup, setopenpopup, pfname, plname } = props;
+
+  const [alert1, setAlert] = React.useState(false);
 
   const handleClose = () => {
     setopenpopup(false);
@@ -44,7 +49,6 @@ export default function Popup(props) {
     },
   };
 
-  //Validation Schema
   const validationSchema = yup.object({
     fName: yup.string("Enter your email").required("Email is required"),
     lName: yup.string("Enter your password").required("Password is required"),
@@ -57,18 +61,44 @@ export default function Popup(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setAlert(true);
       axios
         .post(`${BACKEND_URL}/admin/changeUsername`, {
-          adminID:ID,
+          adminID: ID,
           fname: values.fName,
           lname: values.lName,
         })
         .then(function (response) {
           console.log(response);
+          setAlert(false);
+
+          if (response.data.success === 1) {
+            toast.success("Change successfully completed !", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         })
         .catch(function (error) {
           console.log(error);
+          toast.warn("Check internet Connection !", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
+
       handleClose();
     },
   });
@@ -126,11 +156,17 @@ export default function Popup(props) {
           </DialogContent>
           <DialogActions>
             <Button sx={changebtn} type="submit">
-              Save changes
+              Save changes<span style={{ margin: "0 5px" }}></span>
+              {alert1 ? (
+                <CircularProgress sx={{ color: "black" }} size={20} />
+              ) : (
+                ""
+              )}
             </Button>
           </DialogActions>
         </form>
       </BootstrapDialog>
+      <ToastContainer />
     </React.Fragment>
   );
 }
