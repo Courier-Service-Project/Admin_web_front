@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
-import './ApplicantTable.css';
+import './AdminApplicantList.css';
 import { useNavigate } from 'react-router-dom';
 import { Button,Typography } from '@mui/material';
 import axios from 'axios';
@@ -64,14 +64,14 @@ export default function ApplicantTable() {
   const navigate = useNavigate();
   const [rows,SetRows] = useState([])
   useEffect(() =>{
-    getApplicantDetails();
+    getAdminApplicantData();
   },[]);
 
-  const getApplicantDetails = async () =>{
+  const getAdminApplicantData = async () =>{
     try{
-      const result = await axios.get(`${BACKEND_URL}/applicant/applicantDetails`);
+      const result = await axios.get(`${BACKEND_URL}/applicant/adminApplicantData`);
       if(Array.isArray(result.data.message)){ 
-      //console.log(result.data.message[0]);
+      console.log(result.data.message[0]);
       SetRows(result.data.message)
       }else{
         SetRows([]);
@@ -90,11 +90,10 @@ export default function ApplicantTable() {
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
           <TableHead >
           <TableRow> 
-          <StyledTableCell >Applicant ID</StyledTableCell>
+          <StyledTableCell >Admin ID</StyledTableCell>
           <StyledTableCell >Name</StyledTableCell>
-          <StyledTableCell >City</StyledTableCell>
-          <StyledTableCell >Branch</StyledTableCell>
-          <StyledTableCell >Vehicle</StyledTableCell>
+          <StyledTableCell >Type</StyledTableCell>
+          <StyledTableCell >Telephone</StyledTableCell>
           <StyledTableCell >Action</StyledTableCell>
           </TableRow>
           </TableHead>
@@ -102,19 +101,18 @@ export default function ApplicantTable() {
           <TableBody>
             {rows.length>0 ?(
             rows.map((row) => (
-              <StyledTableRow key={row.id} >
-                <StyledTableCell>{row.id}</StyledTableCell>
+              <StyledTableRow key={row.admin_Id} >
+                <StyledTableCell>{row.admin_Id}</StyledTableCell>
                 <StyledTableCell>{row.FirstName}</StyledTableCell>
-                <StyledTableCell>{row.City}</StyledTableCell>
-                <StyledTableCell>{row.BranchLocation}</StyledTableCell>
-                <StyledTableCell>{row.Vehice_Type}</StyledTableCell>
+                <StyledTableCell>{row.type}</StyledTableCell>
+                <StyledTableCell>{row.Tele}</StyledTableCell>
                 <StyledTableCell>
                   <Button
                     sx={{gap:"5px"}}
                     className="hover-link red-button"
                     onClick={() => 
-                      navigate(`/ApplicantPerson/${row.id}`,{
-                        state: {applicantid:row.id},
+                      navigate(`/adminApplicant/${row.admin_Id}`,{
+                        state: {admin_Id:row.admin_Id},
                       })
                     }
                   >

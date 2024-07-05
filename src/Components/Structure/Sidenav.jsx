@@ -192,6 +192,12 @@ export default function Sidenav() {
                 </ListItemIcon>
                 <ListItemText primary="New Administrator" />
               </ListItemButton>
+              <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/adminApplicant")}>
+                <ListItemIcon>
+                  <HowToRegRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin Applicatant" />
+              </ListItemButton>
             </List>
           </Collapse>
 
