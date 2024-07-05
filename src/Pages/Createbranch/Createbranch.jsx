@@ -9,7 +9,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import axios from "axios";
 import { Card, CardContent, Divider, Button } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
-import { BACKEND_URL } from "../../Constants";
+import { BACKEND_URL, ID } from "../../Constants/index";
 import SaveIcon from "@mui/icons-material/Save";
 import BranchTable1 from "../../Components/Createbranch/BranchTable";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -24,6 +24,7 @@ import { branchValidation } from "../../Validation/Validation.js";
 export default function BranchDetails() {
   const [create, setCreate] = useState(true);
   const [open, setOpen] = React.useState(null);
+
   const District = ["Hambantota", "Mathara", "Galle", "Colombo", "Gampaha"];
   const Province = [
     "Central",
@@ -44,23 +45,38 @@ export default function BranchDetails() {
   });
 
   const sendSave = async () => {
-    const data = branchValidation(fromData.B_province,fromData.B_district,fromData.B_location);
+    const data = branchValidation(
+      fromData.B_province,
+      fromData.B_district,
+      fromData.B_location
+    );
     if (data) {
       setOpen(data.Error);
     } else {
+      const accessToken = localStorage.getItem("accessToken");
       axios
-        .post(`${BACKEND_URL}/branch/createNewBranch`, {
-          br_location: fromData.B_location,
-          br_district: fromData.B_district,
-          br_province: fromData.B_province,
-        })
+        .post(
+          `${BACKEND_URL}/branch/createNewBranch`,
+          {
+            br_location: fromData.B_location,
+            br_district: fromData.B_district,
+            br_province: fromData.B_province,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
         .then(function (response) {
-          console.log(response);
+          if (response.data.success === 1) {
+            window.location.reload();
+          }
+          alert("Not you cant");
         })
         .catch(function (error) {
           console.log(error);
         });
-      window.location.reload();
     }
   };
 
@@ -96,6 +112,7 @@ export default function BranchDetails() {
                 <Button
                   size="large"
                   onClick={openbranch}
+                  // disabled={Hide}
                   variant="contained"
                   sx={{
                     margin: "20px 50px 20px 70px",
@@ -124,7 +141,7 @@ export default function BranchDetails() {
                       <Divider
                         sx={{ marginBottom: 1, border: 1, width: "90%" }}
                       />
-                      <Grid container spacing={3} sx={{mt:2}} >
+                      <Grid container spacing={3} sx={{ mt: 2 }}>
                         <Grid item xs={12} md={3}>
                           <Autocomplete
                             disablePortal
@@ -186,10 +203,10 @@ export default function BranchDetails() {
                             }
                           />
                         </Grid>
-                        <Box sx={{ width: "50%", mt:3,ml:3}}>
+                        <Box sx={{ width: "50%", mt: 3, ml: 3 }}>
                           <Collapse in={open}>
                             <Alert
-                            severity="error"
+                              severity="error"
                               action={
                                 <IconButton
                                   aria-label="close"
@@ -199,7 +216,7 @@ export default function BranchDetails() {
                                     setOpen(false);
                                   }}
                                 >
-                                <CloseIcon fontSize="inherit" />
+                                  <CloseIcon fontSize="inherit" />
                                 </IconButton>
                               }
                               sx={{ mb: 2 }}

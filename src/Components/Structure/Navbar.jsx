@@ -71,6 +71,9 @@ export default function Navbar() {
   const updateOpen = useAppStore((state) => state.updateOpen);
   const dopen = useAppStore((state) => state.dopen);
 
+  const type = localStorage.getItem("type");
+  const name = localStorage.getItem("name");
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -185,7 +188,7 @@ export default function Navbar() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-           <span style={{fontSize:50}}>X</span>press
+            <span style={{ fontSize: 50 }}>X</span>press
           </Typography>
           {/* <Box
             component="img"
@@ -198,21 +201,27 @@ export default function Navbar() {
             alt="icon xpress"
             src={vehical}
           /> */}
-          <Box sx={{ml:5.5}}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              sx={{width:"280px"}} 
-            />
-          </Search>
+          <Box sx={{ ml: 5.5 }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                sx={{ width: "280px" }}
+              />
+            </Search>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
+
+          <Typography variant="body1">
+            {name} ,{" "}
+            <span style={{ color: "#030712", margin: "0px 10px" }}>{type}</span>
+          </Typography>
+
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
@@ -220,8 +229,8 @@ export default function Navbar() {
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
-            </IconButton>
-            <IconButton
+            </IconButton> */}
+            {/* <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
@@ -229,17 +238,14 @@ export default function Navbar() {
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={() =>
-                navigate(`/account`
-                )
-              }
+              onClick={() => navigate(`/account`)}
               color="inherit"
             >
               <AccountCircle />
