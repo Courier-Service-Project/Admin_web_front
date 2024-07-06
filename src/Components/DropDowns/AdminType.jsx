@@ -7,12 +7,9 @@ import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 
 export default function AdminTypetDrop({ label, name, value, onChange, error, helperText, width }) {
-    const formControlStyles = {
-        minWidth: width || 120,
-    };
-
+   
     return (
-        <FormControl variant="standard" sx={formControlStyles} error={error}>
+        <FormControl variant="standard" fullWidth error={error}>
         <InputLabel>{label}</InputLabel>
         <Select
             labelId={`${name}-label`}

@@ -26,6 +26,8 @@ import Createbranch from "./Pages/Createbranch/Createbranch.jsx";
 import DetailsOrderTracker from "./Pages/TrackOrder/DetailsOrderTracker.jsx";
 import Ondiliveryorderdetails from "./Pages/In-Progress/Ondiliveryorderdetails.jsx";
 import OnBranchorderdetails from "./Pages/In-Progress/OnBranchOrderdetails.jsx";
+import AdminApplicant from "./Pages/AdminApplicant/AdminApplicant.jsx";
+import AdminPersonDetails from "./Pages/AdminApplicant/AdminApplicantPerson.jsx";
 
 function App() {
   return (
@@ -82,7 +84,15 @@ function App() {
           path="Ondiliveryorder/:orderN06"
           element={<Ondiliveryorderdetails />}
         />
-         <Route path="OnBranchorder/:orderNo7" element={<OnBranchorderdetails/>} />
+        <Route
+          path="OnBranchorder/:orderNo7"
+          element={<OnBranchorderdetails />}
+        />
+        <Route path="/adminApplicant" element={<AdminApplicant />} />
+        <Route
+          path="/adminApplicant/:admin_Id"
+          element={<AdminPersonDetails />}
+        />
       </Routes>
     </BrowserRouter>
   );

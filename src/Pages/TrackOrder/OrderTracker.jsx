@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../Constants';
 
 const steps = [
-    { label: 'Verify Confirm', icon: <ReceiptLongIcon /> },
-    { label: 'Pending Order', icon: <PendingActionsIcon /> },
-    { label: 'Selected Order', icon: <InventoryIcon /> },
+    { label: 'Pending Order', icon: <ReceiptLongIcon /> },
+    { label: 'On Branch', icon: <PendingActionsIcon /> },
+    { label: 'On Pick', icon: <InventoryIcon /> },
     { label: 'On Delivery', icon: <LocalShipping /> },
     { label: 'Order Delivered', icon: <HouseIcon /> },
 ];
@@ -44,9 +44,9 @@ const steptyle = {
 };
 
 const statusMapping = {
-    'VERIFYCONFIRM': 'Verify Confirm',
-    'PENDING': 'Pending Order',
-    'ONPICK': 'Selected Order',
+    'VERIFYCONFIRM': 'Pending Order',
+    'PENDING': 'On Branch',
+    'ONPICK': 'On Pick',
     'ONDILIVERY': 'On Delivery',
     'DILIVERED': 'Order Delivered',
 };
@@ -201,28 +201,15 @@ const OrderTracking = () => {
             )}
             {!error && orderStatus && (
                 <Box>
-                    <Box style={{ padding: '10px', display: 'flex', alignItems: 'center', marginTop: '30px', BorderAllRounded }}>
+                    <Box style={{ padding: '20px', display: 'flex', alignItems: 'center', marginTop: '30px', BorderAllRounded }}>
                         <Typography variant="h6" fontWeight='300' sx={{ marginLeft: '0', color:'#a3a3a3'}}>
-                            Order Id: {orderId}
+                            Order Id: {orderData.Order_id}
                         </Typography>
-                        <Typography variant="h6" sx={{ marginLeft: '150px', color:'#a3a3a3' }} fontWeight='300'>
+                        <Typography variant="h6" sx={{ marginLeft: '100px', color:'#a3a3a3' }} fontWeight='300'>
                             Order Status: {getShipmentDetails(orderId).Status}
                         </Typography>
-                        <Button variant="contained" onClick = {()=>navigate(`/orderdelails/${orderId}`)} style={{ marginLeft: "200px" }} sx={{
-                            bgcolor: "#b91c1c",
-                            height: "40px",
-                            width: "100px",
-                            fontWeight: "600",
-                            ":hover": {
-                                bgcolor: "#ef4444",
-                                color: "#616161",
-                            },
-                        }}>
-                            <RemoveRedEyeIcon sx={{ marginRight: "5px" }} />
-                            View
-                        </Button>
                     </Box>
-                    <div style={{ paddingTop: '10px' }}>
+                    <div style={{ paddingTop: '30px',paddingLeft:'100px',paddingRight:'100px' }}>
                         <Stepper activeStep={activeStep} sx={steptyle} alternativeLabel>
                             {steps.map((step, index) => (
                                 <Step key={step.label} completed={completedSteps[index]}>
@@ -285,6 +272,21 @@ const OrderTracking = () => {
                             </CardContent>
                         </Card>
                     </div>
+                    <Box mt={2} display="flex" justifyContent="flex-end">
+                    <Button variant="contained" onClick = {()=>navigate(`/orderdelails/${orderId}`)} style={{ marginLeft: "200px" }} sx={{
+                            bgcolor: "#ef4444",
+                            height: "40px",
+                            width: "25%",
+                            fontWeight: "600",
+                            ":hover": {
+                                bgcolor: "#f87171",
+                                color: "#616161",
+                            },
+                        }}>
+                            <RemoveRedEyeIcon sx={{ marginRight: "5px" }} />
+                            View Order Details
+                    </Button>
+                    </Box>
                 </Box>
             )}
         </Paper>

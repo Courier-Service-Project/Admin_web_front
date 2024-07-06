@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Box, Alert,Typography,Paper } from '@mui/material';
+import { Grid, TextField, Button, Box, Alert, Typography, Paper, CircularProgress } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import DistrictDrop from '../../Components/DropDowns/City';
@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { BACKEND_URL } from '../../Constants';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const telephoneRegex = /^0\d{9}$/;
 
@@ -37,39 +38,46 @@ const applicantformSchema = Yup.object({
 
 const Newregistrationform = () => {
   const [firstError, setFirstError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const sendRequest=async (values)=>{
-    const formData={
-      values:values
-    }
-
-    try{
-      const result=await axios.post(`${BACKEND_URL}/applicant/postApplicantData`,formData)
+  const sendRequest = async (values, setSubmitting, actions) => {
+    const formData = { values: values };
+    try {
+      const result = await axios.post(`${BACKEND_URL}/applicant/postApplicantData`, formData);
       console.log(result);
-
-    }catch(error){
+      if (result.data.success === 200 && result.data.message === "successfully Inserted") {
+        setFirstError(null);
+        setSuccessMessage("Form submitted successfully!");
+      } else {
+        setSuccessMessage(null);
+        setFirstError(result.data.message);
+      }
+    } catch (error) {
       console.log(error.message);
+      setSuccessMessage(null);
+      setFirstError("Error in form submission.");
     }
-    
-  }
-
-  const onSubmit1 = (values, setSubmitting,actions) => {
-    applicantformSchema.validate(values)
-    .then(() => {
-      sendRequest(values);
-      console.log(values);
-      setSubmitting(false);
-
-    actions.resetForm();
-    })
-    .catch((error) => {
-
-    })
-    .finally(() => {
-      //setLoading(false);
-    });
+    setLoading(false);
+    setSubmitting(false);
+    //actions.resetForm();
   };
 
+  const onSubmit1 = (values, { setSubmitting, resetForm }) => {
+    setLoading(true);
+    setFirstError(null);
+    setSuccessMessage(null);
+    applicantformSchema.validate(values)
+      .then(() => {
+        sendRequest(values, setSubmitting, { resetForm });
+      })
+      .catch((error) => {
+        setFirstError(error.message);
+        setSuccessMessage(null);
+        setLoading(false);
+        setSubmitting(false);
+      });
+  };
 
   return (
     <Formik
@@ -95,7 +103,7 @@ const Newregistrationform = () => {
       validateOnBlur={false}
       validateOnChange={false}
     >
-      {({ errors, touched, handleSubmit, validateForm,setFieldValue,values }) => {
+      {({ errors, touched, handleSubmit, validateForm, setFieldValue, values }) => {
         const handleFormSubmit = async (e) => {
           e.preventDefault();
           const validationErrors = await validateForm();
@@ -114,7 +122,7 @@ const Newregistrationform = () => {
               <Typography variant="h6" fontWeight="600" gutterBottom>
                 Applicant Information
               </Typography>
-              <Grid container spacing={3} columnSpacing={5}>
+              <Grid container spacing={2}>
                 <Grid item xs={12} sm={3}>
                   <Field name="A_fname"
                     as={TextField}
@@ -131,7 +139,8 @@ const Newregistrationform = () => {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12}></Grid>
+                <Grid item xs={12} sm={4}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Field name="A_dob">
                       {({ field }) => (
@@ -151,6 +160,7 @@ const Newregistrationform = () => {
                     </Field>
                   </LocalizationProvider>
                 </Grid>
+                <Grid item xs={12}></Grid>
                 <Grid item xs={12} sm={3}>
                   <Field name="A_telephone"
                     as={TextField}
@@ -159,7 +169,8 @@ const Newregistrationform = () => {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12}></Grid>
+                <Grid item xs={12} sm={6}>
                   <Field name="A_email"
                     as={TextField}
                     type="email"
@@ -168,6 +179,7 @@ const Newregistrationform = () => {
                     style={{ width: "50%" }}
                   />
                 </Grid>
+                <Grid item xs={12}></Grid>
                 <Grid item xs={12} sm={3}>
                   <Field name="A_streetNo"
                     as={TextField}
@@ -192,10 +204,10 @@ const Newregistrationform = () => {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12}></Grid>
+                <Grid item xs={12} sm={3}>
                   <Field name="D_vehicleNo"
                     as={TextField}
-                    //type="text"
                     label="Vehicle No"
                     variant="standard"
                     fullWidth
@@ -210,7 +222,7 @@ const Newregistrationform = () => {
                     onChange={(e) => setFieldValue('D_vehicle', e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={12} sm ={3}>
+                <Grid item xs={12} sm={3}>
                   <DistrictDrop
                     label="Branch Location"
                     name="D_city"
@@ -224,29 +236,27 @@ const Newregistrationform = () => {
               <Typography variant="h6" fontWeight="600" gutterBottom>
                 Emergency Contact
               </Typography>
-              <Grid container spacing={3} columnSpacing={5}>
-                <Grid item xs={12} sm={4} columnSpacing={5}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={4}>
                   <Field name="E_fname"
                     as={TextField}
-                    //type="text"
                     label="Emergency Contact First Name"
                     variant="standard"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} sm={4} columnSpacing={5}>
+                <Grid item xs={12} sm={4}>
                   <Field name="E_lname"
                     as={TextField}
-                    //type="text"
                     label="Emergency Contact Last Name"
                     variant="standard"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} sm={4} columnSpacing={5}>
+                <Grid item xs={12}></Grid>
+                <Grid item xs={12} sm={4}>
                   <Field name="E_relation"
                     as={TextField}
-                    //type="text"
                     label="Emergency Contact Relation"
                     variant="standard"
                     fullWidth
@@ -261,25 +271,42 @@ const Newregistrationform = () => {
                   />
                 </Grid>
               </Grid>
-              </Paper>
+            </Paper>
             {firstError && (
               <Box mt={2}>
                 <Alert severity="error">{firstError}</Alert>
               </Box>
             )}
+            {successMessage && (
+              <Box mt={2}>
+                <Alert severity="success">
+                  {successMessage}
+                </Alert>
+              </Box>
+            )}
             <Box mt={2} display="flex" justifyContent="flex-end">
-              <Button type="submit" variant="contained"style={{marginRight: '0px',marginTop: '20px'}}
-              sx={{
-                p: 1,
-                mt: 5,
-                bgcolor: "#00897b",
-                ":hover": {
-                  bgcolor: "#4db6ac",
-                  color: "#fff",
-                },
-              }}>
-                Submit
-              </Button>
+              {loading ? (
+                <CircularProgress sx={{ color: "#4caf50" }}/>
+              ) : (
+                <Grid item xs={12} sm={5}>
+                  <Button type="submit"
+                    fullWidth
+                    size="medium"
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      bgcolor: "#4caf50",
+                      margin: "0px 0 0px 0",
+                      gap: "3px",
+                      ":hover": {
+                        bgcolor: "#4caf50",
+                        color: "#fff",
+                      },
+                    }}>
+                    <CheckCircleIcon sx={{ mr: 1 }} /> Submit
+                  </Button>
+                </Grid>
+              )}
             </Box>
           </Form>
         );

@@ -15,6 +15,9 @@ import axios from 'axios';
 import { useLocation, useParams,useNavigate } from "react-router-dom";
 import { BACKEND_URL } from '../../Constants';
 import RetryModal from "../../Components/Alert/RetryModal";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 export default function ViewApplicant() {
     const [applicantdata, setApplicantData] = useState({});
@@ -125,236 +128,251 @@ export default function ViewApplicant() {
                                 Applicant Information
                             </Typography>
                             <Grid container spacing={3} columnSpacing={5}>
-                                <Grid item xs={12} md={4}>
+                            <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="First Name"
                                         name="A_fname"
                                         value={applicantdata.FirstName || ''}
                                         variant="standard"
-                                        style={{ width: "250px" }}
+                                        fullWidth
                                         InputProps={{
-                                            sx: { color:'#696969',fontSize:'17px' }
+                                            sx: { color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, FirstName: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Last Name"
                                         name="A_lname"
                                         value={applicantdata.LastName || ''}
                                         variant="standard"
-                                        style={{ width: "250px" }}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, LastName: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Date of Birth"
                                         name="A_Dob"
                                         value={applicantdata.DOB || ''}
                                         variant="standard"
-                                        style={{ width: "250px" }}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, DOB: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Telephone No."
                                         name="A_telephone"
                                         value={applicantdata.MobileNo || ''}
                                         variant="standard"
-                                        style={{ width: "250px" }}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, MobileNo: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={4}>
                                     <TextField
                                         type="email"
                                         label="Email"
                                         name="email"
                                         value={applicantdata.Email || ''}
                                         variant="standard"
-                                        style={{ width: "50%" }}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, Email: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Street No."
                                         name="A_streetNo"
                                         value={applicantdata.StreetNo || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: { color:'#696969',fontSize:'17px' } 
+                                            sx: { color:'#696969',fontSize:'17px' },
+                                            readOnly: true 
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, StreetNo: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Street"
                                         name="A_street"
                                         value={applicantdata.Street || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, Street: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="City"
                                         name="A_city"
                                         value={applicantdata.City || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, City: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
-                                        label="Applying for what city"
+                                        label="Branch Location"
                                         name="D_city"
                                         value={applicantdata.BranchLocation || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, BranchLocation: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={8}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Vehicle Type"
                                         name="D_vehicle"
                                         value={applicantdata.Vehice_Type || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, Vehicle_Type: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Vehicle Plate Number"
                                         name="D_vehicle_no"
                                         value={applicantdata.VehicleNo || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, VehicleNo: e.target.value })}
                                     />
                                 </Grid>
-                            </Grid>
-                        </Paper>
-                        <Paper style={{ padding: '50px', marginBottom: "10px", marginTop: "10px" }}>
-                            <Typography variant="h6" fontWeight="600" gutterBottom>
-                                Emergency Contact Information
-                            </Typography>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
-                                        label="First Name"
+                                        label="Emergency contact's First Name"
                                         name="E_fname"
                                         value={applicantdata.E_FirstName || ''}
-
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, E_FirstName: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={8}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
-                                        label="Last Name"
+                                        label="Emergency contact's Last Name"
                                         name="E_lname"
                                         value={applicantdata.E_LastNane || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12}></Grid>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         label="Relationship"
                                         name="E_relationship"
                                         value={applicantdata.E_Relationship || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, E_Relationship: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
-                                        bgcolor="success"
-                                        label="Telephone"
+                                        label="Emergency contact's Telephone"
                                         name="E_telephone"
                                         value={applicantdata.E_ContactNo || ''}
                                         variant="standard"
-                                        style={{width:"250px"}}
+                                        fullWidth
                                         InputProps={{
-                                            sx: {color:'#696969',fontSize:'17px' }
+                                            sx: {color:'#696969',fontSize:'17px' },
+                                            readOnly: true
                                         }}
-                                        //onChange={e => setApplicantData({ ...applicantdata, E_ContactNo: e.target.value })}
                                     />
                                 </Grid>
-                                {/* <Grid> */}
-                                <Box>
+                                <Grid container spacing={2}sx={{ mt: 2 }} textAlign="right">
+                                    {/* <Grid item={12} md={3}></Grid> */}
+                                    {/* <Grid item={12} md={3}></Grid> */}
+                                <Grid item
+                                    xs={12}
+                                    md={3}
+                                    style={{ margin: "0 auto", padding: "10px 0px" }}>
                                 
                                     <AlertDialog
-                                        bgcolor="error"
+                                        bgcolor="#bdbdbd"
                                         button="Reject"
+                                        icon={DeleteIcon}
                                         title="Confirm Rejection"
                                         text="Are you sure want to delete this Application?"
                                         buttonName1="Cancel"
                                         buttonName2="Delete"
+                                        bcolor="#bdbdbd"
+                                        hoverbgcolor="#94a3b8"
                                         onClick1={()=>{deleteApplicantPerson(applicantid)}}
                                     />
+                                    </Grid>
+                                    <Grid item
+                                    xs={12}
+                                    md={3}
+                                    style={{ margin: "0 auto", padding: "10px 0px" }}>
                                 
                                 
                                     <AlertDialog
-                                        bgcolor="success"
+                                        bgcolor="#4caf50"
                                         button="Accept"
+                                        icon={CheckCircleIcon}
                                         title="Confirm Applicant"
                                         text="Are you sure want to confirm this Application?"
                                         buttonName1="Cancel"
                                         buttonName2="Confirm"
+                                        bcolor="#4caf50"
+                                        hoverbgcolor="#16a34a"
                                         onClick1={()=>{onclick(applicantid)}}
                                     />
                                 
-                                </Box>
-                                {/* </Grid> */}
+                                </Grid>
+                                </Grid>
                             </Grid>
                         </Paper>
                     </Box>

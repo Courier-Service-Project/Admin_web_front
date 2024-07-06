@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Box, Alert, Paper, } from '@mui/material';
+import { Grid, TextField, Button, Box, Alert, Paper,CircularProgress } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import AdminTypetDrop from '../../Components/DropDowns/AdminType';
@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { BACKEND_URL } from '../../Constants';
 
 const telephoneRegex = /^0\d{9}$/;
@@ -31,8 +32,10 @@ const adminformSchema = Yup.object({
 
 const NewAdminForm = () => {
   const [firstError, setFirstError] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const sendRequest = async (values) =>{
+  const sendRequest = async (values, setSubmitting, actions) =>{
     const formData ={
       values:values
     }
@@ -40,23 +43,42 @@ const NewAdminForm = () => {
       const result = await axios.post(`${BACKEND_URL}/applicant/postAdminData`,formData)
       //console.log("im here")
       console.log(result);
+      if(result.data.success === 200 && result.data.message === "Successfully inserted"){
+        setFirstError(null);
+        setSuccessMessage("Form Submitted successfully!");
+      } else{
+        setSuccessMessage(null);
+        setFirstError(result.data.message);
+      }
     }
     catch(error){
       console.log(error.message);
+      setSuccessMessage(null);
+      setFirstError("Error in form submission.");
       
     }
+    setLoading(false);
+    setSubmitting(false);
+    //actions.resetForm();
   }
   
-  const onSubmit = (values, actions,setSubmitting) => {
+  const onSubmit = (values,{setSubmitting,resetForm}) => {
+    setLoading(true);
+    setFirstError(null);
+    setSuccessMessage(null);
     adminformSchema.validate(values)
     .then(() => {
-      sendRequest(values);
-      actions.resetForm();
+      sendRequest(values,setSubmitting, { resetForm });
+      //actions.resetForm();
       console.log(values);
       setSubmitting(false);
     })
     .catch((error) => {
       console.log(error);
+      setFirstError(error.message);
+      setSuccessMessage(null);
+      setLoading(false);
+      setSubmitting(false);
     })
   };
 
@@ -94,7 +116,7 @@ const NewAdminForm = () => {
         return (
           <Form onSubmit={handleFormSubmit}>
             <Paper style={{ padding: '50px', marginBottom: "10px", marginTop: "10px" }}>
-            <Grid container spacing={3} columnSpacing={5}>
+            <Grid container spacing={2} >
               <Grid item xs={12} sm={3}>
                 <Field name="N_fname"
                   as={TextField}
@@ -111,15 +133,17 @@ const NewAdminForm = () => {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} ></Grid>
+              <Grid item xs={12} sm={4}>
                 <Field name="N_email"
                   as={TextField}
                   type="email"
                   label="Email"
                   variant="standard"
-                  style={{ width: "50%" }}
+                  fullWidth
                 />
               </Grid>
+              <Grid item xs={12} ></Grid>
               <Grid item xs={12} sm={3}>
                 <Field name="N_telephone"
                   as={TextField}
@@ -128,6 +152,7 @@ const NewAdminForm = () => {
                   fullWidth
                 />
               </Grid>
+              <Grid item xs={12} ></Grid>
               <Grid item xs={12} >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Field name="N_dob">
@@ -148,6 +173,7 @@ const NewAdminForm = () => {
                     </Field>
                   </LocalizationProvider>
                 </Grid>
+                <Grid item xs={12} ></Grid>
               <Grid item xs={12} sm={3}>
                 <Field name="N_streetNo"
                   as={TextField}
@@ -172,7 +198,8 @@ const NewAdminForm = () => {
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} ></Grid>
+              <Grid item xs={12} sm={3}>
                   <AdminTypetDrop
                     label="Admin Type"
                     name="N_admin"
@@ -186,22 +213,39 @@ const NewAdminForm = () => {
                 <Alert severity="error">{firstError}</Alert>
               </Box>
             )}
-            <Grid item sx={12} sm={4} >
-            <Box mt={3} display="flex" justifyContent="flex-end">
-              <Button type="submit" variant="contained" style={{marginLeft: '400px',marginTop: '20px'}} 
-              sx={{
-                p: 1,
-                mt: 5,
-                bgcolor: "#00897b",
-                ":hover": {
-                  bgcolor: "#4db6ac",
-                  color: "#fff",
-                },
-              }}>
-                Submit
+            {successMessage && (
+              <Box mt={2}>
+                <Alert severity="success">
+                  {successMessage}
+                </Alert>
+              </Box>
+            )}
+            <Box mt={4} display="flex" justifyContent="flex-end">
+              {loading ? (
+                <CircularProgress sx={{ color: "#4caf50" }}/>
+              ) : (
+                <Grid item xs={12} sm={5}>
+              <Button type="submit"
+                fullWidth
+                size="medium"
+                variant="contained" 
+                sx={{
+                  mt: 2,
+                  bgcolor: "#4caf50",
+                  margin: "0px 0 0px 0",
+                  gap: "3px",
+                  ":hover": {
+                          bgcolor: "#4caf50",
+                          color: "#fff",
+                  },
+                }}>
+                <CheckCircleIcon sx={{ mr: 1 }}/> Submit
               </Button>
+
+              </Grid>
+              )
+              }
             </Box>
-            </Grid>
             </Paper>
           </Form>
         );
