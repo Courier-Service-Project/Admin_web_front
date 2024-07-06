@@ -190,6 +190,7 @@ export default function Sidenav() {
                 <ListItemIcon>
                   <HowToRegRoundedIcon />
                 </ListItemIcon>
+                
                 <ListItemText primary="New Administrator" />
               </ListItemButton>
             </List>

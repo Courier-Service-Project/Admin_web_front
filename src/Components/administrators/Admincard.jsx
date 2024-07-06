@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
 import "./Admincard.css";
 import { useNavigate } from "react-router-dom";
+import ChevronRightSharpIcon from '@mui/icons-material/ChevronRightSharp';
 
 export default function Admincard(props) {
   const { name, email, telephone, photoSrc, admin_Id } = props;
@@ -68,7 +69,7 @@ export default function Admincard(props) {
         <Box sx={{
           pt: 4, display: 'flex', justifyContent: "flex-end",
         }}>
-            <Button size="small" color="primary" 
+            {/* <Button size="small" color="primary" 
               onClick={handleViewMore}
             sx={{
               border: 1, justifyContent: "flex-end",
@@ -78,7 +79,24 @@ export default function Admincard(props) {
               }
             }}>
               <Typography>View More</Typography>
-            </Button>
+            </Button> */}
+
+                <Button
+                  size="medium"
+                  onClick={handleViewMore}
+                  variant="contained"
+                  sx={{
+                    margin: "0px 5px",
+                    bgcolor: "#00897b",
+                    ":hover": {
+                      bgcolor: "#4db6ac",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  <Typography sx={{ fontSize: 13 }}>View More</Typography>
+                  <ChevronRightSharpIcon style={{ fontSize: 20 }} />
+                </Button>
         </Box>
       </Box>
     </Card>
