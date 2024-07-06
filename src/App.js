@@ -26,6 +26,7 @@ import Createbranch from "./Pages/Createbranch/Createbranch.jsx";
 import DetailsOrderTracker from "./Pages/TrackOrder/DetailsOrderTracker.jsx";
 import Ondiliveryorderdetails from "./Pages/In-Progress/Ondiliveryorderdetails.jsx";
 import OnBranchorderdetails from "./Pages/In-Progress/OnBranchOrderdetails.jsx";
+import Forgot from "./Pages/Forgot/Forgot.jsx";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route path="/track" element={<Tracker />} />
         <Route path="/order/:orderNo" element={<ViewOrder />} />
         <Route path="/newregistration" element={<NewRegistration />} />
+        <Route path="/forgot" element={<Forgot />} />
         <Route path="/newadministrator" element={<NewAdministrator />} />
         <Route
           path="/ApplicantPerson/:applicantid"
@@ -82,7 +84,10 @@ function App() {
           path="Ondiliveryorder/:orderN06"
           element={<Ondiliveryorderdetails />}
         />
-         <Route path="OnBranchorder/:orderNo7" element={<OnBranchorderdetails/>} />
+        <Route
+          path="OnBranchorder/:orderNo7"
+          element={<OnBranchorderdetails />}
+        />
       </Routes>
     </BrowserRouter>
   );

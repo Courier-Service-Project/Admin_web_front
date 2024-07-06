@@ -169,7 +169,7 @@ export default function SignIn() {
                       />
                     </Button>
                     <Typography>
-                      <Link sx={link} href="#">
+                      <Link sx={link} href="/forgot">
                         Forgot password?
                       </Link>
                     </Typography>
