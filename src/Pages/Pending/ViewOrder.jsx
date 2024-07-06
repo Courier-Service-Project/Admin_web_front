@@ -51,6 +51,8 @@ export default function ViewOrder() {
     S_city: "",
     S_telephone: "",
 
+    R_fname:"",
+    R_lname:"",
     R_province: "",
     R_district: "",
     R_streetNo: "",
@@ -63,6 +65,7 @@ export default function ViewOrder() {
     P_homeTown: "",
     P_district: "",
     p_ordertype: "",
+    p_bloc:"",
   });
 
   const handleConfirmdata = async () => {
@@ -106,19 +109,20 @@ export default function ViewOrder() {
       fromData.S_lname,
       fromData.S_city,
       fromData.S_telephone,
+      fromData.R_fname,
+      fromData.R_lname,
       fromData.R_province,
       fromData.R_district,
       fromData.R_streetNo,
       fromData.R_street,
       fromData.R_HomeTown,
       fromData.R_telephone,
-      // fromData.R_lname,
-      // fromData.R_fname,
       fromData.P_streetNo,
       fromData.P_street,
       fromData.P_homeTown,
       fromData.P_district,
-      fromData.p_ordertype
+      fromData.p_ordertype,
+      fromData.p_bloc,
     );
     if (data) {
       setOpen(data.Error);
@@ -140,20 +144,21 @@ export default function ViewOrder() {
         scity: fromData.S_city,
         stelephone: fromData.S_telephone,
 
+        rfname: fromData.R_fname,
+        rlname: fromData.R_lname,
         rprovince: fromData.R_province,
         rdistric: fromData.R_district,
         rstreetNo: fromData.R_streetNo,
         rstreet: fromData.R_street,
         rhometown: fromData.R_HomeTown,
         rtelephone: fromData.R_telephone,
-        // rfname: fromData.R_lname,
-        // rlname: fromData.R_fname,
 
         pstreetNo: fromData.P_streetNo,
         pstreet: fromData.P_street,
         phometown: fromData.P_homeTown,
         pdistrict: fromData.P_district,
         potype: fromData.p_ordertype,
+        blocation:fromData.p_bloc
       })
       .then(function (response) {
         setEdit(true);
@@ -181,6 +186,8 @@ export default function ViewOrder() {
         S_telephone: response.data.message[0].Customermobile,
 
         recID: response.data.message[0].recieverId,
+        R_fname:response.data.message[0].FirstName,
+        R_lname:response.data.message[0].LastName,
         R_province: response.data.message[0].DiliveryProvince,
         R_district: response.data.message[0].DiliveryDistrict,
         R_streetNo: response.data.message[0].StreetNo,
@@ -193,6 +200,7 @@ export default function ViewOrder() {
         P_homeTown: response.data.message[0].Pickup_City,
         P_district: response.data.message[0].Pickup_District,
         p_ordertype: response.data.message[0].Emmergency,
+        p_bloc:response.data.message[0].branchLocation,
       });
     } catch (error) {
       console.error("Error fetching order details:", error);
@@ -324,6 +332,47 @@ export default function ViewOrder() {
                     <FormSubTitle subTitle="Receiver Details" />
                     <Divider sx={{ marginBottom: 1, border: 1 }} />
                     <Grid container spacing={1} sx={{ mt: 3 }}>
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="outlined-basic"
+                          label="First Name"
+                          size="small"
+                          InputProps={{
+                            readOnly: edit,
+                          }}
+                          name="R_fname"
+                          fullWidth
+                          variant="outlined"
+                          value={fromData.R_fname}
+                          onChange={(event) =>
+                            setFormData({
+                              ...fromData,
+                              R_fname: event.target.value,
+                            })
+                          }
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Last Name"
+                          size="small"
+                          InputProps={{
+                            readOnly: edit,
+                          }}
+                          name="R_lname"
+                          fullWidth
+                          variant="outlined"
+                          value={fromData.R_lname}
+                          onChange={(event) =>
+                            setFormData({
+                              ...fromData,
+                              R_lname: event.target.value,
+                            })
+                          }
+                        />
+                      </Grid>
                       <Grid item xs={12} md={6}>
                         <TextField
                           id="outlined-basic"
@@ -558,6 +607,27 @@ export default function ViewOrder() {
                           }
                         />
                       </Grid>
+                      
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Branch Location"
+                          size="small"
+                          InputProps={{
+                            readOnly: edit,
+                          }}
+                          name="p_bloc"
+                          fullWidth
+                          variant="outlined"
+                          value={fromData.p_bloc}
+                          onChange={(event) =>
+                            setFormData({
+                              ...fromData,
+                              p_bloc: event.target.value,
+                            })
+                          }
+                        />
+                      </Grid>
                     </Grid>
 
                     <Box sx={{ width: "100%", mt: 2 }}>
@@ -639,18 +709,6 @@ export default function ViewOrder() {
                             <SaveIcon />
                             Save Edit
                           </Button>
-
-                          // <Button
-                          //   fullWidth
-                          //   size="large"
-                          //   style={{backgroundColor:"#0288d1"}}
-                          //   sx={{ margin: "30px 0 10px 0", borderRadius: "50px", gap:"15px" }}
-                          //   variant="contained"
-                          //   onClick={sendSave}
-                          // >
-                          //   <SaveIcon/>
-                          //   Save Edit
-                          // </Button>
                         )}
                       </Grid>
 

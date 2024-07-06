@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import "./RegisteredTable.css";
+import "../../Components/complete/CompleteTable.css";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -26,10 +26,11 @@ const StyledTableCell = styled(TableCell)(() => ({
     zIndex: 1,
     overflowX: "auto",
     height: "60px",
+    padding: 10,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 10,
   },
 }));
 
@@ -113,8 +114,8 @@ export default function RegisteredTable() {
                     <StyledTableCell>{row.branchLocation}</StyledTableCell>
                     <StyledTableCell>
                       <Button
-                        sx={{ gap: "5px" }}
-                        className="hover-link red-button"
+                        sx={{gap:"5px",pl:"0.1px"}}
+                        className="hover-link button"
                         onClick={() =>
                           navigate(`/RegisteredPerson/${row.BranchUser_id}`, {
                             state: { orderId: row.BranchUser_id },
@@ -122,9 +123,7 @@ export default function RegisteredTable() {
                         }
                       >
                         View Order
-                        <VisibilityIcon
-                          style={{ fontSize: 20, color: "#e57373" }}
-                        />
+                        <VisibilityIcon style={{ fontSize: 20, color:"#e57373" }} />
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>

@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { BACKEND_URL,ID } from "../../Constants/index";
+import { BACKEND_URL, ID } from "../../Constants/index";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -59,8 +59,8 @@ export default function PopupContact(props) {
 
   const formik = useFormik({
     initialValues: {
-      email:pEmail,
-      tele:pTele,
+      email: pEmail,
+      tele: pTele,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {

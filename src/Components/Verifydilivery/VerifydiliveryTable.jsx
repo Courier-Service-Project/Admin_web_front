@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Typography } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,10 +26,11 @@ const StyledTableCell = styled(TableCell)(() => ({
     zIndex: 1,
     overflowX: "auto",
     height: "60px",
+    padding: 10,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    padding: 8,
+    padding: 10,
     // backgroundColor:"red"
   },
 }));
@@ -112,7 +114,8 @@ export default function VerifydiliveryTable() {
                     <StyledTableCell>{row.Pickup_City}</StyledTableCell>
                     <StyledTableCell>
                       <Button
-                        className="hover-link red-button"
+                       sx={{gap:"5px",pl:"0.1px"}}
+                        className="hover-link button"
                          onClick={() =>
                            navigate(`/verifydiliveryorder/${row.Order_id}`, {
                              state: { orderId: row.Order_id },
@@ -120,6 +123,7 @@ export default function VerifydiliveryTable() {
                          }
                       >
                         View Order
+                        <VisibilityIcon style={{ fontSize: 20, color:"#e57373" }} />
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>
