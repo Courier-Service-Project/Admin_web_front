@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -15,6 +15,7 @@ import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import { Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -60,12 +61,12 @@ const TableContainerStyled = styled(TableContainer)({
 
 export default function RegisteredTable() {
   const navigate = useNavigate();
+  const [rows, setRows] = React.useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getRegisterdpersonDetails();
   }, []);
-
-  const [rows, setRows] = React.useState([]);
 
   const getRegisterdpersonDetails = async () => {
     try {
@@ -84,12 +85,19 @@ export default function RegisteredTable() {
     } catch (error) {
       setRows([]);
       console.error("Failed to fetch order details", error);
+    }finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box style={{ paddingTop: "20px", marginLeft: "20px", overflowX: "auto" }}>
+    <Box style={{ paddingTop: "20px", marginLeft: "20px" }}>
       <Box style={{ display: "flex", justifyContent: "center" }}>
+      {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+              <CircularProgress color="success" />
+            </Box>
+          ) : (
         <TableContainerStyled sx={{ height: "100%", overflowX: "auto" }}>
           <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
             <TableHead>
@@ -150,6 +158,7 @@ export default function RegisteredTable() {
             </TableBody>
           </Table>
         </TableContainerStyled>
+          )}
       </Box>
     </Box>
   );
