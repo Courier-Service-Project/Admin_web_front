@@ -31,6 +31,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from '@mui/icons-material/Logout';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import AddHomeIcon from '@mui/icons-material/AddHome';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -182,13 +184,13 @@ export default function Sidenav() {
             <List component="div" disablePadding>
             <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/adminprofile")}>
                 <ListItemIcon>
-                  <LibraryAddIcon />
+                  <SwitchAccountIcon />
                 </ListItemIcon>
                 <ListItemText primary="Admin Profile" />
               </ListItemButton>
               <ListItemButton sx={{ pl: 4 }} onClick={()=>navigate("/newadministrator")}>
                 <ListItemIcon>
-                  <HowToRegRoundedIcon />
+                  <PersonAddAlt1Icon />
                 </ListItemIcon>
                 
                 <ListItemText primary="New Administrator" />
