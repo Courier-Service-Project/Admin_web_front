@@ -14,25 +14,24 @@ import { json, useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./SigninStyles";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import Alert from '@mui/material/Alert';
-import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 export default function SignIn() {
   const navigation = useNavigate();
-  const [error,setError] = useState(null);
-  const [loading, setLoading] = useState(false)
-
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = yup.object({
-    userName: yup.string("Enter your emai").required(" ").email("Enter valid Email"),
-    password: yup
-      .string("Enter your password")
-      .required(" "),
+    userName: yup
+      .string("Enter your emai")
+      .required(" ")
+      .email("Enter valid Email"),
+    password: yup.string("Enter your password").required(" "),
   });
 
- 
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -40,27 +39,27 @@ export default function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-
-      setLoading(true)
+      setLoading(true);
       axios
-        .post("http://localhost:9000/admin",{
+        .post("http://localhost:9000/admin", {
           userName: values.userName,
           password: values.password,
         })
         .then(function (response) {
-          setLoading(false)
+          setLoading(false);
           //console.log(response.data.token)
           //localStorage.setItem('login',response.data.token)
-          localStorage.setItem('adminID',response.data.adminID)
+          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("adminID", response.data.adminID);
+          localStorage.setItem("type", response.data.type);
+          localStorage.setItem("name", response.data.name);
 
-       
+          // console.log(localStorage.getItem('login'))
 
-          console.log(localStorage.getItem('login'))
           if (response.data.success === 1) {
             navigation("/dashboard");
-
           } else {
-            setError("Invalid Username or Password, Please try again.")
+            setError("Invalid Username or Password, Please try again.");
           }
         })
         .catch(function (error) {
@@ -124,26 +123,35 @@ export default function SignIn() {
                         }
                       />
                     </Box>
-                    <Typography sx={{color:"red",fontSize:"13px"}}> {error? <Box mb={-3}><Collapse in={error}>
-        <Alert
-          severity="error"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setError(null);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          {error}
-        </Alert>
-      </Collapse></Box> :""}</Typography>
+                    <Typography sx={{ color: "red", fontSize: "13px" }}>
+                      {" "}
+                      {error ? (
+                        <Box mb={-3}>
+                          <Collapse in={error}>
+                            <Alert
+                              severity="error"
+                              action={
+                                <IconButton
+                                  aria-label="close"
+                                  color="inherit"
+                                  size="small"
+                                  onClick={() => {
+                                    setError(null);
+                                  }}
+                                >
+                                  <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                              }
+                              sx={{ mb: 2 }}
+                            >
+                              {error}
+                            </Alert>
+                          </Collapse>
+                        </Box>
+                      ) : (
+                        ""
+                      )}
+                    </Typography>
                     <Button
                       type="submit"
                       variant="contained"
@@ -151,16 +159,17 @@ export default function SignIn() {
                       sx={btn}
                       fullWidth
                     >
-                      Sign In <span style={{margin:"0 5px"}}></span><Pulseloader
-                          color={"white"}
-                          loading={loading}
-                          size={6}
-                          aria-label="Loading Spinner"
-                          data-testid="loader"
-                        />
+                      Sign In <span style={{ margin: "0 5px" }}></span>
+                      <Pulseloader
+                        color={"white"}
+                        loading={loading}
+                        size={6}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                      />
                     </Button>
                     <Typography>
-                      <Link sx={link} href="#">
+                      <Link sx={link} href="/forgot">
                         Forgot password?
                       </Link>
                     </Typography>
