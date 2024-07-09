@@ -26,6 +26,7 @@ import Createbranch from "./Pages/Createbranch/Createbranch.jsx";
 import DetailsOrderTracker from "./Pages/TrackOrder/DetailsOrderTracker.jsx";
 import Ondiliveryorderdetails from "./Pages/In-Progress/Ondiliveryorderdetails.jsx";
 import OnBranchorderdetails from "./Pages/In-Progress/OnBranchOrderdetails.jsx";
+import Forgot from "./Pages/Forgot/Forgot.jsx";
 import AdminApplicant from "./Pages/AdminApplicant/AdminApplicant.jsx";
 import AdminPersonDetails from "./Pages/AdminApplicant/AdminApplicantPerson.jsx";
 
@@ -55,6 +56,7 @@ function App() {
         <Route path="/track" element={<Tracker />} />
         <Route path="/order/:orderNo" element={<ViewOrder />} />
         <Route path="/newregistration" element={<NewRegistration />} />
+        <Route path="/forgot" element={<Forgot />} />
         <Route path="/newadministrator" element={<NewAdministrator />} />
         <Route
           path="/ApplicantPerson/:applicantid"

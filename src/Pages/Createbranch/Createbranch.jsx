@@ -9,7 +9,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import axios from "axios";
 import { Card, CardContent, Divider, Button } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
-import { BACKEND_URL } from "../../Constants";
+import { BACKEND_URL, ID } from "../../Constants/index";
 import SaveIcon from "@mui/icons-material/Save";
 import BranchTable1 from "../../Components/Createbranch/BranchTable";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -108,10 +108,15 @@ export default function BranchDetails() {
     setOpenA(false);
 
     try {
+      const accessToken = localStorage.getItem("accessToken");
       const result = await axios.post(`${BACKEND_URL}/branch/createNewBranch`, {
           br_location: fromData.B_location,
           br_district: fromData.B_district,
           br_province: fromData.B_province,
+        },{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       );
         if (result.status === 200) {
@@ -186,6 +191,7 @@ export default function BranchDetails() {
                 <Button
                   size="large"
                   onClick={openbranch}
+                  // disabled={Hide}
                   variant="contained"
                   sx={{
                     margin: "20px 50px 20px 70px",
@@ -279,7 +285,7 @@ export default function BranchDetails() {
                         <Box sx={{ width: "100%", mt:2,ml:2}}>
                           <Collapse in={open}>
                             <Alert
-                            severity="error"
+                              severity="error"
                               action={
                                 <IconButton
                                   aria-label="close"
@@ -289,7 +295,7 @@ export default function BranchDetails() {
                                     setOpen(false);
                                   }}
                                 >
-                                <CloseIcon fontSize="inherit" />
+                                  <CloseIcon fontSize="inherit" />
                                 </IconButton>
                               }
                               sx={{ mb: 2 }}
