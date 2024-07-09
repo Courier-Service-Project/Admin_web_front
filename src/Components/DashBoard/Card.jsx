@@ -14,33 +14,49 @@ import CardContent from '@mui/material/CardContent';
 import { PieChart } from '../../Charts/PieChart';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CircularProgress from '@mui/material/CircularProgress';
 import { BACKEND_URL } from '../../Constants';
-import RetryModal from '../Alert/RetryModal';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function BasicGrid() {
     const [orderCount, setOrderCount] = useState({});
     const [regPerCount,setRegPerCount] = useState({});
-    const [error, setError] = useState(null);
-    const [open, setOpen] = useState(false);
+    const [loading,setLoading] = useState(false);
+    const [hasErrorToastShown, setHasErrorToastShown] = useState(false);
 
+    const handleCatchError = (error) => {
+        console.error(error.message);
+        if (!hasErrorToastShown) {
+            toast.dismiss();
+            toast.warn('Check internet Connection!', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+            setHasErrorToastShown(true);
+        }
+    };
     useEffect(() => {
         fetchOrderCount();
         perCount();
-    }, []);
+    }, );
 
     const fetchOrderCount = async () => {
         try {
             const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
-
+            console.log(result.data.message)
             setOrderCount(result.data.message);
         } catch (error) {
-            setError("Network error. Please try again.");
-            setOpen(true);
+            console.log(error)
+            //handleCatchError(error);
+        } finally{
+            setLoading(false);
         }
     };
 
@@ -54,21 +70,19 @@ export default function BasicGrid() {
             // const reg = regPerCount.data;
             // console.log("reg:" ,reg)
         } catch (error) {
-            setError("Network error. Please try again.");
-            setOpen(true);
+            handleCatchError(error);
+        } finally{
+            setLoading(false);
         }
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleTryAgain = () => {
-        window.location.reload();
-    }
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
+            {loading ? (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <CircularProgress />
+            </Box>
+            ) : (
+                <Grid container spacing={2}>
                 <Grid item xs={12} md={8}>
                     <Stack spacing={2} direction={'row'}>
                         <Grid item xs={12} md={4}>
@@ -87,7 +101,7 @@ export default function BasicGrid() {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <CardCom 
-                                title={orderCount.onpickCount} 
+                                title={orderCount.inProgressCount} 
                                 text="In progress" 
                                 width="100%" 
                                 height="145px"
@@ -161,14 +175,8 @@ export default function BasicGrid() {
                     </Card>
                 </Grid>
             </Grid>
-
-            
-            <RetryModal
-                open={open}
-                onClose={handleClose}
-                error={error}
-                onclick1={handleTryAgain}
-            />
+            )}
+            <ToastContainer />
         </Box>
     );
 }

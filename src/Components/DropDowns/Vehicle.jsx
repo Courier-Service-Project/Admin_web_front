@@ -23,7 +23,6 @@ export default function VehicleDrop({ label, name, value, onChange, error, helpe
         <MenuItem value="Bike">Bike</MenuItem>
         <MenuItem value="Car">Car</MenuItem>
         <MenuItem value="Van">Van</MenuItem>
-        <MenuItem value={true}>12345</MenuItem>
       </Select>
       {error && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

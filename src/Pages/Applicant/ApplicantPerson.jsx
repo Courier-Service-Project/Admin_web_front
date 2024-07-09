@@ -17,12 +17,14 @@ import { BACKEND_URL } from '../../Constants';
 import RetryModal from "../../Components/Alert/RetryModal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function ViewApplicant() {
     const [applicantdata, setApplicantData] = useState({});
     const { applicantid } = useParams();
-    const [open,setOpen] = useState(false);
+    const [open2,setopen2] = useState(false);
     const [open1,setOpen1] = useState(false);
     const [error,setError] = useState(null);
     const navigate = useNavigate();
@@ -37,7 +39,10 @@ export default function ViewApplicant() {
     const getApplicantDetailsById = async (applicantid) => {
         try {
             const result = await axios.get(`${BACKEND_URL}/applicant/applicantDetailsById/${applicantid}`);
-            console.log(result.data.message);
+            //console.log("get"+result.data.message);
+            if(result.data.success === 3){
+                navigate("/applicant");
+            }
             setApplicantData(result.data.message);
         } catch (error) {
             console.log('Error fetching applicant details:', error);
@@ -46,19 +51,51 @@ export default function ViewApplicant() {
             setOpen1(true);
         }
     };
-
     const deleteApplicantPerson = async (applicantid) => {
         try{
             console.log(applicantid)
             const result = await axios.delete(`${BACKEND_URL}/applicant/applicantPersonDelete/${applicantid}`);
-            console.log(result);
-            console.log("delete...");
-            navigate("/applicant");
-            setOpen(false);
+            if(result.data.success === 200){                   
+                toast.success('Successfully Deleted', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    
+                    setTimeout(() => {
+                        navigate("/applicant");
+                    }, 2000);
+            }else{
+                toast.error('Delete is failed.', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    
+            }
+            setopen2(false);
         }catch(error){
-            console.log(error);
-            setError("Network error. Please try again.")
-            setOpen1(true);
+            toast.warn('Check internet Connection !', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            console.log(error.message);
         }
     };
 
@@ -68,11 +105,51 @@ export default function ViewApplicant() {
         try {
             const result = await axios.post(`${BACKEND_URL}/applicant/postregistereddata/${applicationId}`, { values });
             console.log(result);
-            navigate("/applicant");
+            //navigate("/applicant");
+
+            if(result.data.success === 200){                   
+                toast.success('Successfully Selected', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    
+                    setTimeout(() => {
+                        navigate("/applicant");
+                    }, 2000);
+
+                   
+            }else{
+                toast.error('Confirmation is failed.', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            }
         } catch (error) {
+            toast.warn('Check internet Connection !', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             console.log(error.message);
-            setError("Network error. Please try again.")
-            setOpen1(true);
+            //setError("Network error. Please try again.")
+            //setOpen1(true);
         }
     };
     
@@ -99,16 +176,6 @@ export default function ViewApplicant() {
         sendRequest(applicationId,values);
     };
 
-    const handleClose = () =>{
-        setOpen1(false);
-    };
-
-    const handleTryAgain = () =>{
-        window.location.reload();
-    }
-    
-
-
     return (
         <Box sx={{ bgcolor: "#e0f2f1", minHeight: "100vh" }}>
             <Navbar />
@@ -116,6 +183,7 @@ export default function ViewApplicant() {
             <Box sx={{ display: "flex" }}>
                 <Sidenav />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, m: 3, bgcolor: "white", boxShadow: 1 }}>
+                    
                     <Box sx={{ mx: 4 }}>
                         <Typography sx={{ fontSize: 30, fontWeight: 'bold' }}>
                             <AppsIcon sx={{ mr: 3 }} />
@@ -340,6 +408,7 @@ export default function ViewApplicant() {
                                     style={{ margin: "0 auto", padding: "10px 0px" }}>
                                 
                                     <AlertDialog
+                                        
                                         bgcolor="#bdbdbd"
                                         button="Reject"
                                         icon={DeleteIcon}
@@ -349,7 +418,9 @@ export default function ViewApplicant() {
                                         buttonName2="Delete"
                                         bcolor="#bdbdbd"
                                         hoverbgcolor="#94a3b8"
-                                        onClick1={()=>{deleteApplicantPerson(applicantid)}}
+                                        onClick1={()=>{deleteApplicantPerson(applicantid);
+                                            setopen2(false);
+                                        }}
                                     />
                                     </Grid>
                                     <Grid item
@@ -368,7 +439,9 @@ export default function ViewApplicant() {
                                         buttonName2="Confirm"
                                         bcolor="#4caf50"
                                         hoverbgcolor="#16a34a"
-                                        onClick1={()=>{onclick(applicantid)}}
+                                        onClick1={()=>{onclick(applicantid);
+                                            setopen2(false);
+                                        }}
                                     />
                                 
                                 </Grid>
@@ -377,16 +450,8 @@ export default function ViewApplicant() {
                         </Paper>
                     </Box>
                 </Box>
-
-                <RetryModal
-                open={open1}
-                onClose={handleClose}
-                error={error}
-                onclick1={handleTryAgain}
-                />
-
-                
             </Box>
+            <ToastContainer />
         </Box>
     );
 }

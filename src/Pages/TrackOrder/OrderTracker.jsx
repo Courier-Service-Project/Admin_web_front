@@ -9,7 +9,10 @@ import HouseIcon from '@mui/icons-material/House';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import { BACKEND_URL } from '../../Constants';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const steps = [
     { label: 'Pending Order', icon: <ReceiptLongIcon /> },
@@ -83,6 +86,7 @@ const OrderTracking = () => {
     const [error, setError] = useState(null);
     const [orderData, setOrderData] = useState({});
     const [orderDetails, setOrderDetails] = useState({});
+    const [loading,setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -117,16 +121,23 @@ const OrderTracking = () => {
     };
 
     const handleSearch = async () => {
+        setLoading(true);
         try {
             const result = await axios.get(`${BACKEND_URL}/orders/orderDetails/${orderId}`);
             setOrderData(result.data.message[0]);
 
-            if (result.data.success === 101) {
-                setError('Invalid order ID. Enter a valid order ID.');
-                setOrderStatus(null);
-                return;
-            }
-
+            if(result.data.success === 101){
+                toast.error('Invalid order ID !.', {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+              });
+              }
             const status = statusMapping[result.data.message[0].Status];
             const stepIndex = steps.findIndex((step) => step.label === status);
 
@@ -140,8 +151,22 @@ const OrderTracking = () => {
             );
             setError(null);
         } catch (error) {
-            setError(error.message);
+            //setError(error.message);
             setOrderStatus(null);
+            toast.warn('Check internet Connection !', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            console.log(error.message);
+        }
+        finally{
+            setLoading(false);
         }
     };
 
@@ -194,12 +219,19 @@ const OrderTracking = () => {
                     Search
                 </Button>
             </div>
-            {error && (
+            {loading && (
+                <Box>
+                    <Box display="flex" justifyContent="center" alignItems="center" height="30vh">
+                        <CircularProgress color='success' />
+                    </Box>
+                </Box>
+            )}
+            {!loading && error && (
                 <Typography color="error" sx={{ textAlign: 'center', fontWeight: '600' }}>
                     {error}
                 </Typography>
             )}
-            {!error && orderStatus && (
+            {!loading && !error && orderStatus && (
                 <Box>
                     <Box style={{ padding: '20px', display: 'flex', alignItems: 'center', marginTop: '30px', BorderAllRounded }}>
                         <Typography variant="h6" fontWeight='300' sx={{ marginLeft: '0', color:'#a3a3a3'}}>
@@ -220,55 +252,153 @@ const OrderTracking = () => {
                     </div>
 
                     <div style={{ display: 'flex', flexBasis: '30%', paddingTop: '10px' }}>
-                    {orderStatus !== 'Verify Confirm' && orderStatus !== 'Pending Order' && (
-                            <Card style={{ marginRight: '100px', marginLeft: '10px', marginBottom: '10px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}>
+                    {orderStatus !== 'On Branch' && orderStatus !== 'Pending Order' && (
+                            //<Card style={{ marginRight: '100px', marginLeft: '10px', marginBottom: '10px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}>
+                            <Card style={{
+                                marginRight: '100px',
+                                marginLeft: '10px',
+                                marginBottom: '10px',
+                                width: '100%',
+                                background: 'linear-gradient(45deg, #e0f2f1 30%, #a7ffeb 90%)',
+                                borderRadius: '15px',
+                                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                                padding: '15px',
+                            }}>
                                 <CardContent>
-                                    <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}>
+                                    {/* <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}> */}
+                                    <Typography
+                                    variant="h6"
+                                    sx={{
+                                        textAlign: 'center',
+                                        backgroundColor: '#00897b',
+                                        color: 'white',
+                                        borderRadius: '10px',
+                                        padding: '10px',
+                                        boxShadow: '0 3px 5px 2px rgba(0, 137, 123, .3)',
+                                    }}>
                                         Shipment Details
                                     </Typography>
+                                    <Box
+                                        style={{
+                                            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                                            paddingTop: '7px',
+                                            padding: '5px',
+                                            lineHeight: '1.8',
+                                            color: '#004d40',
+                                        }}
+                                    >
                                     <Typography style={{ fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', paddingTop: '7px',padding:'5px'}}>
                                         {getShipmentDetails(orderId).BranchUserName && (
                                             <>
-                                                Branch User Name: {getShipmentDetails(orderId).BranchUserName}
+                                                <span>Branch User Name: </span>
+                                                <span style={{fontWeight: 'bold' }}>{getShipmentDetails(orderId).BranchUserName}</span>
                                                 <br /><br />
-                                                Branch User Tele.No: {getShipmentDetails(orderId).BranchUserMobile}
+                                                <span>Branch User Tele.No: </span>
+                                                <span style={{fontWeight: 'bold' }}>{getShipmentDetails(orderId).BranchUserMobile}</span>
                                                 <br /><br />
                                             </>
                                         )}
-                                        Cost: {getShipmentDetails(orderId).cost}
+                                        <span>Cost: </span>
+                                        <span style={{fontWeight: 'bold' }}>{getShipmentDetails(orderId).cost}</span>
                                         <br /><br />
-                                        Weight cost: {getShipmentDetails(orderId).weightCost}
+                                        <span>Weight cost: </span>
+                                        <span style={{fontWeight: 'bold' }}>{getShipmentDetails(orderId).weightCost}</span>
                                         <br /><br />
                                     </Typography>
+                                    </Box>
                                 </CardContent>
                             </Card>
                     )}
-                        <Card style={{ marginRight: '100px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}>
+                        {/* <Card style={{ marginRight: '100px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}> */}
+                        <Card style={{
+                                marginRight: '100px',
+                                marginLeft: '10px',
+                                marginBottom: '10px',
+                                width: '100%',
+                                background: 'linear-gradient(45deg, #e0f2f1 30%, #a7ffeb 90%)',
+                                borderRadius: '15px',
+                                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                                padding: '15px',
+                            }}>
                             <CardContent>
-                                <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}>
+                                {/* <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}> */}
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        textAlign: 'center',
+                                        backgroundColor: '#00897b',
+                                        color: 'white',
+                                        borderRadius: '10px',
+                                        padding: '10px',
+                                        boxShadow: '0 3px 5px 2px rgba(0, 137, 123, .3)',
+                                    }}>
                                     Origin
                                 </Typography>
+                                <Box style={{
+                                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                                    paddingTop: '7px',
+                                    padding: '5px',
+                                    lineHeight: '1.8',
+                                    color: '#004d40',
+                                }}
+                                >   
                                 <Typography style={{ fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', paddingTop: '7px'}}>
-                                    Sender Name: {getOriginDetails(orderId).senderName}
+                                    <span>Sender Name: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getOriginDetails(orderId).senderName}</span>
                                     <br /><br />
-                                    Sender Tele.No: {getOriginDetails(orderId).Cust_mobile}
+                                    <span>Sender Tele.No: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getOriginDetails(orderId).Cust_mobile}</span>
                                     <br /><br />
-                                    Sender Address: {getOriginDetails(orderId).senderAddress}
+                                    <span>Sender Address: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getOriginDetails(orderId).senderAddress}</span>
                                 </Typography>
+                                </Box>
                             </CardContent>
                         </Card>
-                        <Card style={{ marginRight: '10px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}>
+                        {/* <Card style={{ marginRight: '10px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}> */}
+                        <Card style={{
+                                marginRight: '10px',
+                                marginLeft: '10px',
+                                marginBottom: '10px',
+                                width: '100%',
+                                background: 'linear-gradient(45deg, #e0f2f1 30%, #a7ffeb 90%)',
+                                borderRadius: '15px',
+                                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                                padding: '15px',
+                            }}>
                             <CardContent>
-                                <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}>
+                                {/* <Typography variant="h6" sx={{ textAlign: 'center', backgroundColor: '#00897b', color: 'white' }}> */}
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        textAlign: 'center',
+                                        backgroundColor: '#00897b',
+                                        color: 'white',
+                                        borderRadius: '10px',
+                                        padding: '10px',
+                                        boxShadow: '0 3px 5px 2px rgba(0, 137, 123, .3)',
+                                    }}>
                                     Destination
                                 </Typography>
+                                <Box style={{
+                                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                                    paddingTop: '7px',
+                                    padding: '5px',
+                                    lineHeight: '1.8',
+                                    color: '#004d40',
+                                }}
+                                >   
                                 <Typography style={{ fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', paddingTop: '7px' }}>
-                                    Receiver Name: {getDestinationDetails(orderId).receiverName}
+                                    <span>Receiver Name: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getDestinationDetails(orderId).receiverName}</span>
                                     <br /><br />
-                                    Telephone Number: {getDestinationDetails(orderId).number}
+                                    <span>Telephone Number: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getDestinationDetails(orderId).number}</span>
                                     <br /><br />
-                                    Receiver Address: {getDestinationDetails(orderId).receiverAddress}
+                                    <span>Receiver Address: </span>
+                                    <span style={{fontWeight: 'bold' }}>{getDestinationDetails(orderId).receiverAddress}</span>
                                 </Typography>
+                                </Box>
                             </CardContent>
                         </Card>
                     </div>
@@ -289,6 +419,7 @@ const OrderTracking = () => {
                     </Box>
                 </Box>
             )}
+            <ToastContainer />
         </Paper>
     );
 };

@@ -10,6 +10,8 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { BACKEND_URL } from '../../Constants';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const telephoneRegex = /^0\d{9}$/;
 
@@ -44,18 +46,49 @@ const NewAdminForm = () => {
       //console.log("im here")
       console.log(result);
       if(result.data.success === 200 && result.data.message === "Successfully inserted"){
-        setFirstError(null);
-        setSuccessMessage("Form Submitted successfully!");
+        // setFirstError(null);
+        // setSuccessMessage("Form Submitted successfully!");
+        toast.success('Submitted successfully!', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+      });
       } else{
+      //   toast.error('Submission failed !', {
+      //     position: "top-right",
+      //     autoClose: 2000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      // });
         setSuccessMessage(null);
         setFirstError(result.data.message);
+        
       }
     }
     catch(error){
-      console.log(error.message);
-      setSuccessMessage(null);
-      setFirstError("Error in form submission.");
-      
+      // console.log(error.message);
+      // setSuccessMessage(null);
+      // setFirstError("Error in form submission.");
+      toast.warn('Check internet Connection !', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    console.log(error.message);
     }
     setLoading(false);
     setSubmitting(false);
@@ -247,6 +280,7 @@ const NewAdminForm = () => {
               }
             </Box>
             </Paper>
+            <ToastContainer />
           </Form>
         );
       }}
