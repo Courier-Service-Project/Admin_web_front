@@ -24,7 +24,7 @@ export function PieChart() {
 
   const data = [
     ["Task", "Orders per Day"],
-    ["Pending",orderCount.verifyconfirm],
+    ["Pending",orderCount.verifyConfirmCount],
     ["On Branch",orderCount.pendingCount ],
     ["In Progress",orderCount.onpickCount ],
     ["On Delivery", orderCount.ondiliveryCount],

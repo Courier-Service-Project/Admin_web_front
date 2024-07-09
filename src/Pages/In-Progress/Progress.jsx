@@ -80,12 +80,12 @@ export default function Progress() {
                 control={<Radio/>}
                 label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnPick</Typography>}
               />
-              <FormControlLabel
+              <FormControlLabel sx={{ml:"20px"}}
                 value="ondil"
                 control={<Radio/>}
                 label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnDilivery</Typography>}
               />
-              <FormControlLabel
+              <FormControlLabel sx={{ml:"20px"}} 
                 value="onbranch"
                 control={<Radio/>}
                 label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnBranch</Typography>}

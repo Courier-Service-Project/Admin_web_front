@@ -73,7 +73,7 @@ export default function BasicGrid() {
                     <Stack spacing={2} direction={'row'}>
                         <Grid item xs={12} md={4}>
                             <CardCom 
-                                title={orderCount.pendingCount} 
+                                title={orderCount.verifyConfirmCount} 
                                 text="Pending Orders" 
                                 width="100%" 
                                 height="145px" 

@@ -19,16 +19,22 @@ export default function AlertDialog(props) {
 
   return (
     <React.Fragment>
-      <Button variant="contained" color={props.bgcolor}
+      <Button 
+        fullWidth
+        size="medium"
+        variant="contained" 
         sx={{
-            marginTop: '10px',
-            marginLeft: '200px',
-            // ":hover": {
-            //     bgcolor: "#009688",
-            //     color: "#616161",
-            // },
+          mt: 2,
+          bgcolor: props.bgcolor,
+          margin: "0px 0 0px 0",
+          gap: "3px",
+          ":hover": {
+                  bgcolor: props.hoverbgcolor,
+                  color: "#fff",
+          },
         }}
       onClick={handleClickOpen}>
+        {props.icon && <props.icon sx={{ mr: 1 }} />}
         {props.button}
       </Button>
       <Dialog
@@ -36,6 +42,13 @@ export default function AlertDialog(props) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{
+          "& .MuiDialog-paper": {
+            width: "500px",
+            maxWidth: "none",
+            padding: "10px",
+          },
+        }}
       >
         <DialogTitle id="title">
           {props.title}
@@ -47,7 +60,10 @@ export default function AlertDialog(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} >{props.buttonName1}</Button>
-          <Button onClick={props.onClick1} autoFocus>
+          <Button 
+            variant="contained"
+            style={{ backgroundColor: props.bcolor }}
+            onClick={props.onClick1} autoFocus>
             {props.buttonName2}
           </Button>
         </DialogActions>
