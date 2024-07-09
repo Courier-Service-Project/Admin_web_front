@@ -11,10 +11,9 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 
 export default function Progress() {
-  const [selectedValue, setSelectedValue] = useState("onpic");
+  const [selectedValue, setSelectedValue] = useState("onbranch");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -76,6 +75,11 @@ export default function Progress() {
               onChange={handleChange}
             >
               <FormControlLabel
+                value="onbranch"
+                control={<Radio/>}
+                label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnBranch</Typography>}
+              />
+              <FormControlLabel sx={{ml:"20px"}} 
                 value="onpic"
                 control={<Radio/>}
                 label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnPick</Typography>}
@@ -84,11 +88,6 @@ export default function Progress() {
                 value="ondil"
                 control={<Radio/>}
                 label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnDilivery</Typography>}
-              />
-              <FormControlLabel sx={{ml:"20px"}} 
-                value="onbranch"
-                control={<Radio/>}
-                label={<Typography sx={{ fontWeight: 'bold',fontSize:"20px"}}>OnBranch</Typography>}
               />
             </RadioGroup>
           </FormControl>
