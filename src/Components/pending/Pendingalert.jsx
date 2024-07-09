@@ -14,6 +14,10 @@ export default function Pendingalert(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleConfirm = () => {
+    props.onClick1();
+    handleClose();
+  };
   return (
     <React.Fragment>
       <Button
@@ -56,7 +60,7 @@ export default function Pendingalert(props) {
           <Button
             variant="contained"
             style={{ backgroundColor: props.bcolor }}
-            onClick={props.onClick1}
+            onClick={handleConfirm}
             autoFocus
           >
             {props.buttonName2}

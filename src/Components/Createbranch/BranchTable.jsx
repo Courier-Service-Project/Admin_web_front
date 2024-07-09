@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -11,7 +11,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../../Constants";
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import { Typography } from "@mui/material";
-import { Padding } from "@mui/icons-material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,6 +59,7 @@ export default function BranchTable() {
   }, []);
 
   const [rows, setRows] = React.useState([]);
+  const [loading, setLoading] = useState(true);
  
 
   const getBranchDetails = async () => {
@@ -76,15 +77,22 @@ export default function BranchTable() {
     } catch (error) {
       setRows([]);
       console.error("Failed to fetch order details",error);
+    }finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box style={{ paddingTop: "20px", marginLeft: "20px" , overflowX: "auto"}}>
+    <Box style={{ paddingTop: "20px", marginLeft: "20px"}}>
       <Box style={{ display: "flex", justifyContent: "center" }}>
         {/* {
             isError==true&&<Typography>Network Error</Typography>
           } */}
+         {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+              <CircularProgress color="success" />
+            </Box>
+          ) : (
         <TableContainerStyled sx={{ height: "100%", overflowX: "auto" }}>
           <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
             <TableHead>
@@ -119,6 +127,7 @@ export default function BranchTable() {
             </TableBody>
           </Table>
         </TableContainerStyled>
+        )}
       </Box>
     </Box>
   );

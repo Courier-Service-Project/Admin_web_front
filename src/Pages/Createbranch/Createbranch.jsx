@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -9,7 +9,7 @@ import Navbar from "../../Components/Structure/Navbar";
 import axios from "axios";
 import { Card, CardContent, Divider, Button } from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
-import { BACKEND_URL } from "../../Constants";
+import { BACKEND_URL, ID } from "../../Constants/index";
 import SaveIcon from "@mui/icons-material/Save";
 import BranchTable1 from "../../Components/Createbranch/BranchTable";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -20,22 +20,36 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import { branchValidation } from "../../Validation/Validation.js";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BranchDetails() {
+  const [openA, setOpenA] = React.useState(false);
   const [create, setCreate] = useState(true);
   const [open, setOpen] = React.useState(null);
-  const District = ["Hambantota", "Mathara", "Galle", "Colombo", "Gampaha"];
-  const Province = [
-    "Central",
-    "Eastern",
-    "North Central",
-    "Northern",
-    "North Western",
-    "Sabaragamuwa",
-    "Southern",
-    "Uva",
-    "Western",
-  ];
+  const [existingLocations, setExistingLocations] = useState([]);
+
+  const handleClose = () => {
+    setOpenA(false);
+  };
+
+  // const District = ["Hambantota", "Mathara", "Galle", "Colombo", "Gampaha"];
+  // const Province = [
+  //   "Central",
+  //   "Eastern",
+  //   "North Central",
+  //   "Northern",
+  //   "North Western",
+  //   "Sabaragamuwa",
+  //   "Southern",
+  //   "Uva",
+  //   "Western",
+  // ];
 
   const [fromData, setFormData] = React.useState({
     B_location: "",
@@ -43,26 +57,107 @@ export default function BranchDetails() {
     B_province: "",
   });
 
+  useEffect(() => {
+    const fetchExistingLocations = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/branch/`);
+        if (response.data.success === 1) {
+          setExistingLocations(response.data.Data);
+        } else {
+          console.error("Error fetching existing locations:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching existing locations:", error);
+      }
+    };
+    fetchExistingLocations();
+  }, []);
+
+  const [filteredDistricts, setFilteredDistricts] = useState([]);
+
+  useEffect(() => {
+    if (fromData.B_province) {
+      setFilteredDistricts(provinceDistrictMap[fromData.B_province] || []);
+    }
+  }, [fromData.B_province]);
+
+  const provinceDistrictMap = {
+    Central: ["Kandy", "Matale", "Nuwara Eliya"],
+    Eastern: ["Ampara", "Batticaloa", "Trincomalee"],
+    NorthCentral: ["Anuradhapura", "Polonnaruwa"],
+    Northern: ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya"],
+    NorthWestern: ["Kurunegala", "Puttalam"],
+    Sabaragamuwa: ["Kegalle", "Ratnapura"],
+    Southern: ["Galle", "Matara", "Hambantota"],
+    Uva: ["Badulla", "Monaragala"],
+    Western: ["Colombo", "Gampaha", "Kalutara"],
+  };
+
+  const Province = Object.keys(provinceDistrictMap);
+
   const sendSave = async () => {
-    const data = branchValidation(fromData.B_province,fromData.B_district,fromData.B_location);
+    const data = branchValidation(fromData.B_province, fromData.B_district, fromData.B_location, existingLocations);
     if (data) {
       setOpen(data.Error);
     } else {
-      axios
-        .post(`${BACKEND_URL}/branch/createNewBranch`, {
+      setOpenA(true);
+    }
+  };
+
+  const comsendsave = async () => {
+    setOpenA(false);
+
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const result = await axios.post(`${BACKEND_URL}/branch/createNewBranch`, {
           br_location: fromData.B_location,
           br_district: fromData.B_district,
           br_province: fromData.B_province,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      window.location.reload();
+        },{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+        if (result.status === 200) {
+          toast.success("Branch Successfully Created", {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+      }
+    } catch (error) {
+      toast.error("Branch Creation Failed", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
+
+  //       .then(function (response) {
+  //         console.log(response);
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //     window.location.reload();
+  //   }
+  // };
 
   const openbranch = async () => {
     setCreate(false);
@@ -96,6 +191,7 @@ export default function BranchDetails() {
                 <Button
                   size="large"
                   onClick={openbranch}
+                  // disabled={Hide}
                   variant="contained"
                   sx={{
                     margin: "20px 50px 20px 70px",
@@ -119,12 +215,12 @@ export default function BranchDetails() {
                   }}
                 >
                   <CardContent>
-                    <Box component="form" sx={{ m: 4 }}>
+                    <Box component="form" sx={{ m:2 }}>
                       <FormSubTitle subTitle=" Add Branch Details" />
                       <Divider
-                        sx={{ marginBottom: 1, border: 1, width: "90%" }}
+                        sx={{ border: 1, width: "90%" }}
                       />
-                      <Grid container spacing={3} sx={{mt:2}} >
+                      <Grid container spacing={3} sx={{mt:0.1}} >
                         <Grid item xs={12} md={3}>
                           <Autocomplete
                             disablePortal
@@ -151,7 +247,7 @@ export default function BranchDetails() {
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={District}
+                            options={filteredDistricts}
                             value={fromData.B_district}
                             onChange={(event, value) =>
                               setFormData({ ...fromData, B_district: value })
@@ -186,10 +282,10 @@ export default function BranchDetails() {
                             }
                           />
                         </Grid>
-                        <Box sx={{ width: "50%", mt:3,ml:3}}>
+                        <Box sx={{ width: "100%", mt:2,ml:2}}>
                           <Collapse in={open}>
                             <Alert
-                            severity="error"
+                              severity="error"
                               action={
                                 <IconButton
                                   aria-label="close"
@@ -199,7 +295,7 @@ export default function BranchDetails() {
                                     setOpen(false);
                                   }}
                                 >
-                                <CloseIcon fontSize="inherit" />
+                                  <CloseIcon fontSize="inherit" />
                                 </IconButton>
                               }
                               sx={{ mb: 2 }}
@@ -216,7 +312,7 @@ export default function BranchDetails() {
                               onClick={closebranch}
                               variant="contained"
                               sx={{
-                                mt: 3,
+                                mt: 1,
                                 ml: 1,
                                 // margin: "50px 90px 20px 0px",
                                 bgcolor: "#00897b",
@@ -239,7 +335,7 @@ export default function BranchDetails() {
                               onClick={sendSave}
                               variant="contained"
                               sx={{
-                                mt: 3,
+                                mt: 1,
                                 ml: 1,
                                 // margin: "50px 50px 20px 70px",
                                 bgcolor: "#00897b",
@@ -260,12 +356,46 @@ export default function BranchDetails() {
                     </Box>
                   </CardContent>
                 </Card>
+                <Dialog
+          open={openA}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          sx={{
+            "& .MuiDialog-paper": {
+              width: "500px",
+              maxWidth: "none",
+              padding: "10px",
+            },
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">Create Branch</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to Create this change?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} sx={{ color: "black" }}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#00897b" }}
+              onClick={comsendsave}
+              autoFocus
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
               </Box>
             )}
             <BranchTable1 />
           </Box>
         </Box>
       </Box>
+      <ToastContainer />
     </React.Fragment>
   );
 }
