@@ -26,7 +26,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ViewOrder() {
   const [openA, setOpenA] = React.useState(false);
@@ -39,6 +40,8 @@ export default function ViewOrder() {
   const [edit, setEdit] = useState(true);
   const [save, setSave] = useState(true);
   const [open, setOpen] = React.useState(null);
+  // const [open2, setopen2] = useState(false);
+  // const [open3, setopen3] = useState(false);
   const { orderNo } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,33 +53,50 @@ export default function ViewOrder() {
     S_lname: "",
     S_city: "",
     S_telephone: "",
+    S_Email:"",
 
-    R_fname:"",
-    R_lname:"",
+    R_fname: "",
+    R_lname: "",
     R_province: "",
     R_district: "",
     R_streetNo: "",
     R_street: "",
     R_HomeTown: "",
     R_telephone: "",
+    R_Email:"",
 
     P_streetNo: "",
     P_street: "",
     P_homeTown: "",
     P_district: "",
     p_ordertype: "",
-    p_bloc:"",
+    p_bloc: "",
   });
 
   const handleConfirmdata = async () => {
     await confirmData(viewOrderData.Order_id);
-    navigate("/pending");
   };
   const confirmData = async (orderId) => {
     try {
       const result = await axios.patch(
         `${BACKEND_URL}/orders/updatependingorderdetails/${orderId}`
       );
+      if (result.data.success === 200) {
+        toast.success("Order Successfully Confirm", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => {
+          navigate("/pending");
+        }, 2500);
+      }
       console.log(result);
     } catch (error) {
       console.error("Error confirming order:", error);
@@ -85,13 +105,30 @@ export default function ViewOrder() {
 
   const handledeleteOrder = async () => {
     await deleteOrder(viewOrderData.Order_id);
-    navigate("/pending");
   };
   const deleteOrder = async (orderId) => {
     try {
       const result = await axios.delete(
         `${BACKEND_URL}/orders/deletependingorderdetails/${orderId}`
       );
+
+      if (result.data.success === 200) {
+        toast.success("Order Successfully Deleted", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => {
+          navigate("/pending");
+        }, 2500);
+      }
+
       console.log(result);
     } catch (error) {
       console.error("Error deleting order:", error);
@@ -109,6 +146,7 @@ export default function ViewOrder() {
       fromData.S_lname,
       fromData.S_city,
       fromData.S_telephone,
+      fromData.S_Email,
       fromData.R_fname,
       fromData.R_lname,
       fromData.R_province,
@@ -117,12 +155,13 @@ export default function ViewOrder() {
       fromData.R_street,
       fromData.R_HomeTown,
       fromData.R_telephone,
+      fromData.R_Email,
       fromData.P_streetNo,
       fromData.P_street,
       fromData.P_homeTown,
       fromData.P_district,
       fromData.p_ordertype,
-      fromData.p_bloc,
+      fromData.p_bloc
     );
     if (data) {
       setOpen(data.Error);
@@ -132,47 +171,125 @@ export default function ViewOrder() {
   };
 
   const comsendsave = async () => {
-    setSave(true);
+    // setSave(true);
     setOpenA(false);
-    axios
-      .post(`${BACKEND_URL}/orders/editpendingorderdetails`, {
-        OrID: fromData.OrderID,
-        customerid: fromData.cusID,
-        reciverid: fromData.recID,
-        sfname: fromData.S_fname,
-        slname: fromData.S_lname,
-        scity: fromData.S_city,
-        stelephone: fromData.S_telephone,
 
-        rfname: fromData.R_fname,
-        rlname: fromData.R_lname,
-        rprovince: fromData.R_province,
-        rdistric: fromData.R_district,
-        rstreetNo: fromData.R_streetNo,
-        rstreet: fromData.R_street,
-        rhometown: fromData.R_HomeTown,
-        rtelephone: fromData.R_telephone,
-
-        pstreetNo: fromData.P_streetNo,
-        pstreet: fromData.P_street,
-        phometown: fromData.P_homeTown,
-        pdistrict: fromData.P_district,
-        potype: fromData.p_ordertype,
-        blocation:fromData.p_bloc
-      })
-      .then(function (response) {
+    try {
+      const result = await axios.post(
+        `${BACKEND_URL}/orders/editpendingorderdetails`,
+        {
+          OrID: fromData.OrderID,
+          customerid: fromData.cusID,
+          reciverid: fromData.recID,
+          sfname: fromData.S_fname,
+          slname: fromData.S_lname,
+          scity: fromData.S_city,
+          stelephone: fromData.S_telephone,
+          semail: fromData.S_Email,
+          rfname: fromData.R_fname,
+          rlname: fromData.R_lname,
+          rprovince: fromData.R_province,
+          rdistric: fromData.R_district,
+          rstreetNo: fromData.R_streetNo,
+          rstreet: fromData.R_street,
+          rhometown: fromData.R_HomeTown,
+          rtelephone: fromData.R_telephone,
+          remail: fromData.R_Email,
+          pstreetNo: fromData.P_streetNo,
+          pstreet: fromData.P_street,
+          phometown: fromData.P_homeTown,
+          pdistrict: fromData.P_district,
+          potype: fromData.p_ordertype,
+          blocation: fromData.p_bloc,
+        }
+      );
+      if (result.status === 200) {
+        toast.info("Order Successfully Edited", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+        setSave(true);
         setEdit(true);
-      })
-      .catch(function (error) {
-        alert("not saved");
+    } catch (error) {
+      toast.error("Order UnSuccessfully Edited", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
   };
+
+  // const comsendsave = async () => {
+  //   setSave(true);
+  //   setOpenA(false);
+
+  //   const result = axios
+  //     .post(`${BACKEND_URL}/orders/editpendingorderdetails`, {
+  //       OrID: fromData.OrderID,
+  //       customerid: fromData.cusID,
+  //       reciverid: fromData.recID,
+  //       sfname: fromData.S_fname,
+  //       slname: fromData.S_lname,
+  //       scity: fromData.S_city,
+  //       stelephone: fromData.S_telephone,
+
+  //       rfname: fromData.R_fname,
+  //       rlname: fromData.R_lname,
+  //       rprovince: fromData.R_province,
+  //       rdistric: fromData.R_district,
+  //       rstreetNo: fromData.R_streetNo,
+  //       rstreet: fromData.R_street,
+  //       rhometown: fromData.R_HomeTown,
+  //       rtelephone: fromData.R_telephone,
+
+  //       pstreetNo: fromData.P_streetNo,
+  //       pstreet: fromData.P_street,
+  //       phometown: fromData.P_homeTown,
+  //       pdistrict: fromData.P_district,
+  //       potype: fromData.p_ordertype,
+  //       blocation:fromData.p_bloc
+  //     })
+  //     .then(function (result) {
+  //       setEdit(true);
+  //       if(result.data.success===200){
+  //         toast.info('Order Successfully Edit', {
+  //           position: "top-right",
+  //           autoClose: 2000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //           });
+  //       }
+
+  //     })
+  //     .catch(function (error) {
+  //       alert("not saved");
+  //     });
+  // };
 
   const fetchOrderById = async (orderId) => {
     try {
       const response = await axios.get(
         `${BACKEND_URL}/orders/pendingorderdetailsbyid/${orderId}`
       );
+      if (response.data.success === 3) {
+        navigate("/pending");
+      }
       setViewOrderData(response.data.message[0]);
       console.log(response.data.message[0]);
       setFormData({
@@ -184,23 +301,25 @@ export default function ViewOrder() {
         S_lname: response.data.message[0].CustomerLastName,
         S_city: response.data.message[0].Customercity,
         S_telephone: response.data.message[0].Customermobile,
+        S_Email: response.data.message[0].CustomerEmail,
 
         recID: response.data.message[0].recieverId,
-        R_fname:response.data.message[0].FirstName,
-        R_lname:response.data.message[0].LastName,
+        R_fname: response.data.message[0].FirstName,
+        R_lname: response.data.message[0].LastName,
         R_province: response.data.message[0].DiliveryProvince,
         R_district: response.data.message[0].DiliveryDistrict,
         R_streetNo: response.data.message[0].StreetNo,
         R_street: response.data.message[0].Street,
         R_HomeTown: response.data.message[0].City,
         R_telephone: response.data.message[0].mobile,
+        R_Email: response.data.message[0].Email,
 
         P_streetNo: response.data.message[0].Pickup_StreetNo,
         P_street: response.data.message[0].Pickup_Street,
         P_homeTown: response.data.message[0].Pickup_City,
         P_district: response.data.message[0].Pickup_District,
         p_ordertype: response.data.message[0].Emmergency,
-        p_bloc:response.data.message[0].branchLocation,
+        p_bloc: response.data.message[0].branchLocation,
       });
     } catch (error) {
       console.error("Error fetching order details:", error);
@@ -327,6 +446,27 @@ export default function ViewOrder() {
                           }
                         />
                       </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Email"
+                          size="small"
+                          InputProps={{
+                            readOnly: edit,
+                          }}
+                          name="S_Email"
+                          fullWidth
+                          variant="outlined"
+                          value={fromData.S_Email}
+                          onChange={(event) =>
+                            setFormData({
+                              ...fromData,
+                              S_Email: event.target.value,
+                            })
+                          }
+                        />
+                      </Grid>
                     </Grid>
 
                     <FormSubTitle subTitle="Receiver Details" />
@@ -415,7 +555,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Street NO"
@@ -436,7 +576,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Street"
@@ -457,7 +597,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="City"
@@ -478,7 +618,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Telephone"
@@ -498,12 +638,33 @@ export default function ViewOrder() {
                           }
                         />
                       </Grid>
+
+                      <Grid item xs={12} md={4}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Email"
+                          size="small"
+                          InputProps={{
+                            readOnly: edit,
+                          }}
+                          name="R_Email"
+                          fullWidth
+                          variant="outlined"
+                          value={fromData.R_Email}
+                          onChange={(event) =>
+                            setFormData({
+                              ...fromData,
+                              R_Email: event.target.value,
+                            })
+                          }
+                        />
+                      </Grid>
                     </Grid>
 
                     <FormSubTitle subTitle="Pickup Details" />
                     <Divider sx={{ marginBottom: 1, border: 1 }} />
                     <Grid container spacing={1} sx={{ mt: 3 }}>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Street No"
@@ -524,7 +685,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Street"
@@ -545,7 +706,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="City"
@@ -566,7 +727,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="District"
@@ -587,7 +748,7 @@ export default function ViewOrder() {
                         />
                       </Grid>
 
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={2}>
                         <TextField
                           id="outlined-basic"
                           label="Order_type"
@@ -607,8 +768,8 @@ export default function ViewOrder() {
                           }
                         />
                       </Grid>
-                      
-                      <Grid item xs={12} md={6}>
+
+                      <Grid item xs={12} md={4}>
                         <TextField
                           id="outlined-basic"
                           label="Branch Location"
@@ -669,7 +830,10 @@ export default function ViewOrder() {
                           buttonName1="Cancel"
                           buttonName2="Delete"
                           bcolor="#bdbdbd"
-                          onClick1={handledeleteOrder}
+                          onClick1={() => {
+                            handledeleteOrder();
+                            // setopen2(false);
+                          }}
                         />
                       </Grid>
 
@@ -709,6 +873,7 @@ export default function ViewOrder() {
                             <SaveIcon />
                             Save Edit
                           </Button>
+                         
                         )}
                       </Grid>
 
@@ -727,7 +892,10 @@ export default function ViewOrder() {
                           buttonName1="Cancel"
                           buttonName2="Confirm"
                           bcolor="#4caf50"
-                          onClick1={handleConfirmdata}
+                          onClick1={() => {
+                            handleConfirmdata();
+                            // setopen3(false);
+                          }}
                         />
                       </Grid>
                     </Grid>
@@ -773,6 +941,7 @@ export default function ViewOrder() {
           </DialogActions>
         </Dialog>
       </Box>
+      <ToastContainer />
     </React.Fragment>
   );
 }

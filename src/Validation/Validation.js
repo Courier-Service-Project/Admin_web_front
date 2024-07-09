@@ -95,13 +95,15 @@ export const PickupValidation = (
   } else return 0;
 };
 
-export const branchValidation = (bprvovince, bdis, blocation) => {
+export const branchValidation = (bprvovince, bdis, blocation, existingLocations) => {
   if (CheckEmpty(bprvovince)) {
     return { textField: "province", Error: "Province is required" };
   } else if (CheckEmpty(bdis)) {
     return { textField: "District", Error: "District is required" };
   } else if (CheckEmpty(blocation)) {
     return { textField: "Location", Error: "Location is required" };
+  }else if (existingLocations.map(location => location.toLowerCase()).includes(blocation.toLowerCase())) {
+    return { textField: "Location", Error: "This Branch Already Created" };
   } else return 0;
 };
 
@@ -110,6 +112,7 @@ export const pendinSenderValidation = (
   slname,
   scity,
   stele,
+  semail,
   rfname,
   rlname,
   rpro,
@@ -118,6 +121,7 @@ export const pendinSenderValidation = (
   rstreet,
   rcity,
   rtele,
+  remail,
   pstno,
   pstreet,
   pcity,
@@ -136,7 +140,13 @@ export const pendinSenderValidation = (
       textField: "Telephone",
       Error: "Sender Telephone Number is required",
     };
-  } else if (CheckEmpty(rfname)) {
+  } else if (CheckEmpty(semail)) {
+    return { textField: "Email", Error: "Sender Email is required" };
+  }else if (
+    !semail.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim)
+  ) {
+    return { textField: "email", Error: "Invalid Customer Email" };
+  }else if (CheckEmpty(rfname)) {
     return { textField: "First Name", Error: "Reciver First Name is required" };
   } else if (CheckEmpty(rlname)) {
     return { textField: "Last Name", Error: "Reciver Last Name is required" };
@@ -158,7 +168,13 @@ export const pendinSenderValidation = (
       textField: "Telephone",
       Error: "Reciver Telephone Number is required",
     };
-  } else if (CheckEmpty(pstno)) {
+  } else if (CheckEmpty(remail)) {
+    return { textField: "Email", Error: "Reciver Email is required" };
+  }else if (
+    !remail.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim)
+  ) {
+    return { textField: "Email", Error: "Invalid Reciver Email" };
+  }else if (CheckEmpty(pstno)) {
     return { textField: "Street No", Error: "Pickup Street No is required" };
   } else if (CheckEmpty(pstreet)) {
     return { textField: "Street", Error: "Pickup Street is required" };
