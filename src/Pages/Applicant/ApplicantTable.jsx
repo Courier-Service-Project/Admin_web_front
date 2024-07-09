@@ -14,6 +14,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../Constants';
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const StyledTableCell = styled(TableCell)(( ) => ({
@@ -62,7 +63,9 @@ const TableContainerStyled = styled(TableContainer)({
 
 export default function ApplicantTable() {
   const navigate = useNavigate();
-  const [rows,SetRows] = useState([])
+  const [rows,SetRows] = useState([]);
+  const [loading,setLoading] = useState(true);
+
   useEffect(() =>{
     getApplicantDetails();
   },[]);
@@ -82,11 +85,19 @@ export default function ApplicantTable() {
       SetRows([]);
         console.error("Failed to fetch order details",error);
     }
+    finally{
+      setLoading(false);
+    }
   };
   return (
         <Box style={{paddingTop:'20px', marginLeft:'20px'}} >
         <Box style = {{display:'flex', justifyContent:'center'}}>
-      <TableContainerStyled sx={{ height: '100%' , overflowX: 'auto'}}>
+          {loading ? (
+            <Box style = {{display:'flex', justifyContent:'center', marginTop:'20px'}}>
+              <CircularProgress color="success" />
+            </Box>
+          ) : (
+            <TableContainerStyled sx={{ height: '100%' , overflowX: 'auto'}}>
         <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 100 }}>
           <TableHead >
           <TableRow> 
@@ -140,6 +151,7 @@ export default function ApplicantTable() {
           
         </Table>
       </TableContainerStyled>
+          )}
       </Box>
     </Box>
   );

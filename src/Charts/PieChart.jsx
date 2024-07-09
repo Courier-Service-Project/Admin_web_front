@@ -26,13 +26,13 @@ export function PieChart() {
     ["Task", "Orders per Day"],
     ["Pending",orderCount.verifyConfirmCount],
     ["On Branch",orderCount.pendingCount ],
-    ["In Progress",orderCount.onpickCount ],
+    ["On Pick",orderCount.onpickCount ],
     ["On Delivery", orderCount.ondiliveryCount],
     ["Complete", orderCount.completeCount],
   ];
 
   const options = {
-    title: "Today Performance",
+    title: "Overall Performance",
     is3D: true,
   };
 

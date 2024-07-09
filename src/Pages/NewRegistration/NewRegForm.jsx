@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import { BACKEND_URL } from '../../Constants';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const telephoneRegex = /^0\d{9}$/;
 
@@ -47,16 +49,38 @@ const Newregistrationform = () => {
       const result = await axios.post(`${BACKEND_URL}/applicant/postApplicantData`, formData);
       console.log(result);
       if (result.data.success === 200 && result.data.message === "successfully Inserted") {
-        setFirstError(null);
-        setSuccessMessage("Form submitted successfully!");
+        toast.success('Submitted successfully!', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+      });
+        // setFirstError(null);
+        // setSuccessMessage("Form submitted successfully!");
       } else {
         setSuccessMessage(null);
         setFirstError(result.data.message);
       }
     } catch (error) {
-      console.log(error.message);
-      setSuccessMessage(null);
-      setFirstError("Error in form submission.");
+      // console.log(error.message);
+      // setSuccessMessage(null);
+      // setFirstError("Error in form submission.");
+
+      toast.warn('Check internet Connection !', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    console.log(error.message);
     }
     setLoading(false);
     setSubmitting(false);
@@ -308,6 +332,7 @@ const Newregistrationform = () => {
                 </Grid>
               )}
             </Box>
+            <ToastContainer />
           </Form>
         );
       }}
