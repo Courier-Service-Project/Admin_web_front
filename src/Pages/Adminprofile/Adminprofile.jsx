@@ -57,7 +57,7 @@ export default function Adminprofile() {
                     <Admincard
                       name={admin.FirstName + " " + admin.LastName}
                       email={admin.Email}
-                      telephone={admin.mobile}
+                      telephone={admin.Tele}
                       photoSrc={admin.photoSrc}
                       admin_Id={admin.admin_Id}
                     />

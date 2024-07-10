@@ -64,7 +64,10 @@ export default function BranchDetails() {
         if (response.data.success === 1) {
           setExistingLocations(response.data.Data);
         } else {
-          console.error("Error fetching existing locations:", response.data.message);
+          console.error(
+            "Error fetching existing locations:",
+            response.data.message
+          );
         }
       } catch (error) {
         console.error("Error fetching existing locations:", error);
@@ -80,6 +83,7 @@ export default function BranchDetails() {
       setFilteredDistricts(provinceDistrictMap[fromData.B_province] || []);
     }
   }, [fromData.B_province]);
+  
 
   const provinceDistrictMap = {
     Central: ["Kandy", "Matale", "Nuwara Eliya"],
@@ -96,7 +100,12 @@ export default function BranchDetails() {
   const Province = Object.keys(provinceDistrictMap);
 
   const sendSave = async () => {
-    const data = branchValidation(fromData.B_province, fromData.B_district, fromData.B_location, existingLocations);
+    const data = branchValidation(
+      fromData.B_province,
+      fromData.B_district,
+      fromData.B_location,
+      existingLocations
+    );
     if (data) {
       setOpen(data.Error);
     } else {
@@ -108,32 +117,35 @@ export default function BranchDetails() {
     setOpenA(false);
 
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      const result = await axios.post(`${BACKEND_URL}/branch/createNewBranch`, {
+      // const accessToken = localStorage.getItem("accessToken");
+      const result = await axios.post(
+        `${BACKEND_URL}/branch/createNewBranch`,
+        {
           br_location: fromData.B_location,
           br_district: fromData.B_district,
           br_province: fromData.B_province,
-        },{
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         }
+        // ,{
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // }
       );
-        if (result.status === 200) {
-          toast.success("Branch Successfully Created", {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+      if (result.status === 200) {
+        toast.success("Branch Successfully Created", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
       toast.error("Branch Creation Failed", {
@@ -215,12 +227,10 @@ export default function BranchDetails() {
                   }}
                 >
                   <CardContent>
-                    <Box component="form" sx={{ m:2 }}>
+                    <Box component="form" sx={{ m: 2 }}>
                       <FormSubTitle subTitle=" Add Branch Details" />
-                      <Divider
-                        sx={{ border: 1, width: "90%" }}
-                      />
-                      <Grid container spacing={3} sx={{mt:0.1}} >
+                      <Divider sx={{ border: 1, width: "90%" }} />
+                      <Grid container spacing={3} sx={{ mt: 0.1 }}>
                         <Grid item xs={12} md={3}>
                           <Autocomplete
                             disablePortal
@@ -282,7 +292,7 @@ export default function BranchDetails() {
                             }
                           />
                         </Grid>
-                        <Box sx={{ width: "100%", mt:2,ml:2}}>
+                        <Box sx={{ width: "100%", mt: 2, ml: 2 }}>
                           <Collapse in={open}>
                             <Alert
                               severity="error"
@@ -357,38 +367,40 @@ export default function BranchDetails() {
                   </CardContent>
                 </Card>
                 <Dialog
-          open={openA}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          sx={{
-            "& .MuiDialog-paper": {
-              width: "500px",
-              maxWidth: "none",
-              padding: "10px",
-            },
-          }}
-        >
-          <DialogTitle id="alert-dialog-title">Create Branch</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to Create this change?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} sx={{ color: "black" }}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#00897b" }}
-              onClick={comsendsave}
-              autoFocus
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
+                  open={openA}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  sx={{
+                    "& .MuiDialog-paper": {
+                      width: "500px",
+                      maxWidth: "none",
+                      padding: "10px",
+                    },
+                  }}
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    Create Branch
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Are you sure you want to Create this change?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} sx={{ color: "black" }}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: "#00897b" }}
+                      onClick={comsendsave}
+                      autoFocus
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             )}
             <BranchTable1 />
