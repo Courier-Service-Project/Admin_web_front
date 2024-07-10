@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-
 import LoginIcon from "@mui/icons-material/Login";
 import {
   Paper,
@@ -13,18 +12,19 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { HomeScreenStyles, picts, btn, link } from "./ForgotStyle";
-
 import CircularProgress from "@mui/material/CircularProgress";
-
 import Alert from "@mui/material/Alert";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { BACKEND_URL } from "../../Constants/index";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import { FogotEmail, otp, forgetpass } from "../../Validation/Validation";
 
 export default function Forgot() {
   const [formStep, setFormStep] = React.useState(0);
+  const [error, setError] = useState(false);
 
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ export default function Forgot() {
   const changebtn = {
     px: 2,
     py: 0.8,
-    my: 0.5,
-    mx: 2,
+    my: 0.3,
+
     textTransform: "none",
     bgcolor: "#60a5fa",
     color: "#fff",
@@ -62,6 +62,34 @@ export default function Forgot() {
     },
   };
 
+  function EmailValidation() {
+    const data = FogotEmail(forgotData.email);
+    if (data) {
+      setError(data.Error);
+      return 1;
+    } else {
+      checkEmail();
+    }
+  }
+  function OTPValidation() {
+    const data = otp(forgotData.otp);
+    if (data) {
+      setError(data.Error);
+      return 1;
+    } else {
+      checkOtp();
+    }
+  }
+  function passValidation() {
+    const data = forgetpass(forgotData.newPass, forgotData.comfirm);
+    if (data) {
+      setError(data.Error);
+      return 1;
+    } else {
+      savechange();
+    }
+  }
+
   async function checkEmail() {
     setLoading(true);
     try {
@@ -70,24 +98,16 @@ export default function Forgot() {
       });
 
       if (result.data.success === 1) {
+        setError(false);
         setLoading(false);
         CompleteFormStep();
       } else {
         setLoading(false);
-        toast.error("Unvalid Email !", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setError(result.data.message);
       }
     } catch {
       setLoading(false);
-      alert("Backend Error");
+      setError("Coonection Error");
     }
   }
   const checkOtp = async () => {
@@ -99,20 +119,12 @@ export default function Forgot() {
       });
 
       if (result.data.success === 1) {
+        setError(false);
         setLoading(false);
         CompleteFormStep();
       } else {
         setLoading(false);
-        toast.error("OTP NOT MATCH !", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setError(result.data.message);
       }
     } catch {
       setLoading(false);
@@ -121,8 +133,10 @@ export default function Forgot() {
   };
 
   const savechange = async () => {
+    setError(false);
     setLoading(true);
     try {
+      setError(false);
       const result = await axios.post(`${BACKEND_URL}/admin/forgotChange`, {
         email: forgotData.email,
         pass: forgotData.newPass,
@@ -167,13 +181,39 @@ export default function Forgot() {
                   Forgot Password ?
                 </Typography>
 
-                <Box sx={{ margin: "20px 0px" }}>
+                <Box sx={{ margin: "20px 0px", marginBottom: "40px" }}>
                   <Typography variant="body2">
                     Enter the Email address associated with your account and
                     we'll sent you a OTP to reset your password
                   </Typography>
                 </Box>
               </Box>
+              {error ? (
+                <Box mt={-2} mb={1}>
+                  <Collapse in={error}>
+                    <Alert
+                      severity="error"
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setError(null);
+                          }}
+                        >
+                          <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                      }
+                      sx={{ mb: 2 }}
+                    >
+                      {error}
+                    </Alert>
+                  </Collapse>
+                </Box>
+              ) : (
+                ""
+              )}
               <Box>
                 <Box>
                   <Box sx={{ margin: "2px 0px" }}>
@@ -182,7 +222,7 @@ export default function Forgot() {
                         <Box
                           sx={{
                             display: "flex",
-                            justifyContent: "center",
+                            flexDirection: "column",
                             alignItems: "center",
                           }}
                         >
@@ -206,10 +246,11 @@ export default function Forgot() {
                             {" "}
                             <Button
                               sx={changebtn}
-                              onClick={checkEmail}
+                              onClick={EmailValidation}
                               type="submit"
+                              fullWidth
                             >
-                              Next <span style={{ margin: "0 5px" }}></span>{" "}
+                              Send OTP <span style={{ margin: "0 5px" }}></span>{" "}
                               {loading ? (
                                 <CircularProgress
                                   sx={{ color: "white" }}
@@ -228,7 +269,7 @@ export default function Forgot() {
                         <Box
                           sx={{
                             display: "flex",
-                            justifyContent: "center",
+                            flexDirection: "column",
                             alignItems: "center",
                           }}
                         >
@@ -252,10 +293,11 @@ export default function Forgot() {
                             {" "}
                             <Button
                               sx={changebtn}
-                              onClick={checkOtp}
+                              onClick={OTPValidation}
                               type="submit"
                             >
-                              Verify<span style={{ margin: "0 5px" }}></span>{" "}
+                              Verify OTP
+                              <span style={{ margin: "0 5px" }}></span>{" "}
                               {loading ? (
                                 <CircularProgress
                                   sx={{ color: "white" }}
@@ -309,7 +351,7 @@ export default function Forgot() {
                           />
                           <Button
                             sx={changebtn1}
-                            onClick={savechange}
+                            onClick={passValidation}
                             type="submit"
                           >
                             Save changes
@@ -369,7 +411,6 @@ export default function Forgot() {
 
                     <ToastContainer />
                   </Box>
-                  {/* {renderButton()} */}
                 </Box>
               </Box>
             </Box>
