@@ -8,20 +8,22 @@ import Navbar from "../../Components/Structure/Navbar";
 import AlertDialog from "../../Components/Alert/AlertDialod";
 import {
     TextField,
-    Paper,
-    Button
+    Paper
 } from "@mui/material";
 import axios from 'axios';
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from '../../Constants';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 export default function ViewAdmin() {
     const [admindata, setAdminData] = useState({});
+    const [loading1,setLoading1] = useState(false);
+    const [loading2,setLoading2] = useState(false);
     const { admin_Id } = useParams();
     const navigate = useNavigate();
 
@@ -55,11 +57,13 @@ export default function ViewAdmin() {
     };
 
     const deleteAdminData = async (admin_Id) => {
+        setLoading2(true)
         try {
             const res = await axios.delete(`${BACKEND_URL}/applicant/adminDataDelete/${admin_Id}`);
             //alert(res)
             // navigate("/adminApplicant");
             console.log(res.data.success);
+            setLoading2(false);
             if(res.data.success === 200){
                 toast.success('Successfully Deleted', {
                     position: "top-right",
@@ -108,8 +112,10 @@ export default function ViewAdmin() {
     };
 
     const updateAdminStatus = async (admin_Id) => {
+        setLoading1(true);
         try {
             const result = await axios.patch(`${BACKEND_URL}/applicant/updateAdminStatus/${admin_Id}`);
+            setLoading1(false);
             if (result.data.success === 200) {
                 toast.success('Successfully Selected', {
                     position: "top-right",
@@ -301,35 +307,44 @@ export default function ViewAdmin() {
                                         xs={12}
                                         md={3}
                                         style={{ margin: "0 auto", padding: "10px 0px" }}>
-                                        <AlertDialog
-                                            bgcolor="#bdbdbd"
-                                            button="Reject"
-                                            icon={DeleteIcon}
-                                            title="Confirm Rejection"
-                                            text="Are you sure want to delete this Application?"
-                                            buttonName1="Cancel"
-                                            buttonName2="Delete"
-                                            bcolor="#bdbdbd"
-                                            hoverbgcolor="#94a3b8"
-                                            onClick1={() => { deleteAdminData(admin_Id) }}
-                                        />
+                                            {loading2 ? (
+                                                <CircularProgress size={30} sx={{color:"#bdbdbd",animationDuration:"1500ms"}}/>
+                                            ) : (
+                                                <AlertDialog
+                                                bgcolor="#bdbdbd"
+                                                button="Reject"
+                                                icon={DeleteIcon}
+                                                title="Confirm Rejection"
+                                                text="Are you sure want to delete this Application?"
+                                                buttonName1="Cancel"
+                                                buttonName2="Delete"
+                                                bcolor="#bdbdbd"
+                                                hoverbgcolor="#94a3b8"
+                                                onClick1={() => { deleteAdminData(admin_Id) }}
+                                            />
+                                            )}
+
                                     </Grid>
                                     <Grid item
                                         xs={12}
                                         md={3}
                                         style={{ margin: "0 auto", padding: "10px 0px" }}>
-                                        <AlertDialog
-                                            bgcolor="#4caf50"
-                                            button="Accept"
-                                            icon={CheckCircleIcon}
-                                            title="Confirm Applicant"
-                                            text="Are you sure want to confirm this Application?"
-                                            buttonName1="Cancel"
-                                            buttonName2="Confirm"
-                                            bcolor="#4caf50"
-                                            hoverbgcolor="#16a34a"
-                                            onClick1={() => { updateAdminStatus(admin_Id) }}
-                                        />
+                                            {loading1 ? (
+                                                <CircularProgress size={30} sx={{color:"#4caf50",animationDuration:"1500ms",ml:"100px"}}/>
+                                            ): (
+                                                <AlertDialog
+                                                bgcolor="#4caf50"
+                                                button="Accept"
+                                                icon={CheckCircleIcon}
+                                                title="Confirm Applicant"
+                                                text="Are you sure want to confirm this Application?"
+                                                buttonName1="Cancel"
+                                                buttonName2="Confirm"
+                                                bcolor="#4caf50"
+                                                hoverbgcolor="#16a34a"
+                                                onClick1={() => { updateAdminStatus(admin_Id) }}
+                                            />
+                                            )}
                                     </Grid>
                                 </Grid>
                             </Grid>

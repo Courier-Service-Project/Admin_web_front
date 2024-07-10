@@ -45,7 +45,7 @@ export default function BasicGrid() {
     useEffect(() => {
         fetchOrderCount();
         perCount();
-    }, );
+    },[]);
 
     const fetchOrderCount = async () => {
         try {
