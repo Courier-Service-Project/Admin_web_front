@@ -75,7 +75,7 @@ export default function Popup(props) {
           if (response.data.success === 1) {
             toast.success("Change successfully completed !", {
               position: "top-right",
-              autoClose: 2000,
+              autoClose: 2500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -83,13 +83,21 @@ export default function Popup(props) {
               progress: undefined,
               theme: "light",
             });
+            handleClose();
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
           }
+
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1000);
         })
         .catch(function (error) {
           console.log(error);
           toast.warn("Check internet Connection !", {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -99,7 +107,7 @@ export default function Popup(props) {
           });
         });
 
-      handleClose();
+      // handleClose();
     },
   });
 

@@ -1,182 +1,206 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import CardCom from "./CardCom";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import ArticleIcon from "@mui/icons-material/Article";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
-import BarChart from '../../Charts/BarChart';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { PieChart } from '../../Charts/PieChart';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import { BACKEND_URL } from '../../Constants';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import BarChart from "../../Charts/BarChart";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { PieChart } from "../../Charts/PieChart";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { BACKEND_URL } from "../../Constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BasicGrid() {
-    const [orderCount, setOrderCount] = useState({});
-    const [regPerCount,setRegPerCount] = useState({});
-    const [loading,setLoading] = useState(false);
-    const [hasErrorToastShown, setHasErrorToastShown] = useState(false);
+  const [orderCount, setOrderCount] = useState({});
+  const [regPerCount, setRegPerCount] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [hasErrorToastShown, setHasErrorToastShown] = useState(false);
 
-    const handleCatchError = (error) => {
-        console.error(error.message);
-        if (!hasErrorToastShown) {
-            toast.dismiss();
-            toast.warn('Check internet Connection!', {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-            setHasErrorToastShown(true);
-        }
-    };
-    useEffect(() => {
-        fetchOrderCount();
-        perCount();
-    }, );
+  const handleCatchError = (error) => {
+    console.error(error.message);
+    if (!hasErrorToastShown) {
+      toast.dismiss();
+      toast.warn("Check internet Connection!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setHasErrorToastShown(true);
+    }
+  };
+  useEffect(() => {
+    fetchOrderCount();
+    perCount();
+  }, []);
 
-    const fetchOrderCount = async () => {
-        try {
-            const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
-            console.log(result.data.message)
-            setOrderCount(result.data.message);
-        } catch (error) {
-            console.log(error)
-            //handleCatchError(error);
-        } finally{
-            setLoading(false);
-        }
-    };
+  const fetchOrderCount = async () => {
+    try {
+      const result = await axios.get(`${BACKEND_URL}/orders/orderCounts`);
+      console.log(result.data.message);
+      setOrderCount(result.data.message);
+    } catch (error) {
+      console.log(error);
+      //handleCatchError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const perCount = async () => {
-        try {
+  const perCount = async () => {
+    try {
+      const result = await axios.get(`${BACKEND_URL}/applicant/peronCount`);
+      setRegPerCount(result.data);
 
-            const result = await axios.get(`${BACKEND_URL}/applicant/peronCount`);
-            setRegPerCount(result.data);
-
-            console.log(result);
-            // const reg = regPerCount.data;
-            // console.log("reg:" ,reg)
-        } catch (error) {
-            handleCatchError(error);
-        } finally{
-            setLoading(false);
-        }
-    };
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            {loading ? (
-                <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <CircularProgress />
-            </Box>
-            ) : (
-                <Grid container spacing={2}>
-                <Grid item xs={12} md={8}>
-                    <Stack spacing={2} direction={'row'}>
-                        <Grid item xs={12} md={4}>
-                            <CardCom 
-                                title={orderCount.verifyConfirmCount} 
-                                text="Pending Orders" 
-                                width="100%" 
-                                height="145px" 
-                                titlefw="1500"
-                                titlefs="30px" subtitlefs="20px"
-                                pl="10px" pr="10px" pt="10px" pb="10px" 
-                                gradient="linear-gradient(158deg, rgba(1, 36, 24, 1) 0%, rgba(16, 196, 134, 1) 100%)"
-                                icon={<AddchartIcon />} 
-                                linkTo="/pending" 
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CardCom 
-                                title={orderCount.inProgressCount} 
-                                text="In progress" 
-                                width="100%" 
-                                height="145px"
-                                titlefw="1500"
-                                titlefs="30px" subtitlefs="20px"
-                                pl="10px" pr="10px" pt="10px" pb="10px"
-                                gradient="linear-gradient(158deg, rgba(24, 28, 28, 1) 0%, rgba(79, 89, 89, 1) 100%)"
-                                icon={<AutorenewIcon />} 
-                                linkTo="/progress" 
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CardCom 
-                                title={orderCount.completeCount} 
-                                text="Completed Orders" 
-                                width="100%" 
-                                height="145px" 
-                                titlefw="1500"
-                                titlefs="30px" subtitlefs="20px"
-                                pl="10px" pr="10px" pt="10px" pb="10px"
-                                gradient="linear-gradient(158deg, rgba(18, 48, 48, 1) 0%, rgba(51, 145, 145, 1) 100%)"
-                                icon={<TaskAltRoundedIcon />} 
-                                linkTo="/complete" 
-                            />
-                        </Grid>
-                    </Stack>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <Stack spacing={2}>
-                        <Grid item xs={12}>
-                            <CardCom 
-                                title={regPerCount.reg} 
-                                text="Registered Courier persons" 
-                                width="100%" 
-                                titlefw="1000"
-                                titlesize="30px" subtitlefs="20px"
-                                pl="10px" pr="10px" pt="10px" pb="10px"
-                                gradient="linear-gradient(158deg, rgba(5, 71, 39, 1) 0%, rgba(17, 128, 74, 1) 100%)"
-                                icon={<HowToRegRoundedIcon />} 
-                                linkTo="/registered" 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <CardCom 
-                                title={regPerCount.app}
-                                text="Applicants" 
-                                width="100%" 
-                                titlefw="1000"
-                                titlesize="30px" subtitlefs="20px"
-                                pl="10px" pr="10px" pt="10px" pb="10px"
-                                gradient="linear-gradient(158deg, rgba(5, 33, 29, 1) 0%, rgba(63, 145, 134, 1) 100%)" 
-                                icon={<ArticleIcon />} 
-                                linkTo="/applicant" 
-                            />
-                        </Grid>
-                    </Stack>
-                </Grid>
-                <Box height={20} />
-                <Grid item xs={12} md={8}>
-                    <Card sx={{ height: 60 + "vh" }}>
-                        <CardContent>
-                            <BarChart />
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ height: 60 + "vh" }}>
-                        <CardContent>
-                            <PieChart />
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-            )}
-            <ToastContainer />
+      console.log(result);
+      // const reg = regPerCount.data;
+      // console.log("reg:" ,reg)
+    } catch (error) {
+      handleCatchError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress />
         </Box>
-    );
+      ) : (
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            <Stack spacing={2} direction={"row"}>
+              <Grid item xs={12} md={4}>
+                <CardCom
+                  title={orderCount.verifyConfirmCount}
+                  text="Pending Orders"
+                  width="100%"
+                  height="145px"
+                  titlefw="1500"
+                  titlefs="30px"
+                  subtitlefs="20px"
+                  pl="10px"
+                  pr="10px"
+                  pt="10px"
+                  pb="10px"
+                  gradient="linear-gradient(158deg, rgba(1, 36, 24, 1) 0%, rgba(16, 196, 134, 1) 100%)"
+                  icon={<AddchartIcon />}
+                  linkTo="/pending"
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CardCom
+                  title={orderCount.inProgressCount}
+                  text="In progress"
+                  width="100%"
+                  height="145px"
+                  titlefw="1500"
+                  titlefs="30px"
+                  subtitlefs="20px"
+                  pl="10px"
+                  pr="10px"
+                  pt="10px"
+                  pb="10px"
+                  gradient="linear-gradient(158deg, rgba(24, 28, 28, 1) 0%, rgba(79, 89, 89, 1) 100%)"
+                  icon={<AutorenewIcon />}
+                  linkTo="/progress"
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CardCom
+                  title={orderCount.completeCount}
+                  text="Completed Orders"
+                  width="100%"
+                  height="145px"
+                  titlefw="1500"
+                  titlefs="30px"
+                  subtitlefs="20px"
+                  pl="10px"
+                  pr="10px"
+                  pt="10px"
+                  pb="10px"
+                  gradient="linear-gradient(158deg, rgba(18, 48, 48, 1) 0%, rgba(51, 145, 145, 1) 100%)"
+                  icon={<TaskAltRoundedIcon />}
+                  linkTo="/complete"
+                />
+              </Grid>
+            </Stack>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Stack spacing={2}>
+              <Grid item xs={12}>
+                <CardCom
+                  title={regPerCount.reg}
+                  text="Registered Courier persons"
+                  width="100%"
+                  titlefw="1000"
+                  titlesize="30px"
+                  subtitlefs="20px"
+                  pl="10px"
+                  pr="10px"
+                  pt="10px"
+                  pb="10px"
+                  gradient="linear-gradient(158deg, rgba(5, 71, 39, 1) 0%, rgba(17, 128, 74, 1) 100%)"
+                  icon={<HowToRegRoundedIcon />}
+                  linkTo="/registered"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CardCom
+                  title={regPerCount.app}
+                  text="Applicants"
+                  width="100%"
+                  titlefw="1000"
+                  titlesize="30px"
+                  subtitlefs="20px"
+                  pl="10px"
+                  pr="10px"
+                  pt="10px"
+                  pb="10px"
+                  gradient="linear-gradient(158deg, rgba(5, 33, 29, 1) 0%, rgba(63, 145, 134, 1) 100%)"
+                  icon={<ArticleIcon />}
+                  linkTo="/applicant"
+                />
+              </Grid>
+            </Stack>
+          </Grid>
+          <Box height={20} />
+          <Grid item xs={12} md={8}>
+            <Card sx={{ height: 60 + "vh" }}>
+              <CardContent>
+                <BarChart />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Card sx={{ height: 60 + "vh" }}>
+              <CardContent>
+                <PieChart />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      )}
+      <ToastContainer />
+    </Box>
+  );
 }
