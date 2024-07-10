@@ -12,12 +12,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useFormik } from "formik";
+import CircularProgress from "@mui/material/CircularProgress";
 import * as yup from "yup";
 import { BACKEND_URL, ID } from "../../Constants/index";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 
 import { ToastContainer, toast } from "react-toastify";
-
-import CircularProgress from "@mui/material/CircularProgress";
+import "react-toastify/dist/ReactToastify.css";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -30,10 +32,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function Popup(props) {
   const { openpopup, setopenpopup } = props;
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState(false);
 
   const [load, setLoad] = React.useState(false);
-
   const [formStep, setFormStep] = React.useState(0);
 
   const CompleteFormStep = () => {
@@ -102,6 +103,7 @@ export default function Popup(props) {
     },
     validationSchema: validationSchema1,
     onSubmit: (values) => {
+      setLoad(true);
       axios
         .post(`${BACKEND_URL}/admin/ChangePassword`, {
           adminID: ID,
@@ -111,9 +113,22 @@ export default function Popup(props) {
         .then(function (response) {
           setLoad(false);
           console.log(response.data.success);
-          if (response.data.success) {
-            CompleteFormStep();
+          if (response.data.success === 1) {
+            toast.success("Change successfully completed !", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           }
+          handleClose();
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         })
         .catch(function (error) {
           console.log(error);
@@ -134,7 +149,8 @@ export default function Popup(props) {
     } else if (formStep === 1) {
       return (
         <Button sx={changebtn} onClick={formik1.handleSubmit} type="submit">
-          Change Password
+          Change Password<span style={{ margin: "0 5px" }}></span>
+          {load ? <CircularProgress sx={{ color: "black" }} size={20} /> : ""}
         </Button>
       );
     }
@@ -195,7 +211,32 @@ export default function Popup(props) {
                   />
                   <Typography sx={{ color: "red", fontSize: "13px" }}>
                     {" "}
-                    {error ? error : ""}
+                    {error ? (
+                      <Box mb={-3}>
+                        <Collapse in={error}>
+                          <Alert
+                            severity="error"
+                            action={
+                              <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                  setError(null);
+                                }}
+                              >
+                                <CloseIcon fontSize="inherit" />
+                              </IconButton>
+                            }
+                            sx={{ mb: 2 }}
+                          >
+                            {error}
+                          </Alert>
+                        </Collapse>
+                      </Box>
+                    ) : (
+                      ""
+                    )}
                   </Typography>
                 </Box>
               </section>
@@ -239,11 +280,6 @@ export default function Popup(props) {
                     }
                   />
                 </Box>
-              </section>
-            )}
-            {formStep === 2 && (
-              <section>
-                <p>Successfully completed</p>
               </section>
             )}
           </DialogContent>

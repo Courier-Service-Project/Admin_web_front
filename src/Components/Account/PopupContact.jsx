@@ -12,7 +12,10 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { BACKEND_URL, ID } from "../../Constants/index";
 import { useFormik } from "formik";
+import CircularProgress from "@mui/material/CircularProgress";
 import * as yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -25,6 +28,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function PopupContact(props) {
   const { openpopup, setopenpopup, pEmail, pTele } = props;
+
+  const [conLoad, setconLoad] = React.useState(false);
 
   const handleClose = () => {
     setopenpopup(false);
@@ -64,6 +69,7 @@ export default function PopupContact(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setconLoad(true);
       axios
         .post(`${BACKEND_URL}/admin/changeContact`, {
           adminID: ID,
@@ -71,13 +77,49 @@ export default function PopupContact(props) {
           tele: values.tele,
         })
         .then(function (response) {
-          console.log(response);
+          setconLoad(false);
+          if (response.data.success === 1) {
+            toast.success("Change successfully completed !", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            handleClose();
+            setTimeout(() => {}, 1500);
+          } else {
+            toast.error("Change Not Successfull !", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         })
         .catch(function (error) {
+          setconLoad(false);
           console.log(error);
+          toast.warn("Check internet Connection !", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
 
-      handleClose();
+      // handleClose();
     },
   });
 
@@ -134,10 +176,16 @@ export default function PopupContact(props) {
           </DialogContent>
           <DialogActions>
             <Button sx={changebtn} type="submit">
-              Save changes
+              Save changes<span style={{ margin: "0 5px" }}></span>
+              {conLoad ? (
+                <CircularProgress sx={{ color: "black" }} size={20} />
+              ) : (
+                ""
+              )}
             </Button>
           </DialogActions>
         </form>
+        <ToastContainer />
       </BootstrapDialog>
     </React.Fragment>
   );
