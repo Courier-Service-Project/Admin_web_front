@@ -241,7 +241,7 @@ const OrderTracking = () => {
                             Order Status: {getShipmentDetails(orderId).Status}
                         </Typography>
                     </Box>
-                    <div style={{ paddingTop: '30px',paddingLeft:'100px',paddingRight:'100px' }}>
+                    <div style={{ paddingTop: '30px',paddingLeft:'100px',paddingRight:'100px',paddingBottom: '30px' }}>
                         <Stepper activeStep={activeStep} sx={steptyle} alternativeLabel>
                             {steps.map((step, index) => (
                                 <Step key={step.label} completed={completedSteps[index]}>
@@ -251,7 +251,7 @@ const OrderTracking = () => {
                         </Stepper>
                     </div>
 
-                    <div style={{ display: 'flex', flexBasis: '30%', paddingTop: '10px' }}>
+                    <div style={{ display: 'flex', flexBasis: '30%', paddingTop: '10px',paddingBottom:'10px' }}>
                     {orderStatus !== 'On Branch' && orderStatus !== 'Pending Order' && (
                             //<Card style={{ marginRight: '100px', marginLeft: '10px', marginBottom: '10px', width: '100%', backgroundColor: '#e0f2f1', height: "100%" }}>
                             <Card style={{
@@ -404,12 +404,12 @@ const OrderTracking = () => {
                     </div>
                     <Box mt={2} display="flex" justifyContent="flex-end">
                     <Button variant="contained" onClick = {()=>navigate(`/orderdelails/${orderId}`)} style={{ marginLeft: "200px" }} sx={{
-                            bgcolor: "#ef4444",
+                            bgcolor: "#00897b",
                             height: "40px",
                             width: "25%",
                             fontWeight: "600",
                             ":hover": {
-                                bgcolor: "#f87171",
+                                bgcolor: "#14b8a6",
                                 color: "#616161",
                             },
                         }}>
