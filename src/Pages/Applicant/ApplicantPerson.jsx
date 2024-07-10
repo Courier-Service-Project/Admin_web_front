@@ -162,7 +162,6 @@ export default function ViewApplicant() {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error.message);
             //setError("Network error. Please try again.")
             //setOpen1(true);
         }
