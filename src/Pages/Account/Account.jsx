@@ -53,32 +53,71 @@ export default function Account() {
   });
 
   const [open, setOpen] = React.useState(false);
+  const [preview,setpreview]=React.useState(profile);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    upLoadProfile();
   };
+  const deleteImage=()=>{
+    deleteProfileImage()
+  }
 
-  const [preview, setpreview] = React.useState(profile);
+  
+
+  useEffect(()=>{
+    
+  },[preview])
   const onClose = () => {
     setpreview(preview);
   };
   const onCrop = (view) => {
     setpreview(view);
-    alert(preview)
+    //alert(preview);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`,{
-        headers:{
-          'access_token':localStorage.getItem('login')
-        }
-      })
+  const upLoadProfile=async()=>{
+    const body={
+      preview
+    }
+    try{
+      const result=await axios.patch(`${BACKEND_URL}/admin/updateProfile/${ID}`,body)
+       console.log(result);
+       if(result.data.success==200){
+
+       }else if(result.data.success==101){
+
+       }else{
+
+       }
+    }catch(error){
+
+    }
     
+  }
+
+  const deleteProfileImage=async()=>{
+    const result=await axios.delete(`${BACKEND_URL}/admin/deleteProfileImage/${ID}`)
+    if(result.data.success=200){
+      getUserDetails();
+    }else if(result.data.success==101){
+
+    }else{
+
+    }
+  }
+
+  const getUserDetails=async()=>{
+    axios
+      .get(`${BACKEND_URL}/admin/getinfo?adminID=${ID}`, {
+        headers: {
+          access_token: localStorage.getItem("login"),
+        },
+      })
+
       .then(function (response) {
         setLoading(false);
         setFormdata({
@@ -88,10 +127,16 @@ export default function Account() {
           eGmail: response.data.data[0].Email,
           tTele: response.data.data[0].Tele,
         });
+        setpreview(response.data.data[0].AdminProfileUrl)
       })
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    getUserDetails();
   }, []);
 
   return (
@@ -135,18 +180,19 @@ export default function Account() {
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   {/* ....................................................................... */}
-                  
+
                   <Box>
-                    <img
-                      style={{
-                        width: "200px",
-                        height: "200px",
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                      }}
-                      src={preview}
-                      alt="profile"
-                    />
+                      <img
+                        style={{
+                          width: "200px",
+                          height: "200px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                        src={preview !=null ?preview:profile}
+                        alt="profile"
+                      />
+
 
                     <BootstrapDialog
                       onClose={handleClose}
@@ -204,12 +250,14 @@ export default function Account() {
                   >
                     Change Image
                   </Button>
-                  <Button variant="contained" sx={deleteimg}>
+                  <Button variant="contained" sx={deleteimg}
+                  onClick={deleteImage}
+                  >
                     Delete Image
                   </Button>
                 </Box>
               </Box>
- {/* ....................................................................... */}
+              {/* ....................................................................... */}
 
               <Box sx={{ mt: 7, ml: 3 }}>
                 <Typography sx={{ fontWeight: "bold", mb: 2 }}>
@@ -277,131 +325,133 @@ export default function Account() {
                 <Divider sx={{ mt: 8, mb: 4 }} />
               </Box>
               <Box sx={{ mt: 4, ml: 3 }}>
-            <Typography sx={{ fontWeight: "bold" }}>Contact Info</Typography>
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              sx={{ mb: 2 }}
-              color={"#9e9e9e"}
-            >
-              Manage your accounts email address for the invoices.
-            </Typography>
-
-            <Grid container spacing={5}>
-              <Grid item xs={4}>
-                <Typography color={"#9e9e9e"}>Email</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  sx={{ boxShadow: 1 }}
-                  id="email"
-                  defaultValue="################"
-                  value={formdata.eGmail}
-                  InputProps={{
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <MailOutlineIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Typography color={"#9e9e9e"}>Tele</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  sx={{ boxShadow: 1 }}
-                  id="tele"
-                  defaultValue="###################"
-                  value={formdata.tTele}
-                  InputProps={{
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PhoneIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={5}
-                sx={{
-                  justifyContent: "end",
-                  display: "flex",
-                  alignItems: "end",
-                  pr: 4,
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={() => setopenConpopup(true)}
-                  sx={changebtn}
+                <Typography sx={{ fontWeight: "bold" }}>
+                  Contact Info
+                </Typography>
+                <Typography
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                  sx={{ mb: 2 }}
+                  color={"#9e9e9e"}
                 >
-                  Change Contact info
-                </Button>
-              </Grid>
-            </Grid>
-            <Divider sx={{ mt: 8, mb: 4 }} />
-          </Box>
-          <Box sx={{ mt: 4, ml: 3 }}>
-            <Typography sx={{ fontWeight: "bold" }}>Password</Typography>
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              color={"#9e9e9e"}
-              sx={{ mb: 2 }}
-            >
-              Modify your current password.
-            </Typography>
+                  Manage your accounts email address for the invoices.
+                </Typography>
 
-            <Grid container spacing={5}>
-              <Grid item xs={4}>
-                <Typography color={"#9e9e9e"}>Current Password</Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="password"
-                  sx={{ boxShadow: 1 }}
-                  id="outlined-read-only-input"
-                  defaultValue="malindaSureshMadhushan"
-                  InputProps={{
-                    readOnly: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <KeyIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                sx={{
-                  justifyContent: "end",
-                  display: "flex",
-                  alignItems: "end",
-                  pr: 4,
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={() => setChange(true)}
-                  sx={changebtn}
+                <Grid container spacing={5}>
+                  <Grid item xs={4}>
+                    <Typography color={"#9e9e9e"}>Email</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      sx={{ boxShadow: 1 }}
+                      id="email"
+                      defaultValue="################"
+                      value={formdata.eGmail}
+                      InputProps={{
+                        readOnly: true,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <MailOutlineIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography color={"#9e9e9e"}>Tele</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      sx={{ boxShadow: 1 }}
+                      id="tele"
+                      defaultValue="###################"
+                      value={formdata.tTele}
+                      InputProps={{
+                        readOnly: true,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PhoneIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={5}
+                    sx={{
+                      justifyContent: "end",
+                      display: "flex",
+                      alignItems: "end",
+                      pr: 4,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => setopenConpopup(true)}
+                      sx={changebtn}
+                    >
+                      Change Contact info
+                    </Button>
+                  </Grid>
+                </Grid>
+                <Divider sx={{ mt: 8, mb: 4 }} />
+              </Box>
+              <Box sx={{ mt: 4, ml: 3 }}>
+                <Typography sx={{ fontWeight: "bold" }}>Password</Typography>
+                <Typography
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                  color={"#9e9e9e"}
+                  sx={{ mb: 2 }}
                 >
-                  Change Password
-                </Button>
-              </Grid>
-            </Grid>
-       
-            <Divider sx={{ mt: 8, mb: 4 }} />
-          </Box>
+                  Modify your current password.
+                </Typography>
+
+                <Grid container spacing={5}>
+                  <Grid item xs={4}>
+                    <Typography color={"#9e9e9e"}>Current Password</Typography>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="password"
+                      sx={{ boxShadow: 1 }}
+                      id="outlined-read-only-input"
+                      defaultValue="malindaSureshMadhushan"
+                      InputProps={{
+                        readOnly: true,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <KeyIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={8}
+                    sx={{
+                      justifyContent: "end",
+                      display: "flex",
+                      alignItems: "end",
+                      pr: 4,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => setChange(true)}
+                      sx={changebtn}
+                    >
+                      Change Password
+                    </Button>
+                  </Grid>
+                </Grid>
+
+                <Divider sx={{ mt: 8, mb: 4 }} />
+              </Box>
             </Box>
           )}
         </Box>
