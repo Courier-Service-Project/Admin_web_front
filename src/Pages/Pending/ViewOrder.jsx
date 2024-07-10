@@ -7,7 +7,13 @@ import TextField from "@mui/material/TextField";
 import Sidenav from "../../Components/Structure/Sidenav";
 import Navbar from "../../Components/Structure/Navbar";
 import axios from "axios";
-import { Card, CardContent, Divider, Button } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Divider,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import FormSubTitle from "../../Components/pending/FormSubTitle";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../Constants";
@@ -31,6 +37,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function ViewOrder() {
   const [openA, setOpenA] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
     setOpenA(false);
@@ -53,7 +60,7 @@ export default function ViewOrder() {
     S_lname: "",
     S_city: "",
     S_telephone: "",
-    S_Email:"",
+    S_Email: "",
 
     R_fname: "",
     R_lname: "",
@@ -63,7 +70,7 @@ export default function ViewOrder() {
     R_street: "",
     R_HomeTown: "",
     R_telephone: "",
-    R_Email:"",
+    R_Email: "",
 
     P_streetNo: "",
     P_street: "",
@@ -74,6 +81,7 @@ export default function ViewOrder() {
   });
 
   const handleConfirmdata = async () => {
+    setLoading(true);
     await confirmData(viewOrderData.Order_id);
   };
   const confirmData = async (orderId) => {
@@ -81,6 +89,8 @@ export default function ViewOrder() {
       const result = await axios.patch(
         `${BACKEND_URL}/orders/updatependingorderdetails/${orderId}`
       );
+      console.log(result.data.success);
+      setLoading(false);
       if (result.data.success === 200) {
         toast.success("Order Successfully Confirm", {
           position: "top-right",
@@ -95,10 +105,22 @@ export default function ViewOrder() {
 
         setTimeout(() => {
           navigate("/pending");
-        }, 2500);
+        }, 2300);
+      } else {
+        toast.error("Order Confirm Failed", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       console.log(result);
     } catch (error) {
+      setLoading(false);
       console.error("Error confirming order:", error);
     }
   };
@@ -113,7 +135,7 @@ export default function ViewOrder() {
       );
 
       if (result.data.success === 200) {
-        toast.success("Order Successfully Deleted", {
+        toast.error("Order Successfully Deleted", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -126,7 +148,7 @@ export default function ViewOrder() {
 
         setTimeout(() => {
           navigate("/pending");
-        }, 2500);
+        }, 2300);
       }
 
       console.log(result);
@@ -215,8 +237,8 @@ export default function ViewOrder() {
           theme: "light",
         });
       }
-        setSave(true);
-        setEdit(true);
+      setSave(true);
+      setEdit(true);
     } catch (error) {
       toast.error("Order UnSuccessfully Edited", {
         position: "top-right",
@@ -873,7 +895,6 @@ export default function ViewOrder() {
                             <SaveIcon />
                             Save Edit
                           </Button>
-                         
                         )}
                       </Grid>
 
@@ -883,20 +904,25 @@ export default function ViewOrder() {
                         md={3}
                         style={{ margin: "0 auto", padding: "10px 0px" }}
                       >
-                        <Pendingalert
-                          color="#4caf50"
-                          Icon={<CheckCircleIcon />}
-                          button="Confirm Order"
-                          title="Confirm Order"
-                          text="Are you sure you want to confirm this order?"
-                          buttonName1="Cancel"
-                          buttonName2="Confirm"
-                          bcolor="#4caf50"
-                          onClick1={() => {
-                            handleConfirmdata();
-                            // setopen3(false);
-                          }}
-                        />
+                        {loading ? (
+                          <CircularProgress size={30} sx={{ color: "#4caf50",animationDuration:'1500ms',ml:"100px"}} />
+                        ) : (
+                          <Pendingalert
+                            color="#4caf50"
+                            Icon={<CheckCircleIcon />}
+                            button="Confirm Order"
+                            title="Confirm Order"
+                            text="Are you sure you want to confirm this order?"
+                            buttonName1="Cancel"
+                            buttonName2="Confirm"
+                            bcolor="#4caf50"
+                            onClick1={() => {
+                              handleConfirmdata();
+                              // setopen3(false);
+                            }}
+                          />
+                        )}
+                        ,
                       </Grid>
                     </Grid>
                   </Box>
