@@ -58,7 +58,7 @@ export default function Adminprofile() {
                       name={admin.FirstName + " " + admin.LastName}
                       email={admin.Email}
                       telephone={admin.Tele}
-                      photoSrc={admin.photoSrc}
+                      photoSrc={admin.AdminProfileUrl}
                       admin_Id={admin.admin_Id}
                     />
                   </Grid>

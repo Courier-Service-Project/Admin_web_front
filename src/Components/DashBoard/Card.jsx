@@ -25,27 +25,28 @@ export default function BasicGrid() {
   const [loading, setLoading] = useState(false);
   const [hasErrorToastShown, setHasErrorToastShown] = useState(false);
 
-  const handleCatchError = (error) => {
-    console.error(error.message);
-    if (!hasErrorToastShown) {
-      toast.dismiss();
-      toast.warn("Check internet Connection!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setHasErrorToastShown(true);
-    }
-  };
-  useEffect(() => {
-    fetchOrderCount();
-    perCount();
-  }, []);
+
+    const handleCatchError = (error) => {
+        console.error(error.message);
+        if (!hasErrorToastShown) {
+            toast.dismiss();
+            toast.warn('Check internet Connection!', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+            setHasErrorToastShown(true);
+        }
+    };
+    useEffect(() => {
+        fetchOrderCount();
+        perCount();
+    },[]);
 
   const fetchOrderCount = async () => {
     try {

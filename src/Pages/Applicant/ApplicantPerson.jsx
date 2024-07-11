@@ -8,25 +8,25 @@ import Navbar from "../../Components/Structure/Navbar";
 import AlertDialog from "../../Components/Alert/AlertDialod";
 import {
     TextField,
-    Paper,
-    Button
+    Paper
 } from "@mui/material";
 import axios from 'axios';
-import { useLocation, useParams,useNavigate } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { BACKEND_URL } from '../../Constants';
-import RetryModal from "../../Components/Alert/RetryModal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function ViewApplicant() {
     const [applicantdata, setApplicantData] = useState({});
     const { applicantid } = useParams();
     const [open2,setopen2] = useState(false);
-    const [open1,setOpen1] = useState(false);
-    const [error,setError] = useState(null);
+    // const [open1,setOpen1] = useState(false);
+    // const [error,setError] = useState(null);
+    const [loading,setLoading] = useState(false);
+    const [loading2,setLoading2] = useState(false);
     const navigate = useNavigate();
 
 
@@ -47,14 +47,27 @@ export default function ViewApplicant() {
         } catch (error) {
             console.log('Error fetching applicant details:', error);
             setApplicantData({});
-            setError("Network error. Please try again.")
-            setOpen1(true);
+            // setError("Network error. Please try again.")
+            // setOpen1(true);
+            toast.warn('Check internet Connection !', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            console.log(error.message);
         }
     };
     const deleteApplicantPerson = async (applicantid) => {
+        setLoading2(true);
         try{
             console.log(applicantid)
             const result = await axios.delete(`${BACKEND_URL}/applicant/applicantPersonDelete/${applicantid}`);
+            setLoading2(false);
             if(result.data.success === 200){                   
                 toast.success('Successfully Deleted', {
                     position: "top-right",
@@ -102,11 +115,13 @@ export default function ViewApplicant() {
     const sendRequest = async (applicationId,values) => {
         console.log("Sending request with values:", values);
         console.log(applicationId)
+        setLoading(true);
         try {
             const result = await axios.post(`${BACKEND_URL}/applicant/postregistereddata/${applicationId}`, { values });
             console.log(result);
             //navigate("/applicant");
 
+            setLoading(false);
             if(result.data.success === 200){                   
                 toast.success('Successfully Selected', {
                     position: "top-right",
@@ -147,7 +162,6 @@ export default function ViewApplicant() {
                 progress: undefined,
                 theme: "light",
             });
-            console.log(error.message);
             //setError("Network error. Please try again.")
             //setOpen1(true);
         }
@@ -406,29 +420,33 @@ export default function ViewApplicant() {
                                     xs={12}
                                     md={3}
                                     style={{ margin: "0 auto", padding: "10px 0px" }}>
-                                
-                                    <AlertDialog
-                                        
-                                        bgcolor="#bdbdbd"
-                                        button="Reject"
-                                        icon={DeleteIcon}
-                                        title="Confirm Rejection"
-                                        text="Are you sure want to delete this Application?"
-                                        buttonName1="Cancel"
-                                        buttonName2="Delete"
-                                        bcolor="#bdbdbd"
-                                        hoverbgcolor="#94a3b8"
-                                        onClick1={()=>{deleteApplicantPerson(applicantid);
-                                            setopen2(false);
-                                        }}
-                                    />
+                                        {loading2 ? (
+                                            <CircularProgress size={30} sx={{color:"#bdbdbd",animationDuration:"1500ms",ml:"100px"}}/>
+                                        ): (
+                                            <AlertDialog
+                                            bgcolor="#bdbdbd"
+                                            button="Reject"
+                                            icon={DeleteIcon}
+                                            title="Confirm Rejection"
+                                            text="Are you sure want to delete this Application?"
+                                            buttonName1="Cancel"
+                                            buttonName2="Delete"
+                                            bcolor="#bdbdbd"
+                                            hoverbgcolor="#94a3b8"
+                                            onClick1={()=>{deleteApplicantPerson(applicantid);
+                                                setopen2(false);
+                                            }}
+                                        />
+                                        )}
+                                    
                                     </Grid>
                                     <Grid item
                                     xs={12}
                                     md={3}
                                     style={{ margin: "0 auto", padding: "10px 0px" }}>
-                                
-                                
+                                        {loading?( 
+                                            <CircularProgress size={30} sx={{color:"#4caf50",animationDuration:"1500ms",ml:"100px"}}/>
+                                        ):(
                                     <AlertDialog
                                         bgcolor="#4caf50"
                                         button="Accept"
@@ -443,7 +461,7 @@ export default function ViewApplicant() {
                                             setopen2(false);
                                         }}
                                     />
-                                
+                                    )}
                                 </Grid>
                                 </Grid>
                             </Grid>
