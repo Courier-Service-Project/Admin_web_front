@@ -90,7 +90,9 @@ export default function PopupContact(props) {
               theme: "light",
             });
             handleClose();
-            setTimeout(() => {}, 1500);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
           } else {
             toast.error("Change Not Successfull !", {
               position: "top-right",

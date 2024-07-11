@@ -47,14 +47,17 @@ export default function SignIn() {
         })
         .then(function (response) {
           setLoading(false);
-          //console.log(response.data.token)
-          //localStorage.setItem('login',response.data.token)
+
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("adminID", response.data.adminID);
           localStorage.setItem("type", response.data.type);
           localStorage.setItem("name", response.data.name);
 
-          // console.log(localStorage.getItem('login'))
+          const accessToken = localStorage.getItem("accessToken");
+
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${accessToken}`;
 
           if (response.data.success === 1) {
             navigation("/dashboard");

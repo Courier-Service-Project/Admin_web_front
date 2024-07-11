@@ -83,7 +83,6 @@ export default function BranchDetails() {
       setFilteredDistricts(provinceDistrictMap[fromData.B_province] || []);
     }
   }, [fromData.B_province]);
-  
 
   const provinceDistrictMap = {
     Central: ["Kandy", "Matale", "Nuwara Eliya"],
@@ -117,21 +116,16 @@ export default function BranchDetails() {
     setOpenA(false);
 
     try {
-      // const accessToken = localStorage.getItem("accessToken");
-      const result = await axios.post(
-        `${BACKEND_URL}/branch/createNewBranch`,
-        {
-          br_location: fromData.B_location,
-          br_district: fromData.B_district,
-          br_province: fromData.B_province,
-        }
-        // ,{
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        // }
-      );
-      if (result.status === 200) {
+      const accessToken = localStorage.getItem("accessToken");
+      const result = await axios.post(`${BACKEND_URL}/branch/createNewBranch`, {
+        br_location: fromData.B_location,
+        br_district: fromData.B_district,
+        br_province: fromData.B_province,
+      });
+
+      console.log("dssssssssssss" + result.data.success);
+
+      if (result.data.success === 1) {
         toast.success("Branch Successfully Created", {
           position: "top-right",
           autoClose: 2000,
@@ -146,6 +140,18 @@ export default function BranchDetails() {
         setTimeout(() => {
           window.location.reload();
         }, 1500);
+      }
+      if (result.data.success === 0) {
+        toast.error(result.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       toast.error("Branch Creation Failed", {
