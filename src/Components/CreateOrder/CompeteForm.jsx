@@ -58,6 +58,8 @@ export default function CompeteForm() {
 
   const [notify, setNotify] = React.useState(null);
 
+  const adID = localStorage.getItem("adminID");
+
   const [loading, setLoading] = React.useState(true);
   const [resSuccess, setResSuccess] = React.useState(true);
   const [fromData, setFormData] = React.useState({
@@ -159,6 +161,7 @@ export default function CompeteForm() {
   }
 
   function sendDetails() {
+    console.log("admin ID" + adID);
     axios
       .post(`${BACKEND_URL}/orders`, {
         sfname: fromData.S_fname,
@@ -190,7 +193,7 @@ export default function CompeteForm() {
         pimergency: fromData.P_imergency,
         pdistancecost: fromData.P_distanceCost,
         pbranch: fromData.P_branch,
-        padminID: ID,
+        padminID: adID,
       })
       .then(function (response) {
         if (response.data.success === 1) {
@@ -219,6 +222,8 @@ export default function CompeteForm() {
             theme: "light",
           });
           setResSuccess(false);
+          setLoading(false);
+          setActiveStep(3);
         }
       })
       .catch(function (error) {
